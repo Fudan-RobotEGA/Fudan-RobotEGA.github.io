@@ -7,9 +7,9 @@ config:
     full: true
     background: tint-plate
     hero:
-      name: Theme Plume
-      tagline: VuePress Next Theme
-      text: 一个简约的，功能丰富的 vuepress 文档&博客 主题
+      name: 星云EGA
+      tagline: 复旦大学RoboMaster战队
+      text: 筚路蓝缕 以启山林
       actions:
         -
           theme: brand
