@@ -9,7 +9,7 @@ config:
     hero:
       name: 星云EGA
       tagline: 复旦大学RoboMaster战队
-      text: 筚路蓝缕 以启山林
+      text: 测试
       actions:
         -
           theme: brand
