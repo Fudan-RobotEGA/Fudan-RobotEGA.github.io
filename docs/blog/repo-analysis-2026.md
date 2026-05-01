@@ -1,5 +1,5 @@
 ---
-title: Fudan-RobotEGA 组织与 RM2026 英雄舵轮仓库全面分析报告
+title: Fudan-RobotEGA 全组织数据分析报告
 tags:
   - 电控
   - 分析报告
@@ -9,17 +9,27 @@ createTime: 2026/05/01 17:00:00
 permalink: /article/repo-analysis-2026/
 ---
 
-# Fudan-RobotEGA 组织数据分析报告 (v3.0 精确版)
+# Fudan-RobotEGA 全组织数据分析报告
 
-> 数据采集: 2026-05-01 | 数据来源: GitHub API (72 仓库, 42 成员全量采集)
+> **v3.1 精确版 (全分支修正)** | 数据采集: 2026-05-01
+>
+> 本报告对 GitHub Contributors API 仅统计默认分支的系统性低估问题进行了修正,对全部 39 个多分支仓库逐分支统计 commit 数。同时纳入非组织成员贡献者和匿名贡献者别名合并。
 
 ---
 
 ## 组织规模
 
-复旦大学星云EGA战队 (Fudan-RobotEGA) GitHub 组织目前拥有 **72 个仓库**（68 私有, 4 公开）和 **42 名成员**。仓库总磁盘占用 2829.6 MB,代码量 526.4 MB。
+复旦大学星云EGA战队 (Fudan-RobotEGA) GitHub 组织拥有 **72 个仓库** (68 私有, 4 公开) 和 **42 名成员**。
 
-赛季分布: 2025 (9), 2025/2026 过渡 (11), 2026 (52)。2026 赛季仓库占比最大,反映团队活跃开发状态。
+| 指标 | 数值 |
+|------|------|
+| 仓库总数 | 72 |
+| 组织成员 | 42 |
+| 全组织总提交数 | **4,959** |
+| 总磁盘占用 | 2829.6 MB |
+| 代码总量 | 526.4 MB |
+
+赛季分布: 2025 (9), 过渡期 (11), **2026 (52)**。
 
 ## 活跃度
 
@@ -27,22 +37,27 @@ permalink: /article/repo-analysis-2026/
 - 🟡 30-90天: **13** 个仓库
 - 🔴 超过90天: **30** 个仓库
 
-## 核心贡献者 Top 10
+## 贡献者排行 Top 15 (全分支修正)
 
-| 成员 | 总Commits | 原创Commits | 参与仓库数 |
-|------|----------|------------|----------|
-| JAHNAN00 | 2197 | 994 | 12 |
-| teleaki | 383 | 197 | 13 |
-| shangtianxuanniao | 378 | 171 | 9 |
-| LemonServer | 184 | 143 | 8 |
-| Beecheer | 158 | 100 | 16 |
-| xinruilee04 | 139 | 137 | 12 |
-| Breeze-by | 121 | 101 | 16 |
-| Hrmys3 | 91 | 65 | 11 |
-| chushanxiaodaoshi | 80 | 77 | 12 |
-| Co1con | 76 | 66 | 7 |
+| # | 贡献者 | 总Commits | 原创Commits | 仓库数 | 身份 |
+|---|--------|----------|------------|--------|------|
+| 1 | JAHNAN00 | 2199 | 994 | 12 |  |
+| 2 | Hrmys3 | 446 | 117 | 11 |  |
+| 3 | shangtianxuanniao | 437 | 194 | 9 |  |
+| 4 | teleaki | 408 | 222 | 13 |  |
+| 5 | LemonServer | 197 | 156 | 8 |  |
+| 6 | Beecheer | 195 | 137 | 16 |  |
+| 7 | xinruilee04 | 150 | 141 | 12 |  |
+| 8 | Breeze-by | 121 | 101 | 16 |  |
+| 9 | lucky-sharon | 115 | 46 | 5 | [non-org] |
+| 10 | chushanxiaodaoshi | 101 | 98 | 12 |  |
+| 11 | Co1con | 86 | 73 | 7 |  |
+| 12 | pyrosucrose | 77 | 59 | 7 |  |
+| 13 | ClearWei | 69 | 69 | 2 |  |
+| 14 | zlm-ega | 65 | 26 | 5 | [non-org] |
+| 15 | littlef111 | 38 | 38 | 3 |  |
 
-> 注: "原创 Commits" 排除 Fork 仓库的基线提交，仅计算非 fork 仓库中的贡献。
+> Hrmys3 从修正前的 91 升至 **446** (+355),原因是其主力开发在 `gimbal_refactor` 等非默认分支上。
 
 ## 语言分布
 
@@ -57,7 +72,7 @@ permalink: /article/repo-analysis-2026/
 | JavaScript | 0.35% |
 | Shell | 0.31% |
 
-## 机器人覆盖
+## 机器人类型覆盖
 
 - **General**: 26 个仓库
 - **Sentry**: 18 个仓库
@@ -72,30 +87,21 @@ permalink: /article/repo-analysis-2026/
 
 ## 框架体系
 
-核心框架 **EGAdapter_MC02** (510 commits) 是组织的模板仓库，被 7 个仓库 fork:
-
-- RM2026_Hero_SwerveDrive
-- RM2026_TransformableInfantry
-- RM2026_OmniandSteer_New
-- RM2026_EGAdapter_WheelLeg_Hero
-- RM2026_EGAdapter_WheelLegged_Chassis
-- RM2026_Transformable_Infantry
-- 2026_EGAIM_wheeled_leg
+核心框架 **EGAdapter_MC02** (2199 commits) 被 7 个仓库 fork,是组织全部嵌入式项目的基石。
 
 ## 关键发现
 
-1. **JAHNAN00** 是核心框架贡献者,贡献了 2197 次提交（原创 994 次）
-2. **EGAdapter_MC02** 是组织核心框架,被 7 个仓库 fork
-3. **C 语言** 占主导地位 (76.91%),C++ 其次 (12.21%)——典型嵌入式开发特征
-4. **30** 个仓库超过 90 天未更新,建议归档 2025 赛季遗留仓库
-5. **64** 个仓库缺少 License
+1. **JAHNAN00** 是核心框架贡献者 (2199 commits),占全组织总提交的 44%
+2. **Hrmys3** 被严重低估: 修正后从第 8 名跃升至第 2 名 (91 → 446)
+3. **C 语言** 占 76.91%,C++ 12.21% — 典型嵌入式开发特征
+4. **30** 个仓库超过 90 天未更新
+5. 多个仓库的主力开发在非默认分支,建议统一
+6. 4 名非组织成员贡献者需确认身份
 
 ## 可视化版本
 
-👉 **[点击查看交互式可视化报告](/report-visual.html)**（含 11 张图表）
+[点击查看交互式可视化报告](/report-visual.html) (含 11 张 ECharts 图表)
 
 ---
 
-> 数据采集方法: GitHub REST API 全量采集 (72 仓库 × 5 端点 + 42 成员详情，共 ~560 次 API 调用)
->
 > 完整版报告 (含 72 个仓库卡片) 存档于工作区 `docs/tasks/26-0501-full-org-scan/step7_report/full_report.md`
