@@ -13,7 +13,7 @@ permalink: /article/repo-analysis-2026/
 
 > 数据采集: 2026-05-01 | 72 仓库 · 42 成员 · 全分支统计
 >
-> [可视化版本 (11 张交互图表)](/report-visual.html)
+> [可视化版本 (13 张交互图表)](/report-visual.html)
 
 ---
 
@@ -544,7 +544,98 @@ OnmiandSteer
 | 2026_navigation_Sentry_ws | 星云战队26赛季哨兵工作空间 | - | 0K | 0 | 0 | -(0) | 0 | 🔴 | [详情](/repos/2026_navigation_Sentry_ws.html) |
 | RM2026_Drone_Gimbal | 2026无人机云台双稳调试仓库 | - | 0K | 0 | 0 | -(0) | 0 | 🔴 | [详情](/repos/RM2026_Drone_Gimbal.html) |
 
-## 7. 问题与建议
+
+## 7. 代码行数统计 (User Code)
+
+> 统计范围: 仅 `User/` 或 `src/` 目录下的用户代码,排除 SDK (Drivers/Core/Middlewares/HAL/CMSIS/MatlabPID)。
+> 去重: 同一 SHA 跨分支不重复计算。单次 commit 超过 5000 行 additions 视为"批量导入"单独列出。
+
+### 总览
+
+| 指标 | 数值 |
+|------|------|
+| 正常代码 Additions | 688,932 行 |
+| 正常代码 Net | 147,794 行 |
+| 批量导入 Additions | 2,689,216 行 |
+| 当前仓库总行数 | 1,125,744 行 |
+
+### 贡献者代码行数排行
+
+| # | 贡献者 | Code Additions | Code Deletions | Net | Commits | 批量导入 | 仓库数 | 身份 |
+|---|--------|---------------|---------------|-----|---------|---------|--------|------|
+| 1 | JAHNAN00 | 252,472 | 189,748 | +62,724 | 1441 | 34,579 | 14 |  |
+| 2 | Hrmys3 | 67,243 | 41,492 | +25,751 | 482 | 58,365 | 11 |  |
+| 3 | Beecheer | 65,935 | 24,241 | +41,694 | 193 | 63,800 | 15 |  |
+| 4 | shangtianxuanniao | 44,227 | 18,628 | +25,599 | 671 | 57,799 | 9 |  |
+| 5 | pyrosucrose | 42,174 | 19,531 | +22,643 | 115 | 72,811 | 10 |  |
+| 6 | teleaki | 28,571 | 20,882 | +7,689 | 368 | 18,567 | 15 |  |
+| 7 | Co1con | 26,128 | 38,899 | -12,771 | 87 | 159,839 | 8 |  |
+| 8 | chushanxiaodaoshi | 18,038 | 9,263 | +8,775 | 96 | 136,709 | 13 |  |
+| 9 | Breeze-by | 16,635 | 4,674 | +11,961 | 80 | 19,685 | 13 |  |
+| 10 | yly-true | 15,056 | 29,029 | -13,973 | 37 | 329,299 | 5 |  |
+| 11 | littlef111 | 14,663 | 1,210 | +13,453 | 27 | 7,265 | 4 |  |
+| 12 | chen0000-sudo | 14,214 | 11,278 | +2,936 | 19 | - | 4 |  |
+| 13 | ssssssqy | 13,180 | 9,535 | +3,645 | 13 | 181,674 | 8 |  |
+| 14 | xinruilee04 | 12,934 | 6,811 | +6,123 | 130 | 112,590 | 12 |  |
+| 15 | jessica070413 | 11,949 | 5,334 | +6,615 | 51 | 5,550 | 8 |  |
+| 16 | LemonServer | 9,660 | 3,406 | +6,254 | 81 | 1,021,785 | 8 |  |
+| 17 | thhos | 5,593 | 30,586 | -24,993 | 5 | - | 1 |  |
+| 18 | ega-rog | 5,541 | 56,815 | -51,274 | 20 | 67,286 | 1 | [non-org] |
+| 19 | konichan-7 | 3,228 | 1,720 | +1,508 | 79 | - | 1 | [non-org] |
+| 20 | SadMei | 2,338 | 5,843 | -3,505 | 9 | - | 6 |  |
+| 21 | zlm-ega | 2,035 | 95 | +1,940 | 25 | - | 5 | [non-org] |
+| 22 | dawncity1104 | 2,035 | 123 | +1,912 | 2 | 18,074 | 1 |  |
+| 23 | 你的名字 | 1,999 | 406 | +1,593 | 3 | 46,516 | 1 | [non-org] |
+| 24 | zaraaa | 1,991 | 16 | +1,975 | 2 | - | 2 | [non-org] |
+| 25 | jinnes06 | 1,743 | 2 | +1,741 | 14 | 7,172 | 1 | [non-org] |
+| 26 | fishyu | 1,427 | 649 | +778 | 37 | - | 1 | [non-org] |
+| 27 | WANGJ-miao | 1,302 | 2,196 | -894 | 18 | 133,833 | 3 |  |
+| 28 | leanusli | 1,256 | 7,077 | -5,821 | 8 | 5,874 | 1 | [non-org] |
+| 29 | zfw-scut | 1,106 | 180 | +926 | 5 | 15,332 | 1 | [non-org] |
+| 30 | jinnes | 1,042 | 86 | +956 | 5 | 19,603 | 1 | [non-org] |
+| 31 | Leannnnnnn | 811 | 0 | +811 | 1 | - | 1 |  |
+| 32 | ClearWei | 524 | 0 | +524 | 2 | - | 1 |  |
+| 33 | wx2450 | 506 | 270 | +236 | 14 | 74,591 | 3 |  |
+| 34 | juiceooorange | 433 | 469 | -36 | 8 | 20,618 | 2 |  |
+| 35 | Dreamingiv | 287 | 333 | -46 | 5 | - | 1 |  |
+| 36 | Phospheneser | 215 | 1 | +214 | 3 | - | 3 |  |
+| 37 | XiaoYoung | 213 | 237 | -24 | 10 | - | 1 | [non-org] |
+| 38 | WithBreeze | 186 | 62 | +124 | 3 | - | 1 | [non-org] |
+| 39 | YYZ-XeF6 | 39 | 8 | +31 | 3 | - | 2 |  |
+| 40 | En-cke | 2 | 2 | +0 | 2 | - | 1 |  |
+| 41 | Za892961012 | 1 | 1 | +0 | 1 | - | 1 | [non-org] |
+
+### 仓库代码规模排行 (当前行数)
+
+| # | 仓库 | 当前行数 | 总Additions | 总Deletions | 详情 |
+|---|------|---------|------------|------------|------|
+| 1 | 2025_autoaim_sentry_infantry_hero | 73,276 | 90,840 | 3 | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
+| 2 | 2026_Autoaim_Sentry_Hero_Infantry | 73,276 | 93,796 | 9,536 | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
+| 3 | RM2026_NAV_Sentry_UL | 71,741 | 101,286 | 788 | [→](/repos/RM2026_NAV_Sentry_UL.html) |
+| 4 | RM2026_Sentry_Nav_UC | 71,597 | 120,301 | 12,839 | [→](/repos/RM2026_Sentry_Nav_UC.html) |
+| 5 | 2026_NAV_sentry | 51,033 | 808,417 | 151,202 | [→](/repos/2026_NAV_sentry.html) |
+| 6 | 2026_HERO_UC | 43,245 | 134,404 | 1,610 | [→](/repos/2026_HERO_UC.html) |
+| 7 | 2026_Gimbal_Sky | 34,029 | 78,876 | 3,221 | [→](/repos/2026_Gimbal_Sky.html) |
+| 8 | RM2026_EGAdapter_WheelLeg_Hero | 33,635 | 57,496 | 22,054 | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
+| 9 | 2025_NAV_Sentry | 33,481 | 88,685 | 0 | [→](/repos/2025_NAV_Sentry.html) |
+| 10 | RM2026_EGARadar_develop | 31,630 | 93,472 | 57,097 | [→](/repos/RM2026_EGARadar_develop.html) |
+| 11 | 2026_infantry_Wheellegged_Chassis_RL_v0 | 28,927 | 321,283 | 29,630 | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
+| 12 | EGA_GimbalExample | 24,412 | 33,241 | 886 | [→](/repos/EGA_GimbalExample.html) |
+| 13 | RM2026_PowerRune | 24,042 | 25,039 | 24 | [→](/repos/RM2026_PowerRune.html) |
+| 14 | miao_machine_learning_wheelleg_infantry | 22,179 | 62,591 | 7,089 | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
+| 15 | 2025_Gimbal_Hero | 21,857 | 22,755 | 857 | [→](/repos/2025_Gimbal_Hero.html) |
+| 16 | RM2026_WheelLegged_Gimbal | 21,722 | 24,503 | 2,079 | [→](/repos/RM2026_WheelLegged_Gimbal.html) |
+| 17 | 2025_Gimbalright_Sentry | 21,425 | 22,999 | 1,533 | [→](/repos/2025_Gimbalright_Sentry.html) |
+| 18 | 2025_Gimballeft_Sentry | 21,404 | 23,000 | 1,555 | [→](/repos/2025_Gimballeft_Sentry.html) |
+| 19 | 2025_Gimbalyaw_Sentry | 21,017 | 22,211 | 196 | [→](/repos/2025_Gimbalyaw_Sentry.html) |
+| 20 | 2026_Gimbal_SentryFromInfantry | 20,282 | 44,992 | 3,536 | [→](/repos/2026_Gimbal_SentryFromInfantry.html) |
+| 21 | RM2026_WheelLegged_Chassis | 20,125 | 65,032 | 36,297 | [→](/repos/RM2026_WheelLegged_Chassis.html) |
+| 22 | EGAdapter_MC02 | 19,688 | 70,671 | 44,978 | [→](/repos/EGAdapter_MC02.html) |
+| 23 | 2026_Gimbal_Infantry | 19,403 | 19,474 | 12 | [→](/repos/2026_Gimbal_Infantry.html) |
+| 24 | 2025_Gimbal_Infantry | 19,120 | 23,355 | 5,540 | [→](/repos/2025_Gimbal_Infantry.html) |
+| 25 | LK4005Driver | 17,299 | 17,434 | 135 | [→](/repos/LK4005Driver.html) |
+
+## 8. 问题与建议
 
 1. **License 缺失**: 64/72 个仓库无 License,公开仓库必须添加
 2. **低活跃仓库**: 30 个仓库 >90 天未更新,建议归档 2025 赛季废弃仓库
