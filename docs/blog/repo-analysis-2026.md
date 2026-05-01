@@ -11,7 +11,7 @@ permalink: /article/repo-analysis-2026/
 
 # Fudan-RobotEGA 全组织数据分析报告
 
-> 数据采集: 2026-05-01 | 72 仓库 · 42 成员 · 全分支统计 · SHA 全组织去重
+> 数据采集: 2026-05-01 | 72 仓库 · 42 成员 · 全分支统计 · SHA 全组织去重 · User Code 精确过滤
 >
 > [可视化版本 (13 张交互图表)](/report-visual.html)
 
@@ -21,21 +21,20 @@ permalink: /article/repo-analysis-2026/
 
 | 项目 | 数值 |
 |------|------|
-| 组织名称 | Fudan-RobotEGA (复旦大学星云EGA战队) |
-| 仓库总数 | **72** (68 私有, 4 公开) |
-| 组织成员 | **42** 人 |
-| 全组织唯一 Commit | **2,130** (SHA 跨仓库去重) |
-| User Code Additions | **610,368** 行 (排除 SDK 和批量导入) |
-| 当前代码总行数 | **1,125,744** 行 |
-| 代码体积 | 526.4 MB (551,989,198 字节) |
+| 组织 | Fudan-RobotEGA (复旦大学星云EGA战队) |
+| 仓库 | **72** (68 私有, 4 公开) |
+| 成员 | **42** 人 |
+| 唯一 Commit (SHA去重) | **2,130** |
+| User Code Additions | **287,138** 行 |
+| 当前代码行数 | **1,125,744** 行 |
+| 代码体积 | 526.4 MB |
 | 磁盘占用 | 2829.6 MB |
-| 核心框架 | EGAdapter_MC02 (C++ / STM32H723 / FreeRTOS) |
 
 ### 赛季分布
 
-- **2025**: 9 个仓库
-- **2025/2026**: 11 个仓库
-- **2026**: 52 个仓库
+- **2025**: 9
+- **2025/2026**: 11
+- **2026**: 52
 
 ### 成员列表
 
@@ -88,7 +87,7 @@ permalink: /article/repo-analysis-2026/
 
 ### 2.1 仓库活跃度
 
-🟢 30天内: **29** | 🟡 30-90天: **13** | 🔴 >90天: **30**
+🟢 30天: **29** | 🟡 30-90天: **13** | 🔴 >90天: **30**
 
 | # | 仓库 | 最后推送 | 距今 | 状态 | Commits | 贡献者 | 分支 | 详情 |
 |---|------|---------|------|------|---------|--------|------|------|
@@ -165,137 +164,59 @@ permalink: /article/repo-analysis-2026/
 | 71 | 2025_Gimbalyaw_Sentry | 2025-03-28 | 398d | 🔴 | 14 | 2 | 1 | [→](/repos/2025_Gimbalyaw_Sentry.html) |
 | 72 | 2025_Gimballeft_Sentry | 2025-03-28 | 398d | 🔴 | 13 | 3 | 1 | [→](/repos/2025_Gimballeft_Sentry.html) |
 
-### 2.2 Commit 排行 (SHA 全组织去重)
+### 2.2 贡献者统一排行 (Commits + 行数同口径)
 
-同一 commit 出现在多个 fork 仓库或分支时只计一次。
+> 同一 SHA 跨仓库/分支只计一次。仅统计触及 User Code 路径的 commit。>3000 行/commit 视为批量导入。
 
-| # | 贡献者 | 唯一 Commits | 身份 |
-|---|--------|------------|------|
-| 1 | shangtianxuanniao | 345 |  |
-| 2 | Hrmys3 | 294 |  |
-| 3 | JAHNAN00 | 289 |  |
-| 4 | teleaki | 145 |  |
-| 5 | xinruilee04 | 128 |  |
-| 6 | Beecheer | 111 |  |
-| 7 | chushanxiaodaoshi | 97 |  |
-| 8 | pyrosucrose | 91 |  |
-| 9 | Co1con | 89 |  |
-| 10 | konichan-7 | 77 | [non-org] |
-| 11 | LemonServer | 71 |  |
-| 12 | Breeze-by | 59 |  |
-| 13 | jessica070413 | 48 |  |
-| 14 | yly-true | 46 |  |
-| 15 | fishyu | 36 | [non-org] |
-| 16 | littlef111 | 27 |  |
-| 17 | ega-rog | 22 | [non-org] |
-| 18 | wx2450 | 19 |  |
-| 19 | WANGJ-miao | 17 |  |
-| 20 | chen0000-sudo | 16 |  |
-| 21 | ssssssqy | 10 |  |
-| 22 | XiaoYoung | 10 | [non-org] |
-| 23 | juiceooorange | 9 |  |
-| 24 | leanusli | 9 | [non-org] |
-| 25 | SadMei | 8 |  |
-| 26 | jinnes06 | 8 | [non-org] |
-| 27 | jinnes | 6 | [non-org] |
-| 28 | zlm-ega | 5 | [non-org] |
-| 29 | Dreamingiv | 5 |  |
-| 30 | thhos | 5 |  |
-| 31 | 你的名字 | 4 | [non-org] |
-| 32 | dawncity1104 | 4 |  |
-| 33 | YYZ-XeF6 | 3 |  |
-| 34 | WithBreeze | 3 | [non-org] |
-| 35 | Phospheneser | 2 |  |
-| 36 | En-cke | 2 |  |
-| 37 | zaraaa | 2 | [non-org] |
-| 38 | ClearWei | 2 |  |
-| 39 | zfw-scut | 2 | [non-org] |
-| 40 | Za892961012 | 1 | [non-org] |
-| 41 | RXC | 1 | [non-org] |
-| 42 | me-speaker | 1 |  |
-| 43 | Leannnnnnn | 1 |  |
+| # | 贡献者 | 唯一Commits | Code Add | Code Del | Net | Code Commits | 批量导入 | 仓库 | 身份 |
+|---|--------|-----------|----------|----------|-----|-------------|---------|------|------|
+| 1 | shangtianxuanniao | 345 | 18,632 | 10,328 | +8,304 | 343 | 268,590 | 7 |  |
+| 2 | Hrmys3 | 294 | 34,562 | 24,990 | +9,572 | 293 | 19,455 | 7 |  |
+| 3 | JAHNAN00 | 289 | 46,279 | 39,830 | +6,449 | 286 | 25,270 | 9 |  |
+| 4 | teleaki | 145 | 11,910 | 9,571 | +2,339 | 144 | 18,567 | 9 |  |
+| 5 | xinruilee04 | 128 | 12,240 | 6,022 | +6,218 | 123 | 90,588 | 12 |  |
+| 6 | Beecheer | 111 | 27,577 | 11,577 | +16,000 | 104 | 64,925 | 8 |  |
+| 7 | chushanxiaodaoshi | 97 | 16,193 | 9,258 | +6,935 | 91 | 136,709 | 8 |  |
+| 8 | pyrosucrose | 91 | 19,819 | 14,048 | +5,771 | 83 | 80,268 | 9 |  |
+| 9 | Co1con | 89 | 22,433 | 34,215 | -11,782 | 83 | 163,534 | 8 |  |
+| 10 | konichan-7 | 77 | 3,228 | 1,720 | +1,508 | 77 | - | 1 | [non-org] |
+| 11 | LemonServer | 71 | 9,224 | 3,230 | +5,994 | 66 | 1,021,785 | 8 |  |
+| 12 | Breeze-by | 59 | 8,411 | 4,370 | +4,041 | 56 | 19,685 | 7 |  |
+| 13 | jessica070413 | 48 | 4,538 | 2,903 | +1,635 | 45 | 12,925 | 4 |  |
+| 14 | yly-true | 46 | 11,600 | 27,494 | -15,894 | 35 | 335,624 | 5 |  |
+| 15 | fishyu | 36 | 1,427 | 649 | +778 | 36 | - | 1 | [non-org] |
+| 16 | littlef111 | 27 | 6,609 | 897 | +5,712 | 24 | 15,319 | 4 |  |
+| 17 | ega-rog | 22 | 5,541 | 56,815 | -51,274 | 20 | 67,286 | 1 | [non-org] |
+| 18 | wx2450 | 19 | 506 | 270 | +236 | 14 | 74,591 | 5 |  |
+| 19 | WANGJ-miao | 17 | 1,458 | 2,196 | -738 | 16 | 133,833 | 3 |  |
+| 20 | chen0000-sudo | 16 | 2,786 | 2,893 | -107 | 14 | 7,081 | 3 |  |
+| 21 | ssssssqy | 10 | 5,832 | 9,535 | -3,703 | 9 | 90,837 | 4 |  |
+| 22 | XiaoYoung | 10 | 213 | 237 | -24 | 10 | - | 1 | [non-org] |
+| 23 | juiceooorange | 9 | 433 | 469 | -36 | 8 | 20,618 | 2 |  |
+| 24 | leanusli | 9 | 1,256 | 7,077 | -5,821 | 8 | 5,874 | 1 | [non-org] |
+| 25 | SadMei | 8 | 2,211 | 5,182 | -2,971 | 8 | - | 5 |  |
+| 26 | jinnes06 | 8 | 1,743 | 2 | +1,741 | 7 | 7,172 | 1 | [non-org] |
+| 27 | jinnes | 6 | 1,042 | 86 | +956 | 5 | 19,603 | 1 | [non-org] |
+| 28 | zlm-ega | 5 | 407 | 19 | +388 | 5 | - | 1 | [non-org] |
+| 29 | Dreamingiv | 5 | 287 | 333 | -46 | 5 | - | 1 |  |
+| 30 | thhos | 5 | 2,330 | 33,455 | -31,125 | 4 | 3,263 | 1 |  |
+| 31 | 你的名字 | 4 | 1,999 | 406 | +1,593 | 3 | 46,516 | 1 | [non-org] |
+| 32 | dawncity1104 | 4 | 64 | 118 | -54 | 2 | 22,691 | 1 |  |
+| 33 | YYZ-XeF6 | 3 | 39 | 8 | +31 | 3 | - | 2 |  |
+| 34 | WithBreeze | 3 | 186 | 62 | +124 | 3 | - | 1 | [non-org] |
+| 35 | Phospheneser | 2 | 213 | 1 | +212 | 2 | - | 2 |  |
+| 36 | En-cke | 2 | 2 | 2 | +0 | 2 | - | 1 |  |
+| 37 | zaraaa | 2 | 1,991 | 16 | +1,975 | 2 | - | 2 | [non-org] |
+| 38 | ClearWei | 2 | 524 | 0 | +524 | 2 | - | 1 |  |
+| 39 | zfw-scut | 2 | 581 | 164 | +417 | 1 | 15,260 | 1 | [non-org] |
+| 40 | Za892961012 | 1 | 1 | 1 | +0 | 1 | - | 1 | [non-org] |
+| 41 | RXC | 1 | 0 | 0 | +0 | 0 | 21,885 | 1 | [non-org] |
+| 42 | me-speaker | 1 | 0 | 0 | +0 | 0 | 88,685 | 1 |  |
+| 43 | Leannnnnnn | 1 | 811 | 0 | +811 | 1 | - | 1 |  |
 
-### 2.3 User Code 行数排行
+### 2.3 语言分布
 
-仅统计 `User/` 或 `src/` 下的用户代码,排除 HAL/CMSIS/FreeRTOS 等 SDK。单次 commit >3000 行视为批量导入,单独标注。
-
-| # | 贡献者 | Additions | Deletions | Net | Commits | 批量导入 | 仓库 | 身份 |
-|---|--------|-----------|-----------|-----|---------|---------|------|------|
-| 1 | JAHNAN00 | 247,953 | 188,498 | +59,455 | 1438 | 39,098 | 14 |  |
-| 2 | Hrmys3 | 67,243 | 41,492 | +25,751 | 482 | 58,365 | 11 |  |
-| 3 | Beecheer | 53,617 | 24,157 | +29,460 | 190 | 76,118 | 15 |  |
-| 4 | shangtianxuanniao | 36,705 | 18,140 | +18,565 | 669 | 272,351 | 9 |  |
-| 5 | teleaki | 28,571 | 20,882 | +7,689 | 367 | 18,567 | 15 |  |
-| 6 | pyrosucrose | 27,260 | 15,665 | +11,595 | 111 | 87,725 | 10 |  |
-| 7 | Co1con | 22,433 | 34,215 | -11,782 | 83 | 163,534 | 8 |  |
-| 8 | chushanxiaodaoshi | 18,038 | 9,263 | +8,775 | 96 | 136,709 | 13 |  |
-| 9 | Breeze-by | 16,635 | 4,674 | +11,961 | 80 | 19,685 | 13 |  |
-| 10 | ssssssqy | 13,180 | 9,535 | +3,645 | 13 | 181,674 | 8 |  |
-| 11 | xinruilee04 | 12,934 | 6,811 | +6,123 | 130 | 112,590 | 12 |  |
-| 12 | yly-true | 11,600 | 27,494 | -15,894 | 35 | 335,624 | 5 |  |
-| 13 | LemonServer | 9,660 | 3,406 | +6,254 | 79 | 1,021,785 | 8 |  |
-| 14 | littlef111 | 6,609 | 897 | +5,712 | 24 | 15,319 | 4 |  |
-| 15 | ega-rog | 5,541 | 56,815 | -51,274 | 20 | 67,286 | 1 | [non-org] |
-| 16 | jessica070413 | 4,574 | 2,939 | +1,635 | 49 | 12,925 | 8 |  |
-| 17 | konichan-7 | 3,228 | 1,720 | +1,508 | 77 | - | 1 | [non-org] |
-| 18 | chen0000-sudo | 3,106 | 3,221 | -115 | 16 | 11,108 | 4 |  |
-| 19 | SadMei | 2,338 | 5,843 | -3,505 | 9 | - | 6 |  |
-| 20 | thhos | 2,330 | 33,455 | -31,125 | 4 | 3,263 | 1 |  |
-| 21 | zlm-ega | 2,035 | 95 | +1,940 | 25 | - | 5 | [non-org] |
-| 22 | 你的名字 | 1,999 | 406 | +1,593 | 3 | 46,516 | 1 | [non-org] |
-| 23 | zaraaa | 1,991 | 16 | +1,975 | 2 | - | 2 | [non-org] |
-| 24 | jinnes06 | 1,743 | 2 | +1,741 | 7 | 7,172 | 1 | [non-org] |
-| 25 | WANGJ-miao | 1,458 | 2,196 | -738 | 16 | 133,833 | 3 |  |
-| 26 | fishyu | 1,427 | 649 | +778 | 36 | - | 1 | [non-org] |
-| 27 | leanusli | 1,256 | 7,077 | -5,821 | 8 | 5,874 | 1 | [non-org] |
-| 28 | jinnes | 1,042 | 86 | +956 | 5 | 19,603 | 1 | [non-org] |
-| 29 | Leannnnnnn | 811 | 0 | +811 | 1 | - | 1 |  |
-| 30 | zfw-scut | 581 | 164 | +417 | 1 | 15,260 | 1 | [non-org] |
-| 31 | ClearWei | 524 | 0 | +524 | 2 | - | 1 |  |
-| 32 | wx2450 | 506 | 270 | +236 | 14 | 74,591 | 3 |  |
-| 33 | juiceooorange | 433 | 469 | -36 | 8 | 20,618 | 2 |  |
-| 34 | Dreamingiv | 287 | 333 | -46 | 5 | - | 1 |  |
-| 35 | Phospheneser | 215 | 1 | +214 | 3 | - | 3 |  |
-| 36 | XiaoYoung | 213 | 237 | -24 | 10 | - | 1 | [non-org] |
-| 37 | WithBreeze | 186 | 62 | +124 | 3 | - | 1 | [non-org] |
-| 38 | dawncity1104 | 64 | 118 | -54 | 2 | 22,691 | 1 |  |
-| 39 | YYZ-XeF6 | 39 | 8 | +31 | 3 | - | 2 |  |
-| 40 | En-cke | 2 | 2 | +0 | 2 | - | 1 |  |
-| 41 | Za892961012 | 1 | 1 | +0 | 1 | - | 1 | [non-org] |
-
-### 2.4 贡献者综合排行 (Commits + 行数)
-
-| # | 贡献者 | 唯一Commits | Code Additions | 参与仓库 | 身份 |
-|---|--------|-----------|---------------|---------|------|
-| 1 | shangtianxuanniao | 345 | 36,705 | 9 |  |
-| 2 | Hrmys3 | 294 | 67,243 | 11 |  |
-| 3 | JAHNAN00 | 289 | 247,953 | 14 |  |
-| 4 | teleaki | 145 | 28,571 | 15 |  |
-| 5 | xinruilee04 | 128 | 12,934 | 12 |  |
-| 6 | Beecheer | 111 | 53,617 | 15 |  |
-| 7 | chushanxiaodaoshi | 97 | 18,038 | 13 |  |
-| 8 | pyrosucrose | 91 | 27,260 | 10 |  |
-| 9 | Co1con | 89 | 22,433 | 8 |  |
-| 10 | konichan-7 | 77 | 3,228 | 1 | [non-org] |
-| 11 | LemonServer | 71 | 9,660 | 8 |  |
-| 12 | Breeze-by | 59 | 16,635 | 13 |  |
-| 13 | jessica070413 | 48 | 4,574 | 8 |  |
-| 14 | yly-true | 46 | 11,600 | 5 |  |
-| 15 | fishyu | 36 | 1,427 | 1 | [non-org] |
-| 16 | littlef111 | 27 | 6,609 | 4 |  |
-| 17 | ega-rog | 22 | 5,541 | 1 | [non-org] |
-| 18 | wx2450 | 19 | 506 | 3 |  |
-| 19 | WANGJ-miao | 17 | 1,458 | 3 |  |
-| 20 | chen0000-sudo | 16 | 3,106 | 4 |  |
-| 21 | ssssssqy | 10 | 13,180 | 8 |  |
-| 22 | XiaoYoung | 10 | 213 | 1 | [non-org] |
-| 23 | leanusli | 9 | 1,256 | 1 | [non-org] |
-| 24 | juiceooorange | 9 | 433 | 2 |  |
-| 25 | SadMei | 8 | 2,338 | 6 |  |
-
-### 2.5 语言分布
-
-代码总量: **551,989,198** 字节 (526.4 MB)
+总量: **551,989,198** 字节 (526.4 MB)
 
 | 语言 | 字节数 | 占比 | 仓库数 |
 |------|--------|------|--------|
@@ -320,32 +241,32 @@ permalink: /article/repo-analysis-2026/
 | Batchfile | 5,525 | 0.0% | 0 |
 | Dockerfile | 3,667 | 0.0% | 0 |
 
-### 2.6 仓库规模
+### 2.4 仓库规模与代码行数
 
-| # | 仓库 | 大小(MB) | 当前代码行数 | 详情 |
-|---|------|---------|-----------|------|
-| 1 | RM26_QtClient | 682.5 | 0 | [→](/repos/RM26_QtClient.html) |
-| 2 | RM2026_EGARadar_develop | 272.7 | 31,630 | [→](/repos/RM2026_EGARadar_develop.html) |
-| 3 | RM2026_Sentry_Nav_UC | 237.0 | 71,597 | [→](/repos/RM2026_Sentry_Nav_UC.html) |
-| 4 | RM2026_NAV_Sentry_UL | 202.1 | 71,741 | [→](/repos/RM2026_NAV_Sentry_UL.html) |
-| 5 | 2026_AUTOAIM_HERO | 142.6 | 2,106 | [→](/repos/2026_AUTOAIM_HERO.html) |
-| 6 | 2026_EGAIM | 126.8 | 1,965 | [→](/repos/2026_EGAIM.html) |
-| 7 | 2026_EGAIM_wheeled_leg | 126.8 | 1,978 | [→](/repos/2026_EGAIM_wheeled_leg.html) |
-| 8 | 2026_infantry_Wheellegged_Chassis_RL_v0 | 124.7 | 28,927 | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
-| 9 | 2026_HERO_UC | 120.9 | 43,245 | [→](/repos/2026_HERO_UC.html) |
-| 10 | 2026_EGAIM_sentry | 117.9 | 1,974 | [→](/repos/2026_EGAIM_sentry.html) |
-| 11 | 2026_EGAIM_sentry_ros2 | 96.5 | 2,162 | [→](/repos/2026_EGAIM_sentry_ros2.html) |
-| 12 | 2026_Autoaim_Infantry | 96.5 | 1,841 | [→](/repos/2026_Autoaim_Infantry.html) |
-| 13 | 2026_NAV_sentry | 66.9 | 51,033 | [→](/repos/2026_NAV_sentry.html) |
-| 14 | rl_sim2sim_lqr_raspberrypi | 41.6 | 14,573 | [→](/repos/rl_sim2sim_lqr_raspberrypi.html) |
-| 15 | miao_machine_learning_wheelleg_infantry | 33.7 | 22,179 | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
-| 16 | RM2026_EGAdapter_WheelLeg_Hero | 30.3 | 33,635 | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
-| 17 | EGAdapter_lib | 19.0 | 107 | [→](/repos/EGAdapter_lib.html) |
-| 18 | RM2026_WheelLegged_Gimbal | 17.2 | 21,722 | [→](/repos/RM2026_WheelLegged_Gimbal.html) |
-| 19 | RM2026_WheelLegged_Chassis | 16.0 | 20,125 | [→](/repos/RM2026_WheelLegged_Chassis.html) |
-| 20 | 2025_SuperCap_Hero_Infantry_Sentry | 14.9 | 0 | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
+| # | 仓库 | 大小(MB) | 当前代码行数 | User Code Add | 详情 |
+|---|------|---------|-----------|--------------|------|
+| 1 | RM26_QtClient | 682.5 | 0 | 0 | [→](/repos/RM26_QtClient.html) |
+| 2 | RM2026_EGARadar_develop | 272.7 | 31,630 | 6,583 | [→](/repos/RM2026_EGARadar_develop.html) |
+| 3 | RM2026_Sentry_Nav_UC | 237.0 | 71,597 | 2,669 | [→](/repos/RM2026_Sentry_Nav_UC.html) |
+| 4 | RM2026_NAV_Sentry_UL | 202.1 | 71,741 | 4,923 | [→](/repos/RM2026_NAV_Sentry_UL.html) |
+| 5 | 2026_AUTOAIM_HERO | 142.6 | 2,106 | 7,624 | [→](/repos/2026_AUTOAIM_HERO.html) |
+| 6 | 2026_EGAIM | 126.8 | 1,965 | 2,065 | [→](/repos/2026_EGAIM.html) |
+| 7 | 2026_EGAIM_wheeled_leg | 126.8 | 1,978 | 2,076 | [→](/repos/2026_EGAIM_wheeled_leg.html) |
+| 8 | 2026_infantry_Wheellegged_Chassis_RL_v0 | 124.7 | 28,927 | 12,400 | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
+| 9 | 2026_HERO_UC | 120.9 | 43,245 | 727 | [→](/repos/2026_HERO_UC.html) |
+| 10 | 2026_EGAIM_sentry | 117.9 | 1,974 | 1,974 | [→](/repos/2026_EGAIM_sentry.html) |
+| 11 | 2026_EGAIM_sentry_ros2 | 96.5 | 2,162 | 2,307 | [→](/repos/2026_EGAIM_sentry_ros2.html) |
+| 12 | 2026_Autoaim_Infantry | 96.5 | 1,841 | 1,841 | [→](/repos/2026_Autoaim_Infantry.html) |
+| 13 | 2026_NAV_sentry | 66.9 | 51,033 | 627 | [→](/repos/2026_NAV_sentry.html) |
+| 14 | rl_sim2sim_lqr_raspberrypi | 41.6 | 14,573 | 2,683 | [→](/repos/rl_sim2sim_lqr_raspberrypi.html) |
+| 15 | miao_machine_learning_wheelleg_infantry | 33.7 | 22,179 | 7,465 | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
+| 16 | RM2026_EGAdapter_WheelLeg_Hero | 30.3 | 33,635 | 11,005 | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
+| 17 | EGAdapter_lib | 19.0 | 107 | 413 | [→](/repos/EGAdapter_lib.html) |
+| 18 | RM2026_WheelLegged_Gimbal | 17.2 | 21,722 | 5,048 | [→](/repos/RM2026_WheelLegged_Gimbal.html) |
+| 19 | RM2026_WheelLegged_Chassis | 16.0 | 20,125 | 16,676 | [→](/repos/RM2026_WheelLegged_Chassis.html) |
+| 20 | 2025_SuperCap_Hero_Infantry_Sentry | 14.9 | 0 | 6 | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
 
-### 2.7 仓库创建时间线
+### 2.5 时间线
 
 | 月份 | 新建 | 累计 |
 |------|------|------|
@@ -367,8 +288,6 @@ permalink: /article/repo-analysis-2026/
 
 ## 3. 框架体系与 Fork 链
 
-核心框架 **EGAdapter_MC02** 是模板仓库,被 7 个仓库 fork。
-
 ```
 EGAdapter_MC02
   ├── RM2026_Hero_SwerveDrive
@@ -384,152 +303,145 @@ OnmiandSteer
   └── RM2026_Transformable_Infantry
 ```
 
-| 模板仓库 | 描述 | Fork数 | 详情 |
-|---------|------|--------|------|
-| [EGAdapter_MC02](/repos/EGAdapter_MC02.html) | 高解耦性、快速适配、兼容云台底盘的新一代电控框架，基于达妙mc02开发板。 | 7 | [→](/repos/EGAdapter_MC02.html) |
-| [RM2026_Hero_SwerveDrive](/repos/RM2026_Hero_SwerveDrive.html) | 2026赛季舵轮英雄代码 | 1 | [→](/repos/RM2026_Hero_SwerveDrive.html) |
-| [RM2026_TransformableInfantry](/repos/RM2026_TransformableInfantry.html) | 基于达妙框架开发的变形步兵机器人代码 | 0 | [→](/repos/RM2026_TransformableInfantry.html) |
-| [RM2026_OmniandSteer_New](/repos/RM2026_OmniandSteer_New.html) | 基于较新框架的2026赛季半舵半全代码 | 0 | [→](/repos/RM2026_OmniandSteer_New.html) |
-
 ## 4. 机器人矩阵
 
 ### General (26)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| EGAdapter_MC02 | 框架 | 2025/2026 | 515 | C | [→](/repos/EGAdapter_MC02.html) |
-| RM26_QtClient | 工具 | 2025/2026 | 67 | C++ | [→](/repos/RM26_QtClient.html) |
-| 2026_EGAIM | 自瞄 | 2026 | 53 | C | [→](/repos/2026_EGAIM.html) |
-| 2026_EGAIM_wheeled_leg | 自瞄 | 2026 | 49 | C | [→](/repos/2026_EGAIM_wheeled_leg.html) |
-| RM2026_EGAdapter_mc02_base | 框架 | 2026 | 44 | C | [→](/repos/RM2026_EGAdapter_mc02_base.html) |
-| RM2026_EGARadar_develop | 工具 | 2026 | 29 | Python | [→](/repos/RM2026_EGARadar_develop.html) |
-| EGAdapter_lib | 框架 | 2026 | 25 | C | [→](/repos/EGAdapter_lib.html) |
-| RM2026_TinyRos2 | 工具 | 2026 | 22 | C++ | [→](/repos/RM2026_TinyRos2.html) |
-| 2026_Laser_Gimble | 嵌入式 | 2026 | 19 | C | [→](/repos/2026_Laser_Gimble.html) |
-| RM2026_Swerve_Chassis | 底盘 | 2026 | 19 | C | [→](/repos/RM2026_Swerve_Chassis.html) |
-| RM2026_Waves_Analyze | 工具 | 2026 | 18 | MATLAB | [→](/repos/RM2026_Waves_Analyze.html) |
-| RM2026_EGAdapter_Cboard_base | 框架 | 2026 | 16 | C | [→](/repos/RM2026_EGAdapter_Cboard_base.html) |
-| EGA_GimbalExample | 框架, 云台 | 2025/2026 | 13 | C | [→](/repos/EGA_GimbalExample.html) |
-| EGA_ChassisExample | 框架, 底盘 | 2025/2026 | 12 | C | [→](/repos/EGA_ChassisExample.html) |
-| IMU | 嵌入式 | 2025/2026 | 7 | C | [→](/repos/IMU.html) |
-| 2026_EGAIM_autobuff | 自瞄 | 2026 | 7 | C++ | [→](/repos/2026_EGAIM_autobuff.html) |
-| LK4005Driver | 嵌入式 | 2025/2026 | 6 | C | [→](/repos/LK4005Driver.html) |
-| 2026_DMmc02BSP_ALL | 框架 | 2026 | 5 | C | [→](/repos/2026_DMmc02BSP_ALL.html) |
-| EGA-code-style | 其他 | 2025/2026 | 4 | None | [→](/repos/EGA-code-style.html) |
-| RM2026_PowerRune | 嵌入式 | 2026 | 4 | C | [→](/repos/RM2026_PowerRune.html) |
-| Raspberrypi_deployment | 上位机/算法 | 2026 | 4 | Python | [→](/repos/Raspberrypi_deployment.html) |
-| rl_sim2sim_lqr_raspberrypi | RL | 2026 | 4 | Python | [→](/repos/rl_sim2sim_lqr_raspberrypi.html) |
-| SMC_Cpp | 嵌入式 | 2025/2026 | 2 | C++ | [→](/repos/SMC_Cpp.html) |
-| AITools | 工具 | 2026 | 2 | None | [→](/repos/AITools.html) |
-| Fudan-RobotEGA.github.io | 网站 | 2025/2026 | 1 | HTML | [→](/repos/Fudan-RobotEGA.github.io.html) |
-| Chassis_Mecanum | 底盘 | 2025/2026 | 1 | None | [→](/repos/Chassis_Mecanum.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| EGAdapter_MC02 | 框架 | 2025/2026 | 515 | [→](/repos/EGAdapter_MC02.html) |
+| RM26_QtClient | 工具 | 2025/2026 | 67 | [→](/repos/RM26_QtClient.html) |
+| 2026_EGAIM | 自瞄 | 2026 | 53 | [→](/repos/2026_EGAIM.html) |
+| 2026_EGAIM_wheeled_leg | 自瞄 | 2026 | 49 | [→](/repos/2026_EGAIM_wheeled_leg.html) |
+| RM2026_EGAdapter_mc02_base | 框架 | 2026 | 44 | [→](/repos/RM2026_EGAdapter_mc02_base.html) |
+| RM2026_EGARadar_develop | 工具 | 2026 | 29 | [→](/repos/RM2026_EGARadar_develop.html) |
+| EGAdapter_lib | 框架 | 2026 | 25 | [→](/repos/EGAdapter_lib.html) |
+| RM2026_TinyRos2 | 工具 | 2026 | 22 | [→](/repos/RM2026_TinyRos2.html) |
+| 2026_Laser_Gimble | 嵌入式 | 2026 | 19 | [→](/repos/2026_Laser_Gimble.html) |
+| RM2026_Swerve_Chassis | 底盘 | 2026 | 19 | [→](/repos/RM2026_Swerve_Chassis.html) |
+| RM2026_Waves_Analyze | 工具 | 2026 | 18 | [→](/repos/RM2026_Waves_Analyze.html) |
+| RM2026_EGAdapter_Cboard_base | 框架 | 2026 | 16 | [→](/repos/RM2026_EGAdapter_Cboard_base.html) |
+| EGA_GimbalExample | 框架, 云台 | 2025/2026 | 13 | [→](/repos/EGA_GimbalExample.html) |
+| EGA_ChassisExample | 框架, 底盘 | 2025/2026 | 12 | [→](/repos/EGA_ChassisExample.html) |
+| IMU | 嵌入式 | 2025/2026 | 7 | [→](/repos/IMU.html) |
+| 2026_EGAIM_autobuff | 自瞄 | 2026 | 7 | [→](/repos/2026_EGAIM_autobuff.html) |
+| LK4005Driver | 嵌入式 | 2025/2026 | 6 | [→](/repos/LK4005Driver.html) |
+| 2026_DMmc02BSP_ALL | 框架 | 2026 | 5 | [→](/repos/2026_DMmc02BSP_ALL.html) |
+| EGA-code-style | 其他 | 2025/2026 | 4 | [→](/repos/EGA-code-style.html) |
+| RM2026_PowerRune | 嵌入式 | 2026 | 4 | [→](/repos/RM2026_PowerRune.html) |
+| Raspberrypi_deployment | 上位机/算法 | 2026 | 4 | [→](/repos/Raspberrypi_deployment.html) |
+| rl_sim2sim_lqr_raspberrypi | RL | 2026 | 4 | [→](/repos/rl_sim2sim_lqr_raspberrypi.html) |
+| SMC_Cpp | 嵌入式 | 2025/2026 | 2 | [→](/repos/SMC_Cpp.html) |
+| AITools | 工具 | 2026 | 2 | [→](/repos/AITools.html) |
+| Fudan-RobotEGA.github.io | 网站 | 2025/2026 | 1 | [→](/repos/Fudan-RobotEGA.github.io.html) |
+| Chassis_Mecanum | 底盘 | 2025/2026 | 1 | [→](/repos/Chassis_Mecanum.html) |
 
 ### Sentry (18)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| 2025_Chassis_Hero_Infantry_Sentry | 底盘 | 2025 | 49 | C | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
-| RM2026_NAV_Sentry_UL | 导航 | 2026 | 40 | Makefile | [→](/repos/RM2026_NAV_Sentry_UL.html) |
-| 2026_Gimbal_SentryFromInfantry | 云台 | 2026 | 35 | C | [→](/repos/2026_Gimbal_SentryFromInfantry.html) |
-| 2025_Gimbalyaw_Sentry | 云台 | 2025 | 14 | C | [→](/repos/2025_Gimbalyaw_Sentry.html) |
-| 2025_Gimbalright_Sentry | 云台 | 2025 | 13 | C | [→](/repos/2025_Gimbalright_Sentry.html) |
-| 2025_Gimballeft_Sentry | 云台 | 2025 | 13 | C | [→](/repos/2025_Gimballeft_Sentry.html) |
-| 2026_EGAIM_sentry_ros2 | 自瞄, 工具 | 2026 | 12 | C | [→](/repos/2026_EGAIM_sentry_ros2.html) |
-| RM2026_Sentry_Nav_UC | 导航 | 2026 | 11 | Makefile | [→](/repos/RM2026_Sentry_Nav_UC.html) |
-| 2025_SuperCap_Hero_Infantry_Sentry | 超级电容 | 2025 | 6 | C | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
-| 2026_NAV_sentry | 导航 | 2026 | 4 | Makefile | [→](/repos/2026_NAV_sentry.html) |
-| 2025_autoaim_sentry_infantry_hero | 自瞄 | 2025 | 3 | C++ | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
-| 2025_NAV_Sentry | 导航 | 2025 | 2 | Makefile | [→](/repos/2025_NAV_Sentry.html) |
-| 2026_Autoaim_Sentry_Hero_Infantry | 自瞄 | 2026 | 2 | C++ | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
-| 2026_EGAIM_sentry | 自瞄 | 2026 | 2 | C | [→](/repos/2026_EGAIM_sentry.html) |
-| 2026_INFANTRY_TO_SENTRY_CHASSIS | 底盘 | 2026 | 2 | C | [→](/repos/2026_INFANTRY_TO_SENTRY_CHASSIS.html) |
-| 26UL_Sentry_Chassis | 底盘 | 2026 | 2 | C | [→](/repos/26UL_Sentry_Chassis.html) |
-| RM2026_UL_Sentry_Driver | 嵌入式 | 2026 | 1 | C | [→](/repos/RM2026_UL_Sentry_Driver.html) |
-| 2026_navigation_Sentry_ws | 导航 | 2026 | 0 | None | [→](/repos/2026_navigation_Sentry_ws.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| 2025_Chassis_Hero_Infantry_Sentry | 底盘 | 2025 | 49 | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
+| RM2026_NAV_Sentry_UL | 导航 | 2026 | 40 | [→](/repos/RM2026_NAV_Sentry_UL.html) |
+| 2026_Gimbal_SentryFromInfantry | 云台 | 2026 | 35 | [→](/repos/2026_Gimbal_SentryFromInfantry.html) |
+| 2025_Gimbalyaw_Sentry | 云台 | 2025 | 14 | [→](/repos/2025_Gimbalyaw_Sentry.html) |
+| 2025_Gimbalright_Sentry | 云台 | 2025 | 13 | [→](/repos/2025_Gimbalright_Sentry.html) |
+| 2025_Gimballeft_Sentry | 云台 | 2025 | 13 | [→](/repos/2025_Gimballeft_Sentry.html) |
+| 2026_EGAIM_sentry_ros2 | 自瞄, 工具 | 2026 | 12 | [→](/repos/2026_EGAIM_sentry_ros2.html) |
+| RM2026_Sentry_Nav_UC | 导航 | 2026 | 11 | [→](/repos/RM2026_Sentry_Nav_UC.html) |
+| 2025_SuperCap_Hero_Infantry_Sentry | 超级电容 | 2025 | 6 | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
+| 2026_NAV_sentry | 导航 | 2026 | 4 | [→](/repos/2026_NAV_sentry.html) |
+| 2025_autoaim_sentry_infantry_hero | 自瞄 | 2025 | 3 | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
+| 2025_NAV_Sentry | 导航 | 2025 | 2 | [→](/repos/2025_NAV_Sentry.html) |
+| 2026_Autoaim_Sentry_Hero_Infantry | 自瞄 | 2026 | 2 | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
+| 2026_EGAIM_sentry | 自瞄 | 2026 | 2 | [→](/repos/2026_EGAIM_sentry.html) |
+| 2026_INFANTRY_TO_SENTRY_CHASSIS | 底盘 | 2026 | 2 | [→](/repos/2026_INFANTRY_TO_SENTRY_CHASSIS.html) |
+| 26UL_Sentry_Chassis | 底盘 | 2026 | 2 | [→](/repos/26UL_Sentry_Chassis.html) |
+| RM2026_UL_Sentry_Driver | 嵌入式 | 2026 | 1 | [→](/repos/RM2026_UL_Sentry_Driver.html) |
+| 2026_navigation_Sentry_ws | 导航 | 2026 | 0 | [→](/repos/2026_navigation_Sentry_ws.html) |
 
 ### Infantry (15)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| TransformableInfantry | 嵌入式 | 2026 | 506 | C | [→](/repos/TransformableInfantry.html) |
-| RM2026_TransformableInfantry | 其他 | 2026 | 501 | None | [→](/repos/RM2026_TransformableInfantry.html) |
-| RM2026_Transformable_Infantry | 嵌入式 | 2026 | 393 | C | [→](/repos/RM2026_Transformable_Infantry.html) |
-| 2025_Chassis_Hero_Infantry_Sentry | 底盘 | 2025 | 49 | C | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
-| 2025_Gimbal_Infantry | 云台 | 2025 | 42 | C | [→](/repos/2025_Gimbal_Infantry.html) |
-| 2026_Gimbal_SentryFromInfantry | 云台 | 2026 | 35 | C | [→](/repos/2026_Gimbal_SentryFromInfantry.html) |
-| miao_machine_learning_wheelleg_infantry | 嵌入式 | 2026 | 27 | C | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
-| 2026_infantry_Wheellegged_Chassis_RL_v0 | 底盘, RL | 2026 | 23 | C++ | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
-| 2026_Gimbal_Infantry | 云台 | 2026 | 10 | C | [→](/repos/2026_Gimbal_Infantry.html) |
-| 2026_Chassis_Infantry_TinyCake | 底盘 | 2026 | 10 | C | [→](/repos/2026_Chassis_Infantry_TinyCake.html) |
-| 2025_SuperCap_Hero_Infantry_Sentry | 超级电容 | 2025 | 6 | C | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
-| 2025_autoaim_sentry_infantry_hero | 自瞄 | 2025 | 3 | C++ | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
-| 2026_Autoaim_Infantry | 自瞄 | 2026 | 3 | C | [→](/repos/2026_Autoaim_Infantry.html) |
-| 2026_Autoaim_Sentry_Hero_Infantry | 自瞄 | 2026 | 2 | C++ | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
-| 2026_INFANTRY_TO_SENTRY_CHASSIS | 底盘 | 2026 | 2 | C | [→](/repos/2026_INFANTRY_TO_SENTRY_CHASSIS.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| TransformableInfantry | 嵌入式 | 2026 | 506 | [→](/repos/TransformableInfantry.html) |
+| RM2026_TransformableInfantry | 其他 | 2026 | 501 | [→](/repos/RM2026_TransformableInfantry.html) |
+| RM2026_Transformable_Infantry | 嵌入式 | 2026 | 393 | [→](/repos/RM2026_Transformable_Infantry.html) |
+| 2025_Chassis_Hero_Infantry_Sentry | 底盘 | 2025 | 49 | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
+| 2025_Gimbal_Infantry | 云台 | 2025 | 42 | [→](/repos/2025_Gimbal_Infantry.html) |
+| 2026_Gimbal_SentryFromInfantry | 云台 | 2026 | 35 | [→](/repos/2026_Gimbal_SentryFromInfantry.html) |
+| miao_machine_learning_wheelleg_infantry | 嵌入式 | 2026 | 27 | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
+| 2026_infantry_Wheellegged_Chassis_RL_v0 | 底盘, RL | 2026 | 23 | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
+| 2026_Gimbal_Infantry | 云台 | 2026 | 10 | [→](/repos/2026_Gimbal_Infantry.html) |
+| 2026_Chassis_Infantry_TinyCake | 底盘 | 2026 | 10 | [→](/repos/2026_Chassis_Infantry_TinyCake.html) |
+| 2025_SuperCap_Hero_Infantry_Sentry | 超级电容 | 2025 | 6 | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
+| 2025_autoaim_sentry_infantry_hero | 自瞄 | 2025 | 3 | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
+| 2026_Autoaim_Infantry | 自瞄 | 2026 | 3 | [→](/repos/2026_Autoaim_Infantry.html) |
+| 2026_Autoaim_Sentry_Hero_Infantry | 自瞄 | 2026 | 2 | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
+| 2026_INFANTRY_TO_SENTRY_CHASSIS | 底盘 | 2026 | 2 | [→](/repos/2026_INFANTRY_TO_SENTRY_CHASSIS.html) |
 
 ### Hero (10)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| RM2026_Hero_SwerveDrive | 嵌入式 | 2026 | 665 | C | [→](/repos/RM2026_Hero_SwerveDrive.html) |
-| RM2026_Gimbal_SixFricHero | 云台, 发射 | 2026 | 160 | C | [→](/repos/RM2026_Gimbal_SixFricHero.html) |
-| RM2026_EGAdapter_WheelLeg_Hero | 框架 | 2026 | 123 | C | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
-| 2026_AUTOAIM_HERO | 自瞄 | 2026 | 81 | C++ | [→](/repos/2026_AUTOAIM_HERO.html) |
-| 2025_Chassis_Hero_Infantry_Sentry | 底盘 | 2025 | 49 | C | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
-| 2025_Gimbal_Hero | 云台 | 2025 | 14 | C | [→](/repos/2025_Gimbal_Hero.html) |
-| 2025_SuperCap_Hero_Infantry_Sentry | 超级电容 | 2025 | 6 | C | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
-| 2026_HERO_UC | 嵌入式 | 2026 | 6 | C | [→](/repos/2026_HERO_UC.html) |
-| 2025_autoaim_sentry_infantry_hero | 自瞄 | 2025 | 3 | C++ | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
-| 2026_Autoaim_Sentry_Hero_Infantry | 自瞄 | 2026 | 2 | C++ | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| RM2026_Hero_SwerveDrive | 嵌入式 | 2026 | 665 | [→](/repos/RM2026_Hero_SwerveDrive.html) |
+| RM2026_Gimbal_SixFricHero | 云台, 发射 | 2026 | 160 | [→](/repos/RM2026_Gimbal_SixFricHero.html) |
+| RM2026_EGAdapter_WheelLeg_Hero | 框架 | 2026 | 123 | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
+| 2026_AUTOAIM_HERO | 自瞄 | 2026 | 81 | [→](/repos/2026_AUTOAIM_HERO.html) |
+| 2025_Chassis_Hero_Infantry_Sentry | 底盘 | 2025 | 49 | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
+| 2025_Gimbal_Hero | 云台 | 2025 | 14 | [→](/repos/2025_Gimbal_Hero.html) |
+| 2025_SuperCap_Hero_Infantry_Sentry | 超级电容 | 2025 | 6 | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
+| 2026_HERO_UC | 嵌入式 | 2026 | 6 | [→](/repos/2026_HERO_UC.html) |
+| 2025_autoaim_sentry_infantry_hero | 自瞄 | 2025 | 3 | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
+| 2026_Autoaim_Sentry_Hero_Infantry | 自瞄 | 2026 | 2 | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
 
 ### WheelLegged (8)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| RM2026_EGAdapter_WheelLeg_Hero | 框架 | 2026 | 123 | C | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
-| RM2026_WheelLegged_Chassis | 底盘 | 2026 | 111 | C | [→](/repos/RM2026_WheelLegged_Chassis.html) |
-| RM2026_WheelLegged_Gimbal | 云台 | 2026 | 66 | C | [→](/repos/RM2026_WheelLegged_Gimbal.html) |
-| RM2026_WheelDog_chassis | 底盘 | 2026 | 36 | C | [→](/repos/RM2026_WheelDog_chassis.html) |
-| miao_machine_learning_wheelleg_infantry | 嵌入式 | 2026 | 27 | C | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
-| 2026_infantry_Wheellegged_Chassis_RL_v0 | 底盘, RL | 2026 | 23 | C++ | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
-| wheel_legged_gym_ega | 上位机/算法 | 2025/2026 | 15 | Python | [→](/repos/wheel_legged_gym_ega.html) |
-| RM2026_EGAdapter_WheelLegged_Chassis | 框架, 底盘 | 2026 | 8 | C | [→](/repos/RM2026_EGAdapter_WheelLegged_Chassis.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| RM2026_EGAdapter_WheelLeg_Hero | 框架 | 2026 | 123 | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
+| RM2026_WheelLegged_Chassis | 底盘 | 2026 | 111 | [→](/repos/RM2026_WheelLegged_Chassis.html) |
+| RM2026_WheelLegged_Gimbal | 云台 | 2026 | 66 | [→](/repos/RM2026_WheelLegged_Gimbal.html) |
+| RM2026_WheelDog_chassis | 底盘 | 2026 | 36 | [→](/repos/RM2026_WheelDog_chassis.html) |
+| miao_machine_learning_wheelleg_infantry | 嵌入式 | 2026 | 27 | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
+| 2026_infantry_Wheellegged_Chassis_RL_v0 | 底盘, RL | 2026 | 23 | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
+| wheel_legged_gym_ega | 上位机/算法 | 2025/2026 | 15 | [→](/repos/wheel_legged_gym_ega.html) |
+| RM2026_EGAdapter_WheelLegged_Chassis | 框架, 底盘 | 2026 | 8 | [→](/repos/RM2026_EGAdapter_WheelLegged_Chassis.html) |
 
 ### Engineer (3)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| RM2026_EngineerRobot | 嵌入式 | 2026 | 58 | C++ | [→](/repos/RM2026_EngineerRobot.html) |
-| RM2026_RoboticArm_ROS2 | 工具 | 2026 | 4 | C++ | [→](/repos/RM2026_RoboticArm_ROS2.html) |
-| RM2026_RoboticArm | 嵌入式 | 2026 | 3 | C | [→](/repos/RM2026_RoboticArm.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| RM2026_EngineerRobot | 嵌入式 | 2026 | 58 | [→](/repos/RM2026_EngineerRobot.html) |
+| RM2026_RoboticArm_ROS2 | 工具 | 2026 | 4 | [→](/repos/RM2026_RoboticArm_ROS2.html) |
+| RM2026_RoboticArm | 嵌入式 | 2026 | 3 | [→](/repos/RM2026_RoboticArm.html) |
 
 ### TransformableInfantry (3)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| TransformableInfantry | 嵌入式 | 2026 | 506 | C | [→](/repos/TransformableInfantry.html) |
-| RM2026_TransformableInfantry | 其他 | 2026 | 501 | None | [→](/repos/RM2026_TransformableInfantry.html) |
-| RM2026_Transformable_Infantry | 嵌入式 | 2026 | 393 | C | [→](/repos/RM2026_Transformable_Infantry.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| TransformableInfantry | 嵌入式 | 2026 | 506 | [→](/repos/TransformableInfantry.html) |
+| RM2026_TransformableInfantry | 其他 | 2026 | 501 | [→](/repos/RM2026_TransformableInfantry.html) |
+| RM2026_Transformable_Infantry | 嵌入式 | 2026 | 393 | [→](/repos/RM2026_Transformable_Infantry.html) |
 
 ### Drone (2)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| 2026_Gimbal_Sky | 云台 | 2026 | 15 | C | [→](/repos/2026_Gimbal_Sky.html) |
-| RM2026_Drone_Gimbal | 云台 | 2026 | 0 | None | [→](/repos/RM2026_Drone_Gimbal.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| 2026_Gimbal_Sky | 云台 | 2026 | 15 | [→](/repos/2026_Gimbal_Sky.html) |
+| RM2026_Drone_Gimbal | 云台 | 2026 | 0 | [→](/repos/RM2026_Drone_Gimbal.html) |
 
 ### OmniSteer (2)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| RM2026_OmniandSteer_New | 其他 | 2026 | 548 | None | [→](/repos/RM2026_OmniandSteer_New.html) |
-| OnmiandSteer | 嵌入式 | 2026 | 348 | C | [→](/repos/OnmiandSteer.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| RM2026_OmniandSteer_New | 其他 | 2026 | 548 | [→](/repos/RM2026_OmniandSteer_New.html) |
+| OnmiandSteer | 嵌入式 | 2026 | 348 | [→](/repos/OnmiandSteer.html) |
 
 ### Dart (1)
 
-| 仓库 | 领域 | 赛季 | Commits | 语言 | 详情 |
-|------|------|------|---------|------|------|
-| 2026_Missile_Chassis | 底盘 | 2026 | 24 | C | [→](/repos/2026_Missile_Chassis.html) |
+| 仓库 | 领域 | 赛季 | Commits | 详情 |
+|------|------|------|---------|------|
+| 2026_Missile_Chassis | 底盘 | 2026 | 24 | [→](/repos/2026_Missile_Chassis.html) |
 
 ## 5. 代码质量
 
@@ -537,116 +449,112 @@ OnmiandSteer
 |------|------|------|
 | 有描述 | 58/72 | 81% |
 | 有 License | 8/72 | 11% |
-| 有 Wiki | 3/72 | 4% |
 | 多贡献者 | 40/72 | 56% |
-| 有 Topics | 0/72 | 0% |
 
 ## 6. 全部仓库一览
 
 ### 2025 (9)
 
-| 仓库 | 语言 | 代码行数 | Commits | 贡献者 | 主力 | 状态 | 详情 |
-|------|------|---------|---------|--------|------|------|------|
-| 2025_Chassis_Hero_Infantry_Sentry | C | 6,635 | 49 | 3 | Breeze-by(47) | 🔴 | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
-| 2025_Gimbal_Infantry | C | 19,120 | 42 | 5 | xinruilee04(20) | 🔴 | [→](/repos/2025_Gimbal_Infantry.html) |
-| 2025_Gimbalyaw_Sentry | C | 21,017 | 14 | 2 | juiceooorange(9) | 🔴 | [→](/repos/2025_Gimbalyaw_Sentry.html) |
-| 2025_Gimbal_Hero | C | 21,857 | 14 | 1 | xinruilee04(14) | 🔴 | [→](/repos/2025_Gimbal_Hero.html) |
-| 2025_Gimbalright_Sentry | C | 21,425 | 13 | 3 | xinruilee04(11) | 🔴 | [→](/repos/2025_Gimbalright_Sentry.html) |
-| 2025_Gimballeft_Sentry | C | 21,404 | 13 | 3 | xinruilee04(11) | 🔴 | [→](/repos/2025_Gimballeft_Sentry.html) |
-| 2025_SuperCap_Hero_Infantry_Sentry | C | - | 6 | 1 | Co1con(6) | 🔴 | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
-| 2025_autoaim_sentry_infantry_hero | C++ | 73,276 | 3 | 2 | ssssssqy(2) | 🔴 | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
-| 2025_NAV_Sentry | Makefile | 33,481 | 2 | 1 | me-speaker(2) | 🔴 | [→](/repos/2025_NAV_Sentry.html) |
+| 仓库 | 语言 | 代码行数 | Commits | 贡献者 | 状态 | 详情 |
+|------|------|---------|---------|--------|------|------|
+| 2025_Chassis_Hero_Infantry_Sentry | C | 6,635 | 49 | 3 | 🔴 | [→](/repos/2025_Chassis_Hero_Infantry_Sentry.html) |
+| 2025_Gimbal_Infantry | C | 19,120 | 42 | 5 | 🔴 | [→](/repos/2025_Gimbal_Infantry.html) |
+| 2025_Gimbalyaw_Sentry | C | 21,017 | 14 | 2 | 🔴 | [→](/repos/2025_Gimbalyaw_Sentry.html) |
+| 2025_Gimbal_Hero | C | 21,857 | 14 | 1 | 🔴 | [→](/repos/2025_Gimbal_Hero.html) |
+| 2025_Gimbalright_Sentry | C | 21,425 | 13 | 3 | 🔴 | [→](/repos/2025_Gimbalright_Sentry.html) |
+| 2025_Gimballeft_Sentry | C | 21,404 | 13 | 3 | 🔴 | [→](/repos/2025_Gimballeft_Sentry.html) |
+| 2025_SuperCap_Hero_Infantry_Sentry | C | 0 | 6 | 1 | 🔴 | [→](/repos/2025_SuperCap_Hero_Infantry_Sentry.html) |
+| 2025_autoaim_sentry_infantry_hero | C++ | 73,276 | 3 | 2 | 🔴 | [→](/repos/2025_autoaim_sentry_infantry_hero.html) |
+| 2025_NAV_Sentry | Makefile | 33,481 | 2 | 1 | 🔴 | [→](/repos/2025_NAV_Sentry.html) |
 
 ### 2025/2026 (11)
 
-| 仓库 | 语言 | 代码行数 | Commits | 贡献者 | 主力 | 状态 | 详情 |
-|------|------|---------|---------|--------|------|------|------|
-| EGAdapter_MC02 | C | 19,688 | 515 | 11 | JAHNAN00(365) | 🟢 | [→](/repos/EGAdapter_MC02.html) |
-| RM26_QtClient | C++ | - | 67 | 1 | ClearWei(67) | 🟢 | [→](/repos/RM26_QtClient.html) |
-| wheel_legged_gym_ega | Python | 7,194 | 15 | 1 | jinnes06(15) | 🔴 | [→](/repos/wheel_legged_gym_ega.html) |
-| EGA_GimbalExample | C | 24,412 | 13 | 3 | pyrosucrose(6) | 🔴 | [→](/repos/EGA_GimbalExample.html) |
-| EGA_ChassisExample | C | 1,778 | 12 | 3 | pyrosucrose(5) | 🔴 | [→](/repos/EGA_ChassisExample.html) |
-| IMU | C | 739 | 7 | 2 | littlef111(6) | 🔴 | [→](/repos/IMU.html) |
-| LK4005Driver | C | 17,299 | 6 | 1 | xinruilee04(6) | 🔴 | [→](/repos/LK4005Driver.html) |
-| EGA-code-style | - | - | 4 | 2 | JAHNAN00(3) | 🔴 | [→](/repos/EGA-code-style.html) |
-| SMC_Cpp | C++ | 112 | 2 | 1 | SadMei(2) | 🔴 | [→](/repos/SMC_Cpp.html) |
-| Fudan-RobotEGA.github.io | HTML | 117 | 1 | 1 | github-actions[bot](1) | 🟢 | [→](/repos/Fudan-RobotEGA.github.io.html) |
-| Chassis_Mecanum | - | - | 1 | 1 | shangtianxuanniao(1) | 🔴 | [→](/repos/Chassis_Mecanum.html) |
+| 仓库 | 语言 | 代码行数 | Commits | 贡献者 | 状态 | 详情 |
+|------|------|---------|---------|--------|------|------|
+| EGAdapter_MC02 | C | 19,688 | 515 | 11 | 🟢 | [→](/repos/EGAdapter_MC02.html) |
+| RM26_QtClient | C++ | 0 | 67 | 1 | 🟢 | [→](/repos/RM26_QtClient.html) |
+| wheel_legged_gym_ega | Python | 7,194 | 15 | 1 | 🔴 | [→](/repos/wheel_legged_gym_ega.html) |
+| EGA_GimbalExample | C | 24,412 | 13 | 3 | 🔴 | [→](/repos/EGA_GimbalExample.html) |
+| EGA_ChassisExample | C | 1,778 | 12 | 3 | 🔴 | [→](/repos/EGA_ChassisExample.html) |
+| IMU | C | 739 | 7 | 2 | 🔴 | [→](/repos/IMU.html) |
+| LK4005Driver | C | 17,299 | 6 | 1 | 🔴 | [→](/repos/LK4005Driver.html) |
+| EGA-code-style | - | 0 | 4 | 2 | 🔴 | [→](/repos/EGA-code-style.html) |
+| SMC_Cpp | C++ | 112 | 2 | 1 | 🔴 | [→](/repos/SMC_Cpp.html) |
+| Fudan-RobotEGA.github.io | HTML | 117 | 1 | 1 | 🟢 | [→](/repos/Fudan-RobotEGA.github.io.html) |
+| Chassis_Mecanum | - | 0 | 1 | 1 | 🔴 | [→](/repos/Chassis_Mecanum.html) |
 
 ### 2026 (52)
 
-| 仓库 | 语言 | 代码行数 | Commits | 贡献者 | 主力 | 状态 | 详情 |
-|------|------|---------|---------|--------|------|------|------|
-| RM2026_Hero_SwerveDrive⑂ | C | 11,978 | 665 | 10 | JAHNAN00(333) | 🟢 | [→](/repos/RM2026_Hero_SwerveDrive.html) |
-| RM2026_OmniandSteer_New⑂ | - | 11,978 | 548 | 10 | JAHNAN00(333) | 🟡 | [→](/repos/RM2026_OmniandSteer_New.html) |
-| TransformableInfantry | C | 11,978 | 506 | 10 | JAHNAN00(332) | 🟡 | [→](/repos/TransformableInfantry.html) |
-| RM2026_TransformableInfantry⑂ | - | 13,927 | 501 | 11 | JAHNAN00(360) | 🟢 | [→](/repos/RM2026_TransformableInfantry.html) |
-| RM2026_Transformable_Infantry⑂ | C | 16,615 | 393 | 7 | shangtianxuanniao(202) | 🟢 | [→](/repos/RM2026_Transformable_Infantry.html) |
-| OnmiandSteer | C | 17,051 | 348 | 6 | shangtianxuanniao(160) | 🟢 | [→](/repos/OnmiandSteer.html) |
-| RM2026_Gimbal_SixFricHero | C | 9,241 | 160 | 6 | JAHNAN00(111) | 🔴 | [→](/repos/RM2026_Gimbal_SixFricHero.html) |
-| RM2026_EGAdapter_WheelLeg_Hero⑂ | C | 33,635 | 123 | 8 | JAHNAN00(36) | 🟢 | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
-| RM2026_WheelLegged_Chassis | C | 20,125 | 111 | 2 | Co1con(62) | 🔴 | [→](/repos/RM2026_WheelLegged_Chassis.html) |
-| 2026_AUTOAIM_HERO | C++ | 2,106 | 81 | 5 | LemonServer(46) | 🟡 | [→](/repos/2026_AUTOAIM_HERO.html) |
-| RM2026_WheelLegged_Gimbal | C | 21,722 | 66 | 3 | chushanxiaodaoshi(41) | 🟢 | [→](/repos/RM2026_WheelLegged_Gimbal.html) |
-| RM2026_EngineerRobot | C++ | 8,850 | 58 | 2 | Beecheer(32) | 🟢 | [→](/repos/RM2026_EngineerRobot.html) |
-| 2026_EGAIM | C | 1,965 | 53 | 3 | LemonServer(45) | 🟢 | [→](/repos/2026_EGAIM.html) |
-| 2026_EGAIM_wheeled_leg⑂ | C | 1,978 | 49 | 3 | LemonServer(41) | 🟢 | [→](/repos/2026_EGAIM_wheeled_leg.html) |
-| RM2026_EGAdapter_mc02_base | C | 11,080 | 44 | 4 | JAHNAN00(31) | 🟡 | [→](/repos/RM2026_EGAdapter_mc02_base.html) |
-| RM2026_NAV_Sentry_UL | Makefile | 71,741 | 40 | 1 | LemonServer(40) | 🟢 | [→](/repos/RM2026_NAV_Sentry_UL.html) |
-| RM2026_WheelDog_chassis | C | 3,957 | 36 | 1 | Beecheer(36) | 🔴 | [→](/repos/RM2026_WheelDog_chassis.html) |
-| 2026_Gimbal_SentryFromInfantry | C | 20,282 | 35 | 2 | Hrmys3(31) | 🟢 | [→](/repos/2026_Gimbal_SentryFromInfantry.html) |
-| RM2026_EGARadar_develop | Python | 31,630 | 29 | 3 | ega-rog(19) | 🟢 | [→](/repos/RM2026_EGARadar_develop.html) |
-| miao_machine_learning_wheelleg_infantry | C | 22,179 | 27 | 1 | chushanxiaodaoshi(27) | 🟢 | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
-| EGAdapter_lib | C | 107 | 25 | 1 | teleaki(25) | 🟢 | [→](/repos/EGAdapter_lib.html) |
-| 2026_Missile_Chassis | C | 10,823 | 24 | 2 | littlef111(23) | 🟢 | [→](/repos/2026_Missile_Chassis.html) |
-| 2026_infantry_Wheellegged_Chassis_RL_v0 | C++ | 28,927 | 23 | 1 | yly-true(23) | 🟡 | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
-| RM2026_TinyRos2 | C++ | 125 | 22 | 1 | teleaki(22) | 🟡 | [→](/repos/RM2026_TinyRos2.html) |
-| 2026_Laser_Gimble | C | 5,854 | 19 | 2 | chushanxiaodaoshi(10) | 🟢 | [→](/repos/2026_Laser_Gimble.html) |
-| RM2026_Swerve_Chassis | C | 6,133 | 19 | 1 | pyrosucrose(19) | 🔴 | [→](/repos/RM2026_Swerve_Chassis.html) |
-| RM2026_Waves_Analyze | MATLAB | 2,543 | 18 | 1 | Breeze-by(18) | 🟢 | [→](/repos/RM2026_Waves_Analyze.html) |
-| RM2026_EGAdapter_Cboard_base | C | 10,193 | 16 | 4 | JAHNAN00(9) | 🟡 | [→](/repos/RM2026_EGAdapter_Cboard_base.html) |
-| 2026_Gimbal_Sky | C | 34,029 | 15 | 3 | chushanxiaodaoshi(11) | 🟢 | [→](/repos/2026_Gimbal_Sky.html) |
-| 2026_EGAIM_sentry_ros2 | C | 2,162 | 12 | 3 | LemonServer(9) | 🟢 | [→](/repos/2026_EGAIM_sentry_ros2.html) |
-| RM2026_Sentry_Nav_UC | Makefile | 71,597 | 11 | 1 | LemonServer(11) | 🟢 | [→](/repos/RM2026_Sentry_Nav_UC.html) |
-| 2026_Gimbal_Infantry | C | 19,403 | 10 | 2 | Hrmys3(7) | 🔴 | [→](/repos/2026_Gimbal_Infantry.html) |
-| 2026_Chassis_Infantry_TinyCake | C | 6,294 | 10 | 1 | pyrosucrose(10) | 🔴 | [→](/repos/2026_Chassis_Infantry_TinyCake.html) |
-| RM2026_EGAdapter_WheelLegged_Chassis⑂ | C | 13,384 | 8 | 1 | xinruilee04(8) | 🟡 | [→](/repos/RM2026_EGAdapter_WheelLegged_Chassis.html) |
-| 2026_EGAIM_autobuff | C++ | 16,259 | 7 | 2 | zfw-scut(6) | 🟢 | [→](/repos/2026_EGAIM_autobuff.html) |
-| 2026_HERO_UC | C | 43,245 | 6 | 1 | WANGJ-miao(6) | 🟢 | [→](/repos/2026_HERO_UC.html) |
-| 2026_DMmc02BSP_ALL | C | 990 | 5 | 1 | Breeze-by(5) | 🔴 | [→](/repos/2026_DMmc02BSP_ALL.html) |
-| 2026_NAV_sentry | Makefile | 51,033 | 4 | 1 | LemonServer(4) | 🔴 | [→](/repos/2026_NAV_sentry.html) |
-| RM2026_RoboticArm_ROS2 | C++ | 17,072 | 4 | 1 | dawncity1104(4) | 🟡 | [→](/repos/RM2026_RoboticArm_ROS2.html) |
-| RM2026_PowerRune | C | 24,042 | 4 | 1 | Beecheer(4) | 🟡 | [→](/repos/RM2026_PowerRune.html) |
-| Raspberrypi_deployment | Python | 249 | 4 | 1 | yly-true(4) | 🟢 | [→](/repos/Raspberrypi_deployment.html) |
-| rl_sim2sim_lqr_raspberrypi | Python | 14,573 | 4 | 1 | yly-true(4) | 🟢 | [→](/repos/rl_sim2sim_lqr_raspberrypi.html) |
-| 2026_Autoaim_Infantry | C | 1,841 | 3 | 2 | ssssssqy(2) | 🔴 | [→](/repos/2026_Autoaim_Infantry.html) |
-| RM2026_RoboticArm | C | 8,979 | 3 | 1 | Beecheer(3) | 🔴 | [→](/repos/RM2026_RoboticArm.html) |
-| 2026_Autoaim_Sentry_Hero_Infantry | C++ | 73,276 | 2 | 2 | Phospheneser(1) | 🔴 | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
-| 2026_EGAIM_sentry | C | 1,974 | 2 | 2 | 1234056(1) | 🟡 | [→](/repos/2026_EGAIM_sentry.html) |
-| 2026_INFANTRY_TO_SENTRY_CHASSIS | C | 6,622 | 2 | 1 | Breeze-by(2) | 🟡 | [→](/repos/2026_INFANTRY_TO_SENTRY_CHASSIS.html) |
-| 26UL_Sentry_Chassis | C | 6,681 | 2 | 1 | Breeze-by(2) | 🟢 | [→](/repos/26UL_Sentry_Chassis.html) |
-| AITools | - | - | 2 | 1 | ClearWei(2) | 🟢 | [→](/repos/AITools.html) |
-| RM2026_UL_Sentry_Driver | C | 13,762 | 1 | 1 | wx2450(1) | 🟡 | [→](/repos/RM2026_UL_Sentry_Driver.html) |
-| 2026_navigation_Sentry_ws | - | - | 0 | 0 | -(0) | 🔴 | [→](/repos/2026_navigation_Sentry_ws.html) |
-| RM2026_Drone_Gimbal | - | - | 0 | 0 | -(0) | 🔴 | [→](/repos/RM2026_Drone_Gimbal.html) |
+| 仓库 | 语言 | 代码行数 | Commits | 贡献者 | 状态 | 详情 |
+|------|------|---------|---------|--------|------|------|
+| RM2026_Hero_SwerveDrive⑂ | C | 11,978 | 665 | 10 | 🟢 | [→](/repos/RM2026_Hero_SwerveDrive.html) |
+| RM2026_OmniandSteer_New⑂ | - | 11,978 | 548 | 10 | 🟡 | [→](/repos/RM2026_OmniandSteer_New.html) |
+| TransformableInfantry | C | 11,978 | 506 | 10 | 🟡 | [→](/repos/TransformableInfantry.html) |
+| RM2026_TransformableInfantry⑂ | - | 13,927 | 501 | 11 | 🟢 | [→](/repos/RM2026_TransformableInfantry.html) |
+| RM2026_Transformable_Infantry⑂ | C | 16,615 | 393 | 7 | 🟢 | [→](/repos/RM2026_Transformable_Infantry.html) |
+| OnmiandSteer | C | 17,051 | 348 | 6 | 🟢 | [→](/repos/OnmiandSteer.html) |
+| RM2026_Gimbal_SixFricHero | C | 9,241 | 160 | 6 | 🔴 | [→](/repos/RM2026_Gimbal_SixFricHero.html) |
+| RM2026_EGAdapter_WheelLeg_Hero⑂ | C | 33,635 | 123 | 8 | 🟢 | [→](/repos/RM2026_EGAdapter_WheelLeg_Hero.html) |
+| RM2026_WheelLegged_Chassis | C | 20,125 | 111 | 2 | 🔴 | [→](/repos/RM2026_WheelLegged_Chassis.html) |
+| 2026_AUTOAIM_HERO | C++ | 2,106 | 81 | 5 | 🟡 | [→](/repos/2026_AUTOAIM_HERO.html) |
+| RM2026_WheelLegged_Gimbal | C | 21,722 | 66 | 3 | 🟢 | [→](/repos/RM2026_WheelLegged_Gimbal.html) |
+| RM2026_EngineerRobot | C++ | 8,850 | 58 | 2 | 🟢 | [→](/repos/RM2026_EngineerRobot.html) |
+| 2026_EGAIM | C | 1,965 | 53 | 3 | 🟢 | [→](/repos/2026_EGAIM.html) |
+| 2026_EGAIM_wheeled_leg⑂ | C | 1,978 | 49 | 3 | 🟢 | [→](/repos/2026_EGAIM_wheeled_leg.html) |
+| RM2026_EGAdapter_mc02_base | C | 11,080 | 44 | 4 | 🟡 | [→](/repos/RM2026_EGAdapter_mc02_base.html) |
+| RM2026_NAV_Sentry_UL | Makefile | 71,741 | 40 | 1 | 🟢 | [→](/repos/RM2026_NAV_Sentry_UL.html) |
+| RM2026_WheelDog_chassis | C | 3,957 | 36 | 1 | 🔴 | [→](/repos/RM2026_WheelDog_chassis.html) |
+| 2026_Gimbal_SentryFromInfantry | C | 20,282 | 35 | 2 | 🟢 | [→](/repos/2026_Gimbal_SentryFromInfantry.html) |
+| RM2026_EGARadar_develop | Python | 31,630 | 29 | 3 | 🟢 | [→](/repos/RM2026_EGARadar_develop.html) |
+| miao_machine_learning_wheelleg_infantry | C | 22,179 | 27 | 1 | 🟢 | [→](/repos/miao_machine_learning_wheelleg_infantry.html) |
+| EGAdapter_lib | C | 107 | 25 | 1 | 🟢 | [→](/repos/EGAdapter_lib.html) |
+| 2026_Missile_Chassis | C | 10,823 | 24 | 2 | 🟢 | [→](/repos/2026_Missile_Chassis.html) |
+| 2026_infantry_Wheellegged_Chassis_RL_v0 | C++ | 28,927 | 23 | 1 | 🟡 | [→](/repos/2026_infantry_Wheellegged_Chassis_RL_v0.html) |
+| RM2026_TinyRos2 | C++ | 125 | 22 | 1 | 🟡 | [→](/repos/RM2026_TinyRos2.html) |
+| 2026_Laser_Gimble | C | 5,854 | 19 | 2 | 🟢 | [→](/repos/2026_Laser_Gimble.html) |
+| RM2026_Swerve_Chassis | C | 6,133 | 19 | 1 | 🔴 | [→](/repos/RM2026_Swerve_Chassis.html) |
+| RM2026_Waves_Analyze | MATLAB | 2,543 | 18 | 1 | 🟢 | [→](/repos/RM2026_Waves_Analyze.html) |
+| RM2026_EGAdapter_Cboard_base | C | 10,193 | 16 | 4 | 🟡 | [→](/repos/RM2026_EGAdapter_Cboard_base.html) |
+| 2026_Gimbal_Sky | C | 34,029 | 15 | 3 | 🟢 | [→](/repos/2026_Gimbal_Sky.html) |
+| 2026_EGAIM_sentry_ros2 | C | 2,162 | 12 | 3 | 🟢 | [→](/repos/2026_EGAIM_sentry_ros2.html) |
+| RM2026_Sentry_Nav_UC | Makefile | 71,597 | 11 | 1 | 🟢 | [→](/repos/RM2026_Sentry_Nav_UC.html) |
+| 2026_Gimbal_Infantry | C | 19,403 | 10 | 2 | 🔴 | [→](/repos/2026_Gimbal_Infantry.html) |
+| 2026_Chassis_Infantry_TinyCake | C | 6,294 | 10 | 1 | 🔴 | [→](/repos/2026_Chassis_Infantry_TinyCake.html) |
+| RM2026_EGAdapter_WheelLegged_Chassis⑂ | C | 13,384 | 8 | 1 | 🟡 | [→](/repos/RM2026_EGAdapter_WheelLegged_Chassis.html) |
+| 2026_EGAIM_autobuff | C++ | 16,259 | 7 | 2 | 🟢 | [→](/repos/2026_EGAIM_autobuff.html) |
+| 2026_HERO_UC | C | 43,245 | 6 | 1 | 🟢 | [→](/repos/2026_HERO_UC.html) |
+| 2026_DMmc02BSP_ALL | C | 990 | 5 | 1 | 🔴 | [→](/repos/2026_DMmc02BSP_ALL.html) |
+| 2026_NAV_sentry | Makefile | 51,033 | 4 | 1 | 🔴 | [→](/repos/2026_NAV_sentry.html) |
+| RM2026_RoboticArm_ROS2 | C++ | 17,072 | 4 | 1 | 🟡 | [→](/repos/RM2026_RoboticArm_ROS2.html) |
+| RM2026_PowerRune | C | 24,042 | 4 | 1 | 🟡 | [→](/repos/RM2026_PowerRune.html) |
+| Raspberrypi_deployment | Python | 249 | 4 | 1 | 🟢 | [→](/repos/Raspberrypi_deployment.html) |
+| rl_sim2sim_lqr_raspberrypi | Python | 14,573 | 4 | 1 | 🟢 | [→](/repos/rl_sim2sim_lqr_raspberrypi.html) |
+| 2026_Autoaim_Infantry | C | 1,841 | 3 | 2 | 🔴 | [→](/repos/2026_Autoaim_Infantry.html) |
+| RM2026_RoboticArm | C | 8,979 | 3 | 1 | 🔴 | [→](/repos/RM2026_RoboticArm.html) |
+| 2026_Autoaim_Sentry_Hero_Infantry | C++ | 73,276 | 2 | 2 | 🔴 | [→](/repos/2026_Autoaim_Sentry_Hero_Infantry.html) |
+| 2026_EGAIM_sentry | C | 1,974 | 2 | 2 | 🟡 | [→](/repos/2026_EGAIM_sentry.html) |
+| 2026_INFANTRY_TO_SENTRY_CHASSIS | C | 6,622 | 2 | 1 | 🟡 | [→](/repos/2026_INFANTRY_TO_SENTRY_CHASSIS.html) |
+| 26UL_Sentry_Chassis | C | 6,681 | 2 | 1 | 🟢 | [→](/repos/26UL_Sentry_Chassis.html) |
+| AITools | - | 0 | 2 | 1 | 🟢 | [→](/repos/AITools.html) |
+| RM2026_UL_Sentry_Driver | C | 13,762 | 1 | 1 | 🟡 | [→](/repos/RM2026_UL_Sentry_Driver.html) |
+| 2026_navigation_Sentry_ws | - | 0 | 0 | 0 | 🔴 | [→](/repos/2026_navigation_Sentry_ws.html) |
+| RM2026_Drone_Gimbal | - | 0 | 0 | 0 | 🔴 | [→](/repos/RM2026_Drone_Gimbal.html) |
 
 ## 7. 问题与建议
 
-1. **License 缺失**: 64/72 个仓库无 License
-2. **低活跃仓库**: 30 个 >90 天未更新,建议归档 2025 赛季废弃仓库
-3. **单贡献者风险**: 32 个仓库仅 1 人维护
+1. **License 缺失**: 64/72
+2. **低活跃**: 30 个 >90 天未更新
+3. **单贡献者**: 32 个仓库
 4. **默认分支不一致**: 多个仓库主力开发在非默认分支
-5. **非组织成员**: lucky-sharon(115), zlm-ega(65) 等贡献者需确认身份
-6. **描述缺失**: 14 个仓库无描述
-7. **git author 不规范**: 部分成员未关联 GitHub 导致匿名提交
+5. **描述缺失**: 14 个
 
-## 附录: 数据方法论
+## 附录
 
-- 全量 clone 70 个仓库,用 `git log --all --no-merges --numstat` 逐仓库分析
-- 路径过滤: 53 个用 `User/` include, 部分用 `src/`, 3 个 exclude SDK 目录, 14 个全量
-- SHA 去重: 同一 commit 跨 fork/分支全组织只计一次
-- 批量导入: 单次 >3000 行 additions 标记分离
+- 全量 clone 70 个仓库 + `git log --all --no-merges --numstat`
+- 路径过滤: 53 个 `User/`, 部分 `src/`, 3 个 exclude SDK, 14 个全量
+- SHA 全组织一次性去重: 同一 commit 跨仓库/分支只计一次 commit 和一次行数
+- 批量导入: >3000 行/commit 单独标注
 - 匿名合并: jingw0206-miao→WANGJ-miao, yly→yly-true, YYZ_XeF6_→YYZ-XeF6, linn_li→Leannnnnnn
 
 ---
-> 数据采集: 2026-05-01 | [可视化](/report-visual.html)
+> [可视化](/report-visual.html) · 2026-05-01

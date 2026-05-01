@@ -6,61 +6,55 @@
 *{margin:0;padding:0;box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,'Noto Sans SC',sans-serif;padding:20px;max-width:960px;margin:0 auto}
 a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
 h1{color:#58a6ff;font-size:1.5rem;margin-bottom:8px}h2{color:#c9d1d9;font-size:1.1rem;margin:20px 0 8px;border-bottom:1px solid #21262d;padding-bottom:4px}
-.back{margin-bottom:16px;font-size:.85rem}
+.bk{margin-bottom:16px;font-size:.85rem}
 table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #21262d;padding:6px 10px;text-align:left}th{background:#161b22;color:#8b949e;font-weight:600}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}.card{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}.card h3{font-size:.85rem;color:#8b949e;margin-bottom:8px}.ch{width:100%;height:240px}
-.tag{display:inline-block;background:#1f6feb33;color:#58a6ff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin:2px}
+.gr{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}.cd{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}.cd h3{font-size:.85rem;color:#8b949e;margin-bottom:8px}.ch{width:100%;height:240px}
+.tg{display:inline-block;background:#1f6feb33;color:#58a6ff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin:2px}
 .fo{text-align:center;padding:20px;color:#484f58;font-size:.8rem;border-top:1px solid #21262d;margin-top:24px}
-@media(max-width:600px){.grid{grid-template-columns:1fr}}
+@media(max-width:600px){.gr{grid-template-columns:1fr}}
 </style></head><body>
-<div class="back"><a href="/article/repo-analysis-2026/">← 完整报告</a> | <a href="/report-visual.html">可视化总览</a></div>
+<div class="bk"><a href="/article/repo-analysis-2026/">← 完整报告</a> | <a href="/report-visual.html">可视化</a></div>
 <h1>RM2026_WheelDog_chassis <span style="color:#f85149">110d ago</span></h1>
 <p style="color:#8b949e;margin-bottom:16px">26赛季工程机器人四轮足底盘控制代码</p>
 <table>
 <tr><th>属性</th><th>值</th></tr>
 <tr><td>语言</td><td>C</td></tr>
 <tr><td>大小</td><td>3,780 KB (3.7 MB)</td></tr>
-<tr><td>当前代码行数</td><td><strong>3,957</strong> 行</td></tr>
+<tr><td>当前代码行数</td><td><strong>3,957</strong></td></tr>
 <tr><td>可见性</td><td>私有</td></tr>
-<tr><td>创建时间</td><td>2025-11-28</td></tr>
+<tr><td>创建</td><td>2025-11-28</td></tr>
 <tr><td>最后推送</td><td>2026-01-10</td></tr>
-<tr><td>默认分支</td><td><code>master</code></td></tr>
 <tr><td>分支</td><td><code>arm</code>, <code>dev</code>, <code>etl</code>, <code>master</code></td></tr>
-<tr><td>Commits</td><td><strong>36</strong></td></tr>
-<tr><td>贡献者</td><td>1</td></tr>
-<tr><td>User Code Additions</td><td>7,451 行</td></tr>
-<tr><td>Stars / Forks / Issues</td><td>1 / 0 / 0</td></tr>
+<tr><td>Commits (全分支)</td><td><strong>36</strong></td></tr>
+<tr><td>User Code Additions</td><td>7,451</td></tr>
 <tr><td>Fork 自</td><td>-</td></tr>
-<tr><td>License</td><td>无</td></tr>
 <tr><td>过滤策略</td><td><code>include:['User/']</code></td></tr>
 </table>
 <div style="margin:12px 0">
-<span class="tag">2026</span>
-<span class="tag">WheelLegged</span>
-<span class="tag">底盘</span>
+<span class="tg">2026</span>
+<span class="tg">WheelLegged</span>
+<span class="tg">底盘</span>
 </div>
-<div class="grid">
-<div class="card"><h3>贡献者分布 (Commits)</h3><div id="ctPie" class="ch"></div></div>
-<div class="card"><h3>语言构成 (字节)</h3><div id="lgPie" class="ch"></div></div>
+<div class="gr">
+<div class="cd"><h3>贡献者 (Commits)</h3><div id="p1" class="ch"></div></div>
+<div class="cd"><h3>语言构成 (字节)</h3><div id="p2" class="ch"></div></div>
 </div>
-<h2>贡献者 Commit 明细</h2>
-<table>
-<tr><th>#</th><th>贡献者</th><th>Commits</th><th>占比</th><th>身份</th></tr>
+<h2>Commit 明细</h2>
+<table><tr><th>#</th><th>贡献者</th><th>Commits</th><th>占比</th><th>身份</th></tr>
 <tr><td>1</td><td>Beecheer</td><td>36</td><td>100.0%</td><td></td></tr>
 </table>
-<h2>User Code 行数明细 (排除 SDK, 批量导入单独标注)</h2>
-<table>
-<tr><th>贡献者</th><th>Additions</th><th>Deletions</th><th>Net</th><th>批量导入</th></tr>
-<tr><td>Beecheer</td><td>7,162</td><td>1,788</td><td>+5,374</td><td>3,942</td></tr>
-<tr><td>teleaki</td><td>289</td><td>57</td><td>+232</td><td>-</td></tr>
+<h2>User Code 行数明细</h2>
+<table><tr><th>贡献者</th><th>Additions</th><th>Deletions</th><th>Net</th><th>Commits</th><th>批量Add</th><th>批量Commits</th></tr>
+<tr><td>Beecheer</td><td>7,162</td><td>1,788</td><td>+5,374</td><td>28</td><td>3,942</td><td>1</td></tr>
+<tr><td>teleaki</td><td>289</td><td>57</td><td>+232</td><td>1</td><td>-</td><td>0</td></tr>
 </table>
 <script>
 const P=['#58a6ff','#3fb950','#d29922','#f0883e','#f85149','#a371f7','#db61a2','#79c0ff','#56d364','#e3b341'];
 const T={backgroundColor:'transparent',textStyle:{color:'#c9d1d9'},tooltip:{backgroundColor:'#1c2128',borderColor:'#30363d',textStyle:{color:'#c9d1d9'}}};
 function I(id){const c=echarts.init(document.getElementById(id));c.setOption(T);return c}
-const c1=I('ctPie');c1.setOption({tooltip:{trigger:'item',formatter:'{b}: {c} ({d}%)'},series:[{type:'pie',radius:['30%','60%'],data:[{"name": "Beecheer", "value": 36}],label:{color:'#8b949e',formatter:'{b}\n{d}%'},itemStyle:{borderColor:'#161b22',borderWidth:2},color:P}]});
-const c2=I('lgPie');c2.setOption({tooltip:{trigger:'item',formatter:'{b}: {d}%'},series:[{type:'pie',radius:['30%','60%'],data:[{"name": "C", "value": 10365763}, {"name": "C++", "value": 116993}, {"name": "Assembly", "value": 30168}, {"name": "MATLAB", "value": 12034}, {"name": "Linker Script", "value": 10598}, {"name": "CMake", "value": 4010}],label:{color:'#8b949e',formatter:'{b}\n{d}%'},itemStyle:{borderColor:'#161b22',borderWidth:2},color:P}]});
+const c1=I('p1');c1.setOption({tooltip:{trigger:'item',formatter:'{b}: {c} ({d}%)'},series:[{type:'pie',radius:['30%','60%'],data:[{"name": "Beecheer", "value": 36}],label:{color:'#8b949e',formatter:'{b}\n{d}%'},itemStyle:{borderColor:'#161b22',borderWidth:2},color:P}]});
+const c2=I('p2');c2.setOption({tooltip:{trigger:'item',formatter:'{b}: {d}%'},series:[{type:'pie',radius:['30%','60%'],data:[{"name": "C", "value": 10365763}, {"name": "C++", "value": 116993}, {"name": "Assembly", "value": 30168}, {"name": "MATLAB", "value": 12034}, {"name": "Linker Script", "value": 10598}, {"name": "CMake", "value": 4010}],label:{color:'#8b949e',formatter:'{b}\n{d}%'},itemStyle:{borderColor:'#161b22',borderWidth:2},color:P}]});
 window.addEventListener('resize',()=>{c1.resize();c2.resize()});
 </script>
-<div class="fo">Fudan-RobotEGA 2026 | <a href="/article/repo-analysis-2026/">完整报告</a> | <a href="/report-visual.html">可视化总览</a></div>
+<div class="fo"><a href="/article/repo-analysis-2026/">完整报告</a> | <a href="/report-visual.html">可视化</a></div>
 </body></html>
