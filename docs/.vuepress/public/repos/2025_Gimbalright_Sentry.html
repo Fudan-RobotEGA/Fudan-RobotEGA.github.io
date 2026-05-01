@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2025_Gimbalright_Sentry — Fudan-RobotEGA</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,'Noto Sans SC',sans-serif;padding:20px;max-width:900px;margin:0 auto}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+h1{color:#58a6ff;font-size:1.5rem;margin-bottom:8px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;margin-left:8px}
+.back{margin-bottom:16px;font-size:.85rem}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th,td{border:1px solid #21262d;padding:8px 12px;text-align:left}
+th{background:#161b22;color:#8b949e;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.card{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}
+.card h3{font-size:.9rem;color:#8b949e;margin-bottom:8px}
+.ch{width:100%;height:260px}
+.tag{display:inline-block;background:#1f6feb33;color:#58a6ff;padding:2px 8px;border-radius:4px;font-size:.75rem;margin:2px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<div class="back"><a href="/article/repo-analysis-2026/">← 返回完整报告</a> | <a href="/report-visual.html">可视化总览</a></div>
+<h1>2025_Gimbalright_Sentry <span style="color:#f85149">398d ago</span></h1>
+<p style="color:#8b949e;margin-bottom:16px">2025赛季哨兵云台代码</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td>语言</td><td>C</td></tr>
+<tr><td>大小</td><td>3,752 KB (3.7 MB)</td></tr>
+<tr><td>可见性</td><td>私有 🔒</td></tr>
+<tr><td>创建时间</td><td>2025-01-19</td></tr>
+<tr><td>最后推送</td><td>2025-03-28</td></tr>
+<tr><td>默认分支</td><td><code>main</code></td></tr>
+<tr><td>分支列表</td><td><code>main</code></td></tr>
+<tr><td>总 Commits</td><td><strong>13</strong></td></tr>
+<tr><td>贡献者数</td><td>3</td></tr>
+<tr><td>Stars</td><td>0</td></tr>
+<tr><td>Forks</td><td>0</td></tr>
+<tr><td>Open Issues</td><td>0</td></tr>
+<tr><td>Fork 自</td><td>-</td></tr>
+<tr><td>是否模板</td><td>否</td></tr>
+<tr><td>License</td><td>无</td></tr>
+</table>
+
+<div style="margin:12px 0">
+<span class="tag">2025</span>
+<span class="tag">Sentry</span>
+<span class="tag">云台</span>
+</div>
+
+<div class="grid">
+<div class="card"><h3>贡献者分布</h3><div id="ctPie" class="ch"></div></div>
+<div class="card"><h3>语言构成 (字节)</h3><div id="lgPie" class="ch"></div></div>
+</div>
+
+<h3 style="margin:16px 0 8px">贡献者明细</h3>
+<table>
+<tr><th>#</th><th>贡献者</th><th>Commits</th><th>占比</th><th>身份</th></tr>
+<tr><td>1</td><td>xinruilee04</td><td>11</td><td>84.6%</td><td></td></tr>
+<tr><td>2</td><td>SadMei</td><td>1</td><td>7.7%</td><td></td></tr>
+<tr><td>3</td><td>Co1con</td><td>1</td><td>7.7%</td><td></td></tr>
+</table>
+
+<script>
+const P=['#58a6ff','#3fb950','#d29922','#f0883e','#f85149','#a371f7','#db61a2','#79c0ff','#56d364','#e3b341'];
+const T={backgroundColor:'transparent',textStyle:{color:'#c9d1d9'},tooltip:{backgroundColor:'#1c2128',borderColor:'#30363d',textStyle:{color:'#c9d1d9'}}};
+function I(id){const c=echarts.init(document.getElementById(id));c.setOption(T);return c}
+const c1=I('ctPie');c1.setOption({tooltip:{trigger:'item',formatter:'{b}: {c} ({d}%)'},series:[{type:'pie',radius:['30%','60%'],data:[{"name": "xinruilee04", "value": 11}, {"name": "SadMei", "value": 1}, {"name": "Co1con", "value": 1}],label:{color:'#8b949e',formatter:'{b}\n{d}%'},itemStyle:{borderColor:'#161b22',borderWidth:2},color:P}]});
+const c2=I('lgPie');c2.setOption({tooltip:{trigger:'item',formatter:'{b}: {d}%'},series:[{type:'pie',radius:['30%','60%'],data:[{"name": "C", "value": 7922053}, {"name": "HTML", "value": 342366}, {"name": "C++", "value": 147331}, {"name": "JavaScript", "value": 129098}, {"name": "Assembly", "value": 22854}, {"name": "Linker Script", "value": 10581}, {"name": "CSS", "value": 10181}, {"name": "Makefile", "value": 10038}],label:{color:'#8b949e',formatter:'{b}\n{d}%'},itemStyle:{borderColor:'#161b22',borderWidth:2},color:P}]});
+window.addEventListener('resize',()=>{c1.resize();c2.resize()});
+</script>
+<div style="text-align:center;padding:24px;color:#484f58;font-size:.8rem;border-top:1px solid #21262d;margin-top:24px">
+Fudan-RobotEGA 2026 | 数据采集: 2026-05-01 | <a href="/article/repo-analysis-2026/">完整报告</a>
+</div>
+</body></html>
