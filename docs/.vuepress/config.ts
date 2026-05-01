@@ -31,15 +31,22 @@ export default defineUserConfig({
     // contributors: true,
     // changelog: false,
 
-    blog: {
-      postList: true,
-      tags: true,
-      archives: true,
-      categories: true,
-      pagination: 15,
-    },
+    collections: [
+      {
+        type: 'post',
+        dir: 'blog',
+        title: '博客',
+        link: '/blog/',
+      },
+      {
+        type: 'doc',
+        dir: 'demo',
+        title: '示例',
+        linkPrefix: '/demo/',
+        sidebar: 'auto',
+      },
+    ],
 
-    /* 博客文章页面链接前缀 */
     article: '/article/',
 
     /**
