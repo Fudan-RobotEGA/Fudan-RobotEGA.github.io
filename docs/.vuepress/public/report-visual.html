@@ -3,371 +3,287 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fudan-RobotEGA 组织分析报告 — 可视化</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<title>Fudan-RobotEGA 全组织数据分析</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 <style>
-  :root {
-    --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
-    --text: #e2e8f0; --text2: #94a3b8; --accent: #38bdf8;
-    --green: #4ade80; --yellow: #facc15; --red: #f87171;
-    --purple: #a78bfa; --pink: #f472b6; --orange: #fb923c;
-    --cyan: #22d3ee; --border: #475569;
-  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-  .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
-
-  /* Header */
-  .header { text-align: center; padding: 48px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-  .header h1 { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
-  .header p { color: var(--text2); font-size: 0.95rem; }
-
-  /* Stats row */
-  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  .stat-card { background: var(--surface); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); transition: transform .2s; }
-  .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
-  .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--accent); }
-  .stat-card .label { font-size: 0.85rem; color: var(--text2); margin-top: 4px; }
-
-  /* Section */
-  .section { margin-bottom: 40px; }
-  .section h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); display: inline-block; }
-
-  /* Chart grid */
-  .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px; }
-  .chart-box { background: var(--surface); border-radius: 12px; padding: 24px; border: 1px solid var(--border); }
-  .chart-box h3 { font-size: 1rem; color: var(--text2); margin-bottom: 16px; font-weight: 500; }
-  .chart-box canvas { max-height: 350px; }
-  .chart-box.full { grid-column: 1 / -1; }
-
-  /* Heatmap */
-  .heatmap-grid { display: grid; grid-template-columns: 60px repeat(7, 1fr); gap: 4px; margin-top: 12px; }
-  .heatmap-cell { aspect-ratio: 1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; }
-  .heatmap-label { display: flex; align-items: center; justify-content: flex-end; font-size: 0.8rem; color: var(--text2); padding-right: 8px; }
-  .heatmap-header { display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--text2); font-weight: 600; }
-
-  /* Branch topology */
-  .topology { background: var(--surface); border-radius: 12px; padding: 24px; border: 1px solid var(--border); font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.8; white-space: pre; overflow-x: auto; color: var(--green); }
-
-  /* Tables */
-  .data-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
-  .data-table th { background: var(--surface2); color: var(--accent); font-weight: 600; text-align: left; padding: 12px 16px; font-size: 0.85rem; }
-  .data-table td { padding: 10px 16px; border-top: 1px solid var(--border); font-size: 0.85rem; }
-  .data-table tr:hover td { background: rgba(56, 189, 248, 0.05); }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-  .badge-green { background: rgba(74,222,128,.15); color: var(--green); }
-  .badge-yellow { background: rgba(250,204,21,.15); color: var(--yellow); }
-  .badge-red { background: rgba(248,113,113,.15); color: var(--red); }
-  .badge-purple { background: rgba(167,139,250,.15); color: var(--purple); }
-
-  /* Quality stars */
-  .stars { color: var(--yellow); letter-spacing: 2px; }
-
-  /* Robot matrix */
-  .robot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-  .robot-card { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
-  .robot-card h4 { font-size: 1rem; margin-bottom: 8px; }
-  .robot-card .meta { display: flex; gap: 12px; color: var(--text2); font-size: 0.85rem; margin-bottom: 8px; }
-  .robot-card .highlights { font-size: 0.85rem; color: var(--cyan); }
-
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, 'Segoe UI', 'Noto Sans SC', sans-serif; }
+  .header { text-align: center; padding: 40px 20px 20px; border-bottom: 1px solid #21262d; }
+  .header h1 { font-size: 2rem; color: #58a6ff; margin-bottom: 8px; }
+  .header p { color: #8b949e; font-size: 0.95rem; }
+  .metrics { display: flex; justify-content: center; gap: 16px; padding: 24px 20px; flex-wrap: wrap; }
+  .metric-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 16px 24px; text-align: center; min-width: 140px; }
+  .metric-card .value { font-size: 1.8rem; font-weight: 700; color: #58a6ff; }
+  .metric-card .label { font-size: 0.8rem; color: #8b949e; margin-top: 4px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px 20px; max-width: 1400px; margin: 0 auto; }
+  .chart-box { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 16px; }
+  .chart-box h3 { font-size: 0.95rem; color: #c9d1d9; margin-bottom: 12px; padding-left: 4px; }
+  .chart { width: 100%; height: 380px; }
+  .chart-wide { grid-column: 1 / -1; }
+  .fork-tree { font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.8; padding: 12px 16px; background: #0d1117; border-radius: 6px; color: #7ee787; overflow-x: auto; white-space: pre; }
+  .footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 16px; }
   @media (max-width: 768px) {
-    .chart-grid { grid-template-columns: 1fr; }
-    .header h1 { font-size: 1.5rem; }
-    .heatmap-grid { grid-template-columns: 50px repeat(7, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.4rem; }
+    .metrics { gap: 8px; }
+    .metric-card { min-width: 100px; padding: 12px 16px; }
+    .metric-card .value { font-size: 1.3rem; }
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-<!-- Header -->
 <div class="header">
-  <h1>Fudan-RobotEGA 组织分析报告</h1>
-  <p>72 个仓库 · 42 位成员 · RM2026 赛季全面数据可视化 · 2026-05-01</p>
+  <h1>Fudan-RobotEGA 全组织数据分析</h1>
+  <p>数据采集: 2026-05-01 | 72 仓库 · 42 成员 | 复旦大学星云EGA战队</p>
 </div>
 
-<!-- Key Stats -->
-<div class="stats-row">
-  <div class="stat-card"><div class="value">72</div><div class="label">总仓库数</div></div>
-  <div class="stat-card"><div class="value">42</div><div class="label">组织成员</div></div>
-  <div class="stat-card"><div class="value">703</div><div class="label">Hero 仓库 Commits</div></div>
-  <div class="stat-card"><div class="value">272K</div><div class="label">代码总行数</div></div>
-  <div class="stat-card"><div class="value">15</div><div class="label">Hero 贡献者</div></div>
-  <div class="stat-card"><div class="value">6</div><div class="label">活跃分支</div></div>
-  <div class="stat-card"><div class="value">17.2%</div><div class="label">注释率</div></div>
-  <div class="stat-card"><div class="value">46</div><div class="label">2026赛季仓库</div></div>
+<div class="metrics">
+  <div class="metric-card"><div class="value">72</div><div class="label">仓库总数</div></div>
+  <div class="metric-card"><div class="value">42</div><div class="label">团队成员</div></div>
+  <div class="metric-card"><div class="value">4,353</div><div class="label">总提交数</div></div>
+  <div class="metric-card"><div class="value">526 MB</div><div class="label">代码总量</div></div>
+  <div class="metric-card"><div class="value" style="color:#3fb950">29</div><div class="label">30天活跃仓库</div></div>
 </div>
 
-<!-- Section 1: Org Overview Charts -->
-<div class="section">
-  <h2>1. 组织仓库分析</h2>
-  <div class="chart-grid">
-    <div class="chart-box"><h3>仓库语言分布</h3><canvas id="langPie"></canvas></div>
-    <div class="chart-box"><h3>仓库赛季分布</h3><canvas id="seasonPie"></canvas></div>
-    <div class="chart-box"><h3>2026 赛季仓库领域分类</h3><canvas id="domainBar"></canvas></div>
-    <div class="chart-box"><h3>机器人类型覆盖</h3><canvas id="robotBar"></canvas></div>
+<div class="grid">
+  <!-- 1. Language Pie -->
+  <div class="chart-box">
+    <h3>语言分布 (按字节数)</h3>
+    <div id="langPie" class="chart"></div>
+  </div>
+
+  <!-- 2. Season Pie -->
+  <div class="chart-box">
+    <h3>赛季分布</h3>
+    <div id="seasonPie" class="chart"></div>
+  </div>
+
+  <!-- 3. Activity Top 20 -->
+  <div class="chart-box chart-wide">
+    <h3>仓库活跃度 Top 20 (按提交数)</h3>
+    <div id="actTop20" class="chart" style="height:480px"></div>
+  </div>
+
+  <!-- 4. Member Top 20 -->
+  <div class="chart-box chart-wide">
+    <h3>成员贡献 Top 20</h3>
+    <div id="memTop20" class="chart" style="height:480px"></div>
+  </div>
+
+  <!-- 5. Monthly Creation -->
+  <div class="chart-box chart-wide">
+    <h3>月度仓库创建数</h3>
+    <div id="monthlyChart" class="chart"></div>
+  </div>
+
+  <!-- 6. Size Top 10 -->
+  <div class="chart-box">
+    <h3>仓库规模 Top 10 (MB)</h3>
+    <div id="sizeTop10" class="chart"></div>
+  </div>
+
+  <!-- 7. Robot Type -->
+  <div class="chart-box">
+    <h3>机器人类型覆盖</h3>
+    <div id="robotChart" class="chart"></div>
+  </div>
+
+  <!-- 8. Quality Radar -->
+  <div class="chart-box">
+    <h3>代码质量雷达图</h3>
+    <div id="qualityRadar" class="chart"></div>
+  </div>
+
+  <!-- 9. Activity Level Pie -->
+  <div class="chart-box">
+    <h3>活跃度分布</h3>
+    <div id="actLevelPie" class="chart"></div>
+  </div>
+
+  <!-- 10. Language Repo Count -->
+  <div class="chart-box">
+    <h3>语言使用仓库数</h3>
+    <div id="langRepoCount" class="chart"></div>
+  </div>
+
+  <!-- 11. Fork Chain -->
+  <div class="chart-box">
+    <h3>Fork 链</h3>
+    <div class="fork-tree" id="forkTree"></div>
   </div>
 </div>
 
-<!-- Section 2: Hero Repo Deep Dive -->
-<div class="section">
-  <h2>2. RM2026_Hero_SwerveDrive 架构</h2>
-  <div class="chart-grid">
-    <div class="chart-box"><h3>四层架构代码行数</h3><canvas id="archBar"></canvas></div>
-    <div class="chart-box"><h3>Module 层模块分布</h3><canvas id="modulePie"></canvas></div>
-  </div>
+<div class="footer">
+  数据来源: GitHub API | 采集工具: gh CLI + Python | Fudan-RobotEGA &copy; 2026
 </div>
-
-<!-- Section 3: Branch Analysis -->
-<div class="section">
-  <h2>3. 分支拓扑与对比</h2>
-  <div class="chart-grid">
-    <div class="chart-box full">
-      <h3>分支 Commit 数量与变更规模</h3>
-      <canvas id="branchBar"></canvas>
-    </div>
-  </div>
-  <div style="margin-top:24px">
-    <div class="topology">EGAdapter_MC02 (模板仓库, ⭐2, fork=7, PR=23)
-│
-├── fork → RM2026_Hero_SwerveDrive (英雄舵轮, 本仓库)
-│   │
-│   ├── main ──── (+3) ──────────────── → 2026-01-25 (停滞)
-│   ├── chassis_board ──── (+29) ────── → 2026-04-13 (独立演进)
-│   ├── gimbal_htk ──── (+72) ──────── → 2026-03-03
-│   ├── gimbal_ul ──── (+196) ──────── → 2026-04-05
-│   ├── gimbal_uc_2fric ──── (+213) ── → 2026-04-29
-│   └── gimbal_refactor ──── (+220) ── → 2026-05-01 (🟢 最活跃)
-│
-├── fork → RM2026_TransformableInfantry (变形步兵)
-└── fork → RM2026_OmniandSteer_New (全向/舵轮)</div>
-  </div>
-</div>
-
-<!-- Section 4: Developer Analysis -->
-<div class="section">
-  <h2>4. 开发者分析</h2>
-  <div class="chart-grid">
-    <div class="chart-box"><h3>贡献者 Commit 排名 (Top 10)</h3><canvas id="contribBar"></canvas></div>
-    <div class="chart-box"><h3>月度提交趋势</h3><canvas id="monthLine"></canvas></div>
-    <div class="chart-box"><h3>每日提交时段分布</h3><canvas id="hourBar"></canvas></div>
-    <div class="chart-box"><h3>星期提交分布</h3><canvas id="weekBar"></canvas></div>
-  </div>
-
-  <!-- Heatmap: Contributor × Branch -->
-  <div class="chart-box full" style="margin-top:24px">
-    <h3>贡献者 × 分支 提交热力图</h3>
-    <div class="heatmap-grid" id="heatmap"></div>
-  </div>
-</div>
-
-<!-- Section 5: Code Quality -->
-<div class="section">
-  <h2>5. 代码质量评估</h2>
-  <div class="chart-grid">
-    <div class="chart-box"><h3>代码组成 (User/ 目录)</h3><canvas id="codePie"></canvas></div>
-    <div class="chart-box"><h3>质量评分雷达图</h3><canvas id="qualityRadar"></canvas></div>
-  </div>
-</div>
-
-<!-- Section 6: Robot Matrix -->
-<div class="section">
-  <h2>6. 2026 赛季机器人矩阵</h2>
-  <div class="robot-grid">
-    <div class="robot-card"><h4>🤖 英雄 Hero</h4><div class="meta"><span>10 仓库</span><span>3 活跃</span></div><div class="highlights">舵轮底盘 · 六摩擦轮 · 轮腿</div></div>
-    <div class="robot-card"><h4>🪖 步兵 Infantry</h4><div class="meta"><span>15 仓库</span><span>4 活跃</span></div><div class="highlights">变形步兵 · TinyCake · 轮腿 RL</div></div>
-    <div class="robot-card"><h4>🛡️ 哨兵 Sentry</h4><div class="meta"><span>18 仓库</span><span>6 活跃</span></div><div class="highlights">导航决策 · UL/UC 双方案 · ROS2 自瞄</div></div>
-    <div class="robot-card"><h4>🔧 工程 Engineer</h4><div class="meta"><span>3 仓库</span><span>2 活跃</span></div><div class="highlights">机械臂 · ROS2 控制</div></div>
-    <div class="robot-card"><h4>🚀 飞镖 Missile</h4><div class="meta"><span>1 仓库</span><span>1 活跃</span></div><div class="highlights">底盘控制</div></div>
-    <div class="robot-card"><h4>🦿 轮腿 WheelLegged</h4><div class="meta"><span>9 仓库</span><span>5 活跃</span></div><div class="highlights">RL 仿真 · Sim2Real · LQR</div></div>
-    <div class="robot-card"><h4>🎯 自瞄 Autoaim</h4><div class="meta"><span>9 仓库</span><span>5 活跃</span></div><div class="highlights">EGAIM 框架 · ROS2 · 自动打符</div></div>
-    <div class="robot-card"><h4>🧭 导航 Navigation</h4><div class="meta"><span>5 仓库</span><span>3 活跃</span></div><div class="highlights">UL/UC 双方案</div></div>
-    <div class="robot-card"><h4>🛩️ 无人机 Drone</h4><div class="meta"><span>2 仓库</span><span>1 活跃</span></div><div class="highlights">Sky 云台</div></div>
-  </div>
-</div>
-
-<!-- Section 7: Tech Stack -->
-<div class="section">
-  <h2>7. 技术栈矩阵</h2>
-  <table class="data-table">
-    <thead><tr><th>技术领域</th><th>仓库数</th><th>主要语言</th><th>关键技术</th></tr></thead>
-    <tbody>
-      <tr><td>嵌入式控制</td><td>~40</td><td>C/C++</td><td>STM32H7 + FreeRTOS + EGAdapter</td></tr>
-      <tr><td>视觉自瞄</td><td>~9</td><td>C/C++</td><td>EGAIM 框架</td></tr>
-      <tr><td>导航决策</td><td>~5</td><td>Makefile/C++</td><td>ROS / ROS2</td></tr>
-      <tr><td>强化学习</td><td>~4</td><td>Python/C++</td><td>Isaac Gym · Sim2Real · LQR</td></tr>
-      <tr><td>上位机工具</td><td>~7</td><td>C++/Python/MATLAB</td><td>Qt · ROS2 · 雷达</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- Section 8: Issues & Suggestions -->
-<div class="section">
-  <h2>8. 问题与建议</h2>
-  <table class="data-table">
-    <thead><tr><th>#</th><th>问题</th><th>严重程度</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>main 分支停滞 3+ 月</td><td><span class="badge badge-red">⚠️ 高</span></td></tr>
-      <tr><td>2</td><td>提交信息不规范</td><td><span class="badge badge-yellow">⚠️ 中</span></td></tr>
-      <tr><td>3</td><td>无测试代码</td><td><span class="badge badge-yellow">⚠️ 中</span></td></tr>
-      <tr><td>4</td><td>无 CI/CD (72 仓库均无)</td><td><span class="badge badge-yellow">⚠️ 中</span></td></tr>
-      <tr><td>5</td><td>Issues 几乎不使用 (全组织仅 2 个)</td><td><span class="badge badge-yellow">⚠️ 中</span></td></tr>
-      <tr><td>6</td><td>chassis_board 分叉过深 (+29/-28)</td><td><span class="badge badge-yellow">⚠️ 中</span></td></tr>
-      <tr><td>7</td><td>gimbal 分支代码重复</td><td><span class="badge badge-yellow">⚠️ 中</span></td></tr>
-    </tbody>
-  </table>
-  <div style="margin-top:24px">
-    <table class="data-table">
-      <thead><tr><th>优先级</th><th>#</th><th>建议</th></tr></thead>
-      <tbody>
-        <tr><td><span class="badge badge-red">高</span></td><td>1</td><td>同步 main 分支，建立定期 sync 机制</td></tr>
-        <tr><td><span class="badge badge-red">高</span></td><td>2</td><td>采用 Conventional Commits 提交规范</td></tr>
-        <tr><td><span class="badge badge-red">高</span></td><td>3</td><td>为核心仓库配置 GitHub Actions 编译检查</td></tr>
-        <tr><td><span class="badge badge-yellow">中</span></td><td>4</td><td>通过条件编译合并相似 gimbal 分支</td></tr>
-        <tr><td><span class="badge badge-yellow">中</span></td><td>5</td><td>将 bug 追踪迁移到 GitHub Issues</td></tr>
-        <tr><td><span class="badge badge-yellow">中</span></td><td>6</td><td>为 Module 层添加单元测试</td></tr>
-        <tr><td><span class="badge badge-purple">低</span></td><td>7</td><td>统一仓库命名规范</td></tr>
-        <tr><td><span class="badge badge-purple">低</span></td><td>8</td><td>完善 README 项目结构说明</td></tr>
-        <tr><td><span class="badge badge-purple">低</span></td><td>9</td><td>为公开仓库添加开源许可</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div style="text-align:center; padding:32px 0; color:var(--text2); font-size:.85rem; border-top:1px solid var(--border); margin-top:40px;">
-  Fudan-RobotEGA 组织分析报告 · 2026-05-01 · Sisyphus AI Agent<br>
-  <a href="/article/repo-analysis-2026/" style="color:var(--accent);text-decoration:none;">查看完整 Markdown 报告 →</a>
-</div>
-
-</div><!-- .container -->
 
 <script>
-const C = (id, type, data, opts = {}) => {
-  new Chart(document.getElementById(id), {
-    type, data,
-    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } }, scales: type === 'radar' ? { r: { grid: { color: '#334155' }, pointLabels: { color: '#e2e8f0', font: { size: 11 } }, ticks: { display: false }, angleLines: { color: '#334155' } } } : (type === 'pie' || type === 'doughnut') ? {} : { x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 11 } } }, y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', font: { size: 11 } } } }, ...opts }
-  });
+// ========== DATA ==========
+const langPie = [{"name": "C", "value": 424549675}, {"name": "C++", "value": 67386626}, {"name": "Makefile", "value": 31083617}, {"name": "CMake", "value": 11204113}, {"name": "Python", "value": 6158893}, {"name": "HTML", "value": 5406964}, {"name": "JavaScript", "value": 1944762}, {"name": "Shell", "value": 1709653}, {"name": "Assembly", "value": 1231077}, {"name": "Linker Script", "value": 468051}, {"name": "PowerShell", "value": 285359}, {"name": "MATLAB", "value": 178173}, {"name": "CSS", "value": 157819}, {"name": "Cuda", "value": 51118}, {"name": "TypeScript", "value": 50482}];
+const seasonPie = [{"name": "2025", "value": 9}, {"name": "2025/2026", "value": 11}, {"name": "2026", "value": 52}];
+const actTop20Names = ["EGAdapter_MC02", "RM2026_TransformableInfan", "RM2026_Hero_SwerveDrive", "RM2026_OmniandSteer_New", "TransformableInfantry", "RM2026_Transformable_Infa", "OnmiandSteer", "RM2026_Gimbal_SixFricHero", "RM2026_EGAdapter_WheelLeg", "RM2026_WheelLegged_Chassi", "2026_AUTOAIM_HERO", "RM2026_WheelLegged_Gimbal", "2026_EGAIM", "2026_EGAIM_wheeled_leg", "2025_Chassis_Hero_Infantr", "RM2026_EGAdapter_mc02_bas", "2025_Gimbal_Infantry", "RM2026_NAV_Sentry_UL", "2026_Gimbal_SentryFromInf", "RM2026_EGARadar_develop"];
+const actTop20Commits = [510, 498, 453, 453, 453, 359, 328, 158, 120, 100, 81, 66, 51, 49, 49, 43, 42, 39, 35, 29];
+const memNames = ["JAHNAN00", "teleaki", "shangtianxuanniao", "LemonServer", "Beecheer", "xinruilee04", "Breeze-by", "Hrmys3", "chushanxiaodaoshi", "Co1con", "pyrosucrose", "jessica070413", "littlef111", "juiceooorange", "yly-true", "ssssssqy", "chen0000-sudo", "ClearWei", "SadMei", "YYZ-XeF6"];
+const memTotal = [2197, 383, 378, 184, 158, 139, 121, 91, 80, 76, 69, 38, 34, 28, 24, 14, 12, 8, 8, 8];
+const memOrig = [994, 197, 171, 143, 100, 137, 101, 65, 77, 66, 54, 3, 34, 28, 24, 12, 6, 8, 8, 8];
+const monthsSorted = ["2024-11", "2025-01", "2025-02", "2025-03", "2025-04", "2025-06", "2025-07", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04"];
+const monthlyValues = [1, 3, 2, 2, 4, 1, 1, 3, 7, 6, 7, 9, 6, 11, 9];
+const sizeNames = ["RM26_QtClient", "RM2026_EGARadar_develop", "RM2026_Sentry_Nav_UC", "RM2026_NAV_Sentry_UL", "2026_AUTOAIM_HERO", "2026_EGAIM", "2026_EGAIM_wheeled_leg", "2026_infantry_Wheellegged", "2026_HERO_UC", "2026_EGAIM_sentry"];
+const sizeValues = [682.5, 272.7, 237.0, 202.1, 142.6, 126.8, 126.8, 124.7, 120.9, 117.9];
+const robotNames = ["General", "Sentry", "Infantry", "Hero", "WheelLegged", "Engineer", "TransformableInfantry", "Drone", "OmniSteer", "Dart"];
+const robotValues = [26, 18, 15, 10, 8, 3, 3, 2, 2, 1];
+const qRadar = [80.6, 11.1, 4.2, 55.6, 0.0];
+const actPie = [{"name": "30\u5929\u5185\u6d3b\u8dc3", "value": 29}, {"name": "30-90\u5929", "value": 13}, {"name": "\u8d85\u8fc790\u5929", "value": 30}];
+const lrcNames = ["C", "C++", "Makefile", "Python", "HTML", "MATLAB"];
+const lrcValues = [45, 10, 4, 4, 1, 1];
+const forkChains = [{"name": "RM2026_Hero_SwerveDrive", "source": "Fudan-RobotEGA/EGAdapter_MC02"}, {"name": "RM2026_EGAdapter_WheelLegged_Chassis", "source": "Fudan-RobotEGA/RM2026_EGAdapter_Cboard_base"}, {"name": "RM2026_TransformableInfantry", "source": "Fudan-RobotEGA/EGAdapter_MC02"}, {"name": "RM2026_EGAdapter_WheelLeg_Hero", "source": "Fudan-RobotEGA/RM2026_EGAdapter_mc02_base"}, {"name": "RM2026_OmniandSteer_New", "source": "Fudan-RobotEGA/EGAdapter_MC02"}, {"name": "2026_EGAIM_wheeled_leg", "source": "Fudan-RobotEGA/2026_EGAIM"}, {"name": "RM2026_Transformable_Infantry", "source": "Fudan-RobotEGA/OnmiandSteer"}];
+
+// ========== THEME ==========
+const darkTheme = {
+  backgroundColor: 'transparent',
+  textStyle: { color: '#c9d1d9' },
+  title: { textStyle: { color: '#c9d1d9' } },
+  legend: { textStyle: { color: '#8b949e' } },
+  tooltip: { backgroundColor: '#1c2128', borderColor: '#30363d', textStyle: { color: '#c9d1d9' } }
 };
 
+const palette = ['#58a6ff','#3fb950','#d29922','#f0883e','#f85149','#a371f7','#db61a2','#79c0ff','#56d364','#e3b341','#ffa657','#ff7b72','#bc8cff','#ff9bce','#7ee787'];
+
+function init(id) {
+  const c = echarts.init(document.getElementById(id));
+  c.setOption(darkTheme);
+  return c;
+}
+
 // 1. Language Pie
-C('langPie', 'doughnut', {
-  labels: ['C', 'C++', '未识别', 'Makefile', 'Python', 'HTML', 'MATLAB'],
-  datasets: [{ data: [45, 10, 7, 4, 4, 1, 1], backgroundColor: ['#38bdf8','#a78bfa','#475569','#fb923c','#4ade80','#f472b6','#facc15'] }]
+const c1 = init('langPie');
+c1.setOption({
+  tooltip: { trigger: 'item', formatter: '{b}: {d}%' },
+  series: [{ type: 'pie', radius: ['35%','65%'], data: langPie, label: { color: '#8b949e', formatter: '{b}\n{d}%' }, itemStyle: { borderColor: '#161b22', borderWidth: 2 }, color: palette }]
 });
 
 // 2. Season Pie
-C('seasonPie', 'doughnut', {
-  labels: ['2026 赛季 (46)', '跨赛季/通用 (17)', '2025 赛季 (9)'],
-  datasets: [{ data: [46, 17, 9], backgroundColor: ['#38bdf8','#a78bfa','#475569'] }]
+const c2 = init('seasonPie');
+c2.setOption({
+  tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+  series: [{ type: 'pie', radius: ['35%','65%'], data: seasonPie, label: { color: '#8b949e', formatter: '{b}\n{c}' }, itemStyle: { borderColor: '#161b22', borderWidth: 2 }, color: ['#d29922','#f0883e','#58a6ff'] }]
 });
 
-// 3. Domain Bar
-C('domainBar', 'bar', {
-  labels: ['整车/框架', '底盘', '云台', '自瞄', '上位机', '导航', 'RL/仿真'],
-  datasets: [{ label: '仓库数', data: [13, 8, 7, 8, 7, 4, 4], backgroundColor: '#38bdf8', borderRadius: 6 }]
+// 3. Activity Top 20
+const c3 = init('actTop20');
+c3.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  grid: { left: 200, right: 40, top: 10, bottom: 30 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b949e' }, splitLine: { lineStyle: { color: '#21262d' } } },
+  yAxis: { type: 'category', data: [...actTop20Names].reverse(), axisLabel: { color: '#8b949e', fontSize: 11 } },
+  series: [{ type: 'bar', data: [...actTop20Commits].reverse(), itemStyle: { color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#1f6feb'},{offset:1,color:'#58a6ff'}]) }, barWidth: 16 }]
 });
 
-// 4. Robot Bar
-C('robotBar', 'bar', {
-  labels: ['哨兵', '步兵', '英雄', '轮腿', '自瞄', '导航', '工程', '无人机', '飞镖'],
-  datasets: [
-    { label: '总仓库', data: [18, 15, 10, 9, 9, 5, 3, 2, 1], backgroundColor: '#334155', borderRadius: 6 },
-    { label: '活跃仓库', data: [6, 4, 3, 5, 5, 3, 2, 1, 1], backgroundColor: '#4ade80', borderRadius: 6 }
+// 4. Member Top 20
+const c4 = init('memTop20');
+c4.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  legend: { data: ['总Commits', '原创Commits'], textStyle: { color: '#8b949e' }, top: 0 },
+  grid: { left: 150, right: 40, top: 30, bottom: 30 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b949e' }, splitLine: { lineStyle: { color: '#21262d' } } },
+  yAxis: { type: 'category', data: [...memNames].reverse(), axisLabel: { color: '#8b949e', fontSize: 11 } },
+  series: [
+    { name: '总Commits', type: 'bar', data: [...memTotal].reverse(), itemStyle: { color: '#58a6ff' }, barWidth: 12, z: 1 },
+    { name: '原创Commits', type: 'bar', data: [...memOrig].reverse(), itemStyle: { color: '#3fb950' }, barWidth: 12, z: 2 }
   ]
-}, { plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } } });
-
-// 5. Architecture Bar
-C('archBar', 'bar', {
-  labels: ['Module (第2层)', 'Driver (第1层)', 'Application (第3层)', 'Task (第4层)'],
-  datasets: [
-    { label: '代码行数', data: [8188, 2923, 426, 371], backgroundColor: ['#38bdf8','#a78bfa','#4ade80','#fb923c'], borderRadius: 6 },
-  ]
-}, { indexAxis: 'y' });
-
-// 6. Module Pie
-C('modulePie', 'doughnut', {
-  labels: ['imu', 'motor', 'remote', 'controller', 'algorithm', 'usb_comm', 'can_comm', 'logger', 'led', 'servo', 'key', 'msg_center', 'daemon', 'buzzer'],
-  datasets: [{ data: [1662,1652,1412,823,705,331,289,258,232,209,168,165,154,128], backgroundColor: ['#38bdf8','#a78bfa','#4ade80','#fb923c','#f472b6','#facc15','#22d3ee','#f87171','#818cf8','#34d399','#fbbf24','#c084fc','#94a3b8','#e879f9'] }]
 });
 
-// 7. Branch Bar
-C('branchBar', 'bar', {
-  labels: ['main', 'chassis_board', 'gimbal_htk', 'gimbal_refactor', 'gimbal_uc_2fric', 'gimbal_ul'],
-  datasets: [
-    { label: 'Commits', data: [453, 454, 522, 670, 663, 646], backgroundColor: '#38bdf8', borderRadius: 6 },
-    { label: '新增行数 (千)', data: [0, 27.7, 18.0, 7.4, 7.2, 20.6], backgroundColor: '#4ade80', borderRadius: 6 },
-  ]
-}, { plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } } });
-
-// 8. Contributor Bar
-C('contribBar', 'bar', {
-  labels: ['JAHNAN00', 'Hrmys3', 'TeleAki', 'lucky-sharon', 'pyrosucrose', 'shangtianxuanniao', 'Beecheer', 'zlm-ega', 'breeze', 'jingw0206-miao'],
-  datasets: [{ label: 'Commits', data: [340, 221, 42, 23, 19, 16, 15, 13, 5, 4], backgroundColor: '#a78bfa', borderRadius: 6 }]
-}, { indexAxis: 'y' });
-
-// 9. Monthly Line
-C('monthLine', 'line', {
-  labels: ['2025-06','09','10','11','12','2026-01','02','03','04','05'],
-  datasets: [{ label: 'Commits', data: [4,35,104,166,79,131,10,122,48,3], borderColor: '#38bdf8', backgroundColor: 'rgba(56,189,248,.15)', fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: '#38bdf8' }]
+// 5. Monthly Creation
+const c5 = init('monthlyChart');
+c5.setOption({
+  tooltip: { trigger: 'axis' },
+  grid: { left: 50, right: 30, top: 20, bottom: 30 },
+  xAxis: { type: 'category', data: monthsSorted, axisLabel: { color: '#8b949e', rotate: 45 }, axisLine: { lineStyle: { color: '#30363d' } } },
+  yAxis: { type: 'value', axisLabel: { color: '#8b949e' }, splitLine: { lineStyle: { color: '#21262d' } } },
+  series: [{ type: 'line', data: monthlyValues, smooth: true, symbol: 'circle', symbolSize: 8, lineStyle: { color: '#58a6ff', width: 3 }, itemStyle: { color: '#58a6ff' }, areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(88,166,255,0.3)'},{offset:1,color:'rgba(88,166,255,0)'}]) } }]
 });
 
-// 10. Hour Bar
-C('hourBar', 'bar', {
-  labels: ['14','16','17','18','19','20','21','22','23','00','01','02'],
-  datasets: [{ label: 'Commits', data: [21,47,45,46,49,64,88,66,52,62,31,40], backgroundColor: (ctx) => ctx.raw >= 80 ? '#f87171' : ctx.raw >= 50 ? '#facc15' : '#334155', borderRadius: 4 }]
+// 6. Size Top 10
+const c6 = init('sizeTop10');
+c6.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  grid: { left: 200, right: 40, top: 10, bottom: 30 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b949e' }, splitLine: { lineStyle: { color: '#21262d' } } },
+  yAxis: { type: 'category', data: [...sizeNames].reverse(), axisLabel: { color: '#8b949e', fontSize: 11 } },
+  series: [{ type: 'bar', data: [...sizeValues].reverse(), itemStyle: { color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#7c3aed'},{offset:1,color:'#a371f7'}]) }, barWidth: 16 }]
 });
 
-// 11. Week Bar
-C('weekBar', 'bar', {
-  labels: ['周一','周二','周三','周四','周五','周六','周日'],
-  datasets: [{ label: 'Commits', data: [91,100,66,106,95,125,120], backgroundColor: (ctx) => [5,6].includes(ctx.dataIndex) ? '#4ade80' : '#38bdf8', borderRadius: 6 }]
+// 7. Robot Type
+const c7 = init('robotChart');
+c7.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  grid: { left: 140, right: 30, top: 10, bottom: 30 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b949e' }, splitLine: { lineStyle: { color: '#21262d' } } },
+  yAxis: { type: 'category', data: [...robotNames].reverse(), axisLabel: { color: '#8b949e' } },
+  series: [{ type: 'bar', data: [...robotValues].reverse(), itemStyle: { color: function(p) { return palette[p.dataIndex % palette.length]; } }, barWidth: 18 }]
 });
 
-// 12. Code Composition Pie
-C('codePie', 'doughnut', {
-  labels: ['代码 (68.4%)', '注释 (17.3%)', '空白 (14.3%)'],
-  datasets: [{ data: [8184, 2067, 1713], backgroundColor: ['#38bdf8','#4ade80','#334155'] }]
+// 8. Quality Radar
+const c8 = init('qualityRadar');
+c8.setOption({
+  radar: {
+    indicator: [
+      { name: '有描述', max: 100 },
+      { name: '有License', max: 100 },
+      { name: '有Wiki', max: 100 },
+      { name: '多贡献者', max: 100 },
+      { name: '有Topics', max: 100 }
+    ],
+    axisName: { color: '#8b949e' },
+    splitLine: { lineStyle: { color: '#21262d' } },
+    splitArea: { areaStyle: { color: ['transparent'] } },
+    axisLine: { lineStyle: { color: '#30363d' } }
+  },
+  series: [{ type: 'radar', data: [{ value: qRadar, name: '质量指标', areaStyle: { color: 'rgba(88,166,255,0.2)' }, lineStyle: { color: '#58a6ff', width: 2 }, itemStyle: { color: '#58a6ff' } }] }]
 });
 
-// 13. Quality Radar
-C('qualityRadar', 'radar', {
-  labels: ['架构设计', '代码规范', '注释覆盖', '文档完整', '提交规范', '分支管理', '测试覆盖', 'CI/CD'],
-  datasets: [{ label: '评分 (满分5)', data: [4, 4, 3, 2, 2, 3, 1, 0], backgroundColor: 'rgba(56,189,248,.2)', borderColor: '#38bdf8', pointBackgroundColor: '#38bdf8' }]
+// 9. Activity Level Pie
+const c9 = init('actLevelPie');
+c9.setOption({
+  tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+  series: [{ type: 'pie', radius: ['35%','65%'], data: actPie, label: { color: '#8b949e', formatter: '{b}\n{c}' }, itemStyle: { borderColor: '#161b22', borderWidth: 2 }, color: ['#3fb950','#d29922','#f85149'] }]
 });
 
-// 14. Heatmap: Contributor × Branch
-(() => {
-  const contributors = ['JAHNAN00', 'Hrmys3', 'TeleAki', 'pyrosucrose', 'Thhos', 'jingw0206'];
-  const branches = ['main', 'chassis', 'htk', 'refactor', 'uc_2fric', 'ul'];
-  // padding is actually the 7th column for spacing
-  const data = [
-    [290, 278, 291, 291, 291, 291],
-    [8,   5,   75,  217, 210, 197],
-    [42,  42,  42,  42,  42,  42],
-    [0,   19,  0,   0,   0,   0],
-    [0,   0,   0,   0,   0,   0],
-    [0,   0,   0,   4,   4,   0],
-  ];
-  const maxVal = 291;
-  const hm = document.getElementById('heatmap');
-  // We need 7 columns: label + 6 branches
-  hm.style.gridTemplateColumns = '100px repeat(6, 1fr)';
+// 10. Language Repo Count
+const c10 = init('langRepoCount');
+c10.setOption({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  grid: { left: 80, right: 30, top: 10, bottom: 30 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b949e' }, splitLine: { lineStyle: { color: '#21262d' } } },
+  yAxis: { type: 'category', data: [...lrcNames].reverse(), axisLabel: { color: '#8b949e' } },
+  series: [{ type: 'bar', data: [...lrcValues].reverse(), itemStyle: { color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#0e8a16'},{offset:1,color:'#3fb950'}]) }, barWidth: 18 }]
+});
 
-  // Header row
-  hm.innerHTML = '<div class="heatmap-label"></div>' +
-    branches.map(b => `<div class="heatmap-header">${b}</div>`).join('');
-
-  contributors.forEach((c, i) => {
-    hm.innerHTML += `<div class="heatmap-label">${c}</div>`;
-    data[i].forEach(v => {
-      const intensity = v / maxVal;
-      const bg = v === 0 ? 'var(--surface2)'
-        : `rgba(56, 189, 248, ${0.15 + intensity * 0.85})`;
-      const textColor = intensity > 0.5 ? '#0f172a' : 'var(--text2)';
-      hm.innerHTML += `<div class="heatmap-cell" style="background:${bg};color:${textColor}">${v || '—'}</div>`;
-    });
+// 11. Fork Chain (ASCII tree)
+(function() {
+  const tree = {};
+  forkChains.forEach(f => {
+    const src = f.source.replace('Fudan-RobotEGA/', '');
+    if (!tree[src]) tree[src] = [];
+    tree[src].push(f.name);
   });
+  let text = '';
+  for (const [src, children] of Object.entries(tree)) {
+    text += src + '\n';
+    children.forEach((c, i) => {
+      const prefix = i === children.length - 1 ? '  \u2514\u2500\u2500 ' : '  \u251c\u2500\u2500 ';
+      text += prefix + c + '\n';
+    });
+    text += '\n';
+  }
+  document.getElementById('forkTree').textContent = text;
 })();
+
+// Responsive resize
+window.addEventListener('resize', function() {
+  [c1,c2,c3,c4,c5,c6,c7,c8,c9,c10].forEach(c => c.resize());
+});
 </script>
 </body>
 </html>
