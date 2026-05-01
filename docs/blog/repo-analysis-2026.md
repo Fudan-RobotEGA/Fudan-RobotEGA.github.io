@@ -298,9 +298,78 @@ User/                          ← 核心代码 (11,964 行 / 103 文件)
 
 ---
 
-## 8. 问题与建议
+## 8. 全局数据统计
 
-### 8.1 发现的问题
+### 8.1 全组织总览
+
+| 指标 | 数值 |
+|------|------|
+| 总 Commits (API 可见) | 4,278 |
+| API 可见贡献者 | 32 人 |
+| 有贡献数据的仓库 | 64 个 |
+| 平均每仓库 Commits | 66.8 |
+| 平均每人参与仓库 | 5.5 个 |
+
+### 8.2 全组织用户 Commit 排行 (Top 15)
+
+| 排名 | 用户 | 总 Commits | 参与仓库数 | 角色分析 |
+|------|------|-----------|-----------|---------|
+| 1 | **JAHNAN00** | 2,197 | 12 | 框架架构师，占总量 51.3% |
+| 2 | **teleaki** | 383 | 13 | 裁判系统/ROS2 核心 |
+| 3 | **shangtianxuanniao** | 378 | 9 | 变形步兵主力 |
+| 4 | **LemonServer** | 183 | 7 | 自瞄/视觉栈主导 (EGAIM) |
+| 5 | **Beecheer** | 158 | 16 | 参与最广，全栈贡献 |
+| 6 | **xinruilee04** | 122 | 10 | 25赛季云台 + 轮腿 |
+| 7 | **Breeze-by** | 121 | 16 | 参与最广，底盘/BSP |
+| 8 | **lucky-sharon** | 115 | 5 | 框架文档 |
+| 9 | **Hrmys3** | 91 | 11 | Hero 仓库当前主力 |
+| 10 | **chushanxiaodaoshi** | 80 | 12 | 轮腿云台/示例 |
+| 11 | **Co1con** | 75 | 6 | 轮腿底盘 |
+| 12 | **pyrosucrose** | 69 | 7 | 底盘/裁判系统 |
+| 13 | **zlm-ega** | 65 | 5 | 框架开发 |
+| 14 | **jessica070413** | 38 | 6 | 轮腿英雄 |
+| 15 | **littlef111** | 34 | 3 | 飞镖/激光 |
+
+### 8.3 仓库 Commit 排行 (Top 15)
+
+| 排名 | 仓库 | 总 Commits | 贡献者数 |
+|------|------|-----------|---------|
+| 1 | EGAdapter_MC02 | 510 | 11 |
+| 2 | RM2026_TransformableInfantry | 498 | 11 |
+| 3 | RM2026_Hero_SwerveDrive | 453 | 10 |
+| 4 | RM2026_OmniandSteer_New | 453 | 10 |
+| 5 | RM2026_Transformable_Infantry | 359 | 7 |
+| 6 | OnmiandSteer | 328 | 6 |
+| 7 | RM2026_Gimbal_SixFricHero | 158 | 6 |
+| 8 | RM2026_EGAdapter_WheelLeg_Hero | 120 | 8 |
+| 9 | RM2026_WheelLegged_Chassis | 100 | 2 |
+| 10 | RM2026_WheelLegged_Gimbal | 66 | 3 |
+| 11 | 2026_AUTOAIM_HERO | 61 | 4 |
+| 12 | 2026_EGAIM | 51 | 3 |
+| 13 | 2026_EGAIM_wheeled_leg | 49 | 3 |
+| 14 | RM2026_EGAdapter_mc02_base | 43 | 4 |
+| 15 | RM2026_NAV_Sentry_UL | 39 | 1 |
+
+### 8.4 仓库规模 Top 10
+
+| 排名 | 仓库 | 大小 | 说明 |
+|------|------|------|------|
+| 1 | RM26_QtClient | 682.6 MB | Qt 调试客户端 |
+| 2 | RM2026_EGARadar_develop | 272.7 MB | 雷达开发 |
+| 3 | RM2026_Sentry_Nav_UC | 237.0 MB | 哨兵导航 |
+| 4 | RM2026_NAV_Sentry_UL | 202.1 MB | 哨兵导航 |
+| 5 | 2026_AUTOAIM_HERO | 142.6 MB | 英雄自瞄 |
+| 6 | 2026_EGAIM | 126.8 MB | 自瞄框架 |
+| 7 | 2026_EGAIM_wheeled_leg | 126.8 MB | 轮腿自瞄 |
+| 8 | 2026_infantry_Wheellegged_Chassis_RL_v0 | 124.7 MB | 轮腿 RL |
+| 9 | 2026_HERO_UC | 120.9 MB | 英雄 UC |
+| 10 | 2026_EGAIM_sentry | 117.9 MB | 哨兵自瞄 |
+
+---
+
+## 9. 问题与建议
+
+### 9.1 发现的问题
 
 | # | 问题 | 严重程度 |
 |---|------|---------|
@@ -312,7 +381,7 @@ User/                          ← 核心代码 (11,964 行 / 103 文件)
 | 6 | chassis_board 分叉过深 | ⚠️ 中 |
 | 7 | gimbal 分支代码重复 | ⚠️ 中 |
 
-### 8.2 改进建议
+### 9.2 改进建议
 
 **高优先级**:
 1. 同步 main 分支，建立定期 sync 机制
