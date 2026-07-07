@@ -77,6 +77,7 @@ const isLoadingMore = ref(false);
 const loadDirection = ref("down");
 
 const columnCount = computed(() => {
+  if (viewportWidth.value <= 560) return 1;
   if (viewportWidth.value <= 760) return 2;
   if (viewportWidth.value <= 1080) return 3;
   return 4;

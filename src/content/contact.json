@@ -1,27 +1,15 @@
 {
   "title": "联系我们",
-  "summary": "欢迎围绕赞助合作、招新咨询、技术交流与校园活动联系星云 EGA。",
-  "channels": [
-    {
-      "title": "赞助合作",
-      "description": "欢迎企业、校友与合作伙伴支持 EGA 的机器人研发、赛事训练与开源建设。",
-      "email": "sponsor@example.com"
-    },
-    {
-      "title": "招新咨询",
-      "description": "欢迎对机械、电控、视觉算法、运营宣传感兴趣的同学加入。",
-      "email": "recruit@example.com"
-    },
-    {
-      "title": "技术交流",
-      "description": "欢迎围绕机器人系统、开源项目、工程实践与文档建设进行交流。",
-      "email": "tech@example.com"
-    }
-  ],
+  "summary": "欢迎通过公开主页了解星云 EGA 的项目进展、开源资料与内容发布。",
+  "channels": [],
   "links": [
     {
       "name": "GitHub",
-      "url": "https://github.com/JAHNAN00/xyega.github.io"
+      "url": "https://github.com/Fudan-RobotEGA"
+    },
+    {
+      "name": "Bilibili",
+      "url": "https://space.bilibili.com/3546796338973608?spm_id_from=333.337.0.0"
     }
   ]
 }
