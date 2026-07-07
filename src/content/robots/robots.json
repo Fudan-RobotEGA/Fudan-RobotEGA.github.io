@@ -1,0 +1,142 @@
+[
+  {
+    "slug": "2026-transform-infantry-robot",
+    "title": "2026 赛季变形步兵机器人",
+    "season": "2026",
+    "role": "步兵",
+    "status": "方案设计中",
+    "cover": "/robots/26变形步兵.JPG",
+    "coverPosition": "50% 42%",
+    "summary": "2026 赛季步兵机组实拍图，当前用于记录变形步兵方向的阶段方案与整车形态。",
+    "tags": ["2026", "步兵", "变形步兵", "整车方案", "实拍"]
+  },
+  {
+    "slug": "2026-transform-infantry-standby-robot",
+    "title": "2026 赛季变形步兵备车",
+    "season": "2026",
+    "role": "步兵",
+    "status": "方案设计中",
+    "cover": "/robots/26变形步兵（备车）.JPG",
+    "coverPosition": "50% 44%",
+    "summary": "2026 赛季步兵机组备车版本实拍图，用于展示同类兵种的阶段性车体方案。",
+    "tags": ["2026", "步兵", "备车", "变形步兵", "实拍"]
+  },
+  {
+    "slug": "2026-balance-infantry-robot",
+    "title": "2026 赛季平衡步兵机器人",
+    "season": "2026",
+    "role": "步兵",
+    "status": "方案设计中",
+    "cover": "/robots/26平衡步兵.JPG",
+    "coverPosition": "50% 40%",
+    "summary": "2026 赛季平衡步兵方向实拍图，当前用于记录不同步兵构型的设计探索。",
+    "tags": ["2026", "步兵", "平衡步兵", "构型探索", "实拍"]
+  },
+  {
+    "slug": "2026-wheel-hero-robot",
+    "title": "2026 赛季舵轮英雄机器人",
+    "season": "2026",
+    "role": "英雄",
+    "status": "方案设计中",
+    "cover": "/robots/26舵轮英雄.JPG",
+    "coverPosition": "52% 38%",
+    "summary": "2026 赛季舵轮英雄方向实拍图，当前用于记录英雄兵种的阶段性方案与车体形态。",
+    "tags": ["2026", "英雄", "舵轮英雄", "整车方案", "实拍"]
+  },
+  {
+    "slug": "2026-leg-hero-robot",
+    "title": "2026 赛季轮腿英雄机器人",
+    "season": "2026",
+    "role": "英雄",
+    "status": "方案设计中",
+    "cover": "/robots/26轮腿英雄.JPG",
+    "coverPosition": "50% 40%",
+    "summary": "2026 赛季轮腿英雄方向实拍图，用于记录英雄兵种在不同机动形态上的设计探索。",
+    "tags": ["2026", "英雄", "轮腿英雄", "机动形态", "实拍"]
+  },
+  {
+    "slug": "2026-engineering-robot",
+    "title": "2026 赛季工程机器人",
+    "season": "2026",
+    "role": "工程",
+    "status": "方案设计中",
+    "cover": "/robots/26工程机器人.JPG",
+    "coverPosition": "50% 42%",
+    "summary": "2026 赛季工程机组实拍图，当前用于记录资源获取与任务执行方向的阶段方案。",
+    "tags": ["2026", "工程", "资源获取", "任务执行", "实拍"]
+  },
+  {
+    "slug": "2026-sentry-robot",
+    "title": "2026 赛季哨兵机器人",
+    "season": "2026",
+    "role": "哨兵",
+    "status": "方案设计中",
+    "cover": "/robots/26变形哨兵.JPG",
+    "coverPosition": "50% 40%",
+    "summary": "2026 赛季哨兵机组实拍图，当前用于记录自主作战方向的阶段性整车方案。",
+    "tags": ["2026", "哨兵", "自主作战", "整车方案", "实拍"]
+  },
+  {
+    "slug": "2026-radar-system",
+    "title": "2026 赛季雷达系统",
+    "season": "2026",
+    "role": "雷达",
+    "status": "方案设计中",
+    "cover": "/robots/26雷达系统.JPG",
+    "coverPosition": "54% 36%",
+    "summary": "2026 赛季雷达系统实拍图，当前用于记录全场感知与信息支撑方向的阶段方案。",
+    "tags": ["2026", "雷达", "全场感知", "信息支撑", "实拍"]
+  },
+  {
+    "slug": "2026-aerial-robot",
+    "title": "2026 赛季空中机器人",
+    "season": "2026",
+    "role": "空中",
+    "status": "方案设计中",
+    "cover": "/robots/26空中机器人.JPG",
+    "coverPosition": "52% 34%",
+    "summary": "2026 赛季空中机组实拍图，当前用于记录空中作战方向的阶段方案与形态。",
+    "tags": ["2026", "空中", "空中机组", "任务载荷", "实拍"]
+  },
+  {
+    "slug": "2026-dart-system",
+    "title": "2026 赛季飞镖系统",
+    "season": "2026",
+    "role": "飞镖",
+    "status": "方案设计中",
+    "cover": "/robots/26飞镖系统.JPG",
+    "coverPosition": "50% 38%",
+    "summary": "2026 赛季飞镖系统实拍图，当前用于记录关键远程打击方向的阶段方案。",
+    "tags": ["2026", "飞镖", "远程打击", "发射机构", "实拍"]
+  },
+  {
+    "slug": "2025-infantry-robot",
+    "title": "2025 赛季步兵机器人",
+    "season": "2025",
+    "role": "步兵",
+    "status": "资料整理中",
+    "cover": "/robot-infantry.svg",
+    "summary": "用于沉淀底盘、云台、联调与整车协同经验的步兵机器人。",
+    "tags": ["2025", "步兵", "底盘", "云台", "整车联调"]
+  },
+  {
+    "slug": "2025-hero-robot",
+    "title": "2025 赛季英雄机器人",
+    "season": "2025",
+    "role": "英雄",
+    "status": "资料整理中",
+    "cover": "/robot-hero.svg",
+    "summary": "用于沉淀高功率发射、打击链路与关键兵种配合经验的英雄机器人。",
+    "tags": ["2025", "英雄", "发射机构", "打击链路", "兵种配合"]
+  },
+  {
+    "slug": "2025-sentry-robot",
+    "title": "2025 赛季哨兵机器人",
+    "season": "2025",
+    "role": "哨兵",
+    "status": "资料整理中",
+    "cover": "/robot-sentry.svg",
+    "summary": "用于沉淀自主巡航、目标识别、赛场策略和可靠性设计经验的哨兵机器人。",
+    "tags": ["2025", "哨兵", "自主导航", "目标识别", "策略"]
+  }
+]

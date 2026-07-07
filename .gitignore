@@ -1,3 +1,4 @@
+.DS_Store
+dist
 node_modules
-docs/.vuepress/.cache
-docs/.vuepress/.temp
+个人简历_2026.pdf

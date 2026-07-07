@@ -1,0 +1,10 @@
+<svg width="1200" height="1600" viewBox="0 0 1200 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="1600" fill="#081019"/>
+<rect x="88" y="88" width="1024" height="1424" rx="44" stroke="#314154" stroke-width="2"/>
+<path d="M310 1042L746 606L846 706L410 1142L310 1042Z" fill="#162332" stroke="#90A8C4" stroke-width="2"/>
+<path d="M774 578L908 444L980 516L846 650L774 578Z" fill="#D9E1EA"/>
+<path d="M238 1114L310 1042L410 1142L338 1214L238 1114Z" fill="#D9E1EA"/>
+<path d="M362 1324H838" stroke="#6F87A4" stroke-width="12" stroke-linecap="round"/>
+<path d="M458 1238H742" stroke="#D9E1EA" stroke-width="18" stroke-linecap="round"/>
+<text x="120" y="196" fill="#C6D0DB" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="700">DART</text>
+</svg>

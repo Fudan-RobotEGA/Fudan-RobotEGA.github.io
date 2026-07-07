@@ -1,0 +1,13 @@
+<svg width="1200" height="1600" viewBox="0 0 1200 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="1600" fill="#091018"/>
+<rect x="88" y="88" width="1024" height="1424" rx="44" stroke="#314154" stroke-width="2"/>
+<path d="M274 1148L454 892H744L926 1148V1246H274V1148Z" fill="#152231"/>
+<rect x="406" y="1028" width="388" height="106" rx="20" stroke="#90A8C4" stroke-width="2"/>
+<circle cx="398" cy="1286" r="86" stroke="#C6D0DB" stroke-width="26"/>
+<circle cx="802" cy="1286" r="86" stroke="#C6D0DB" stroke-width="26"/>
+<path d="M348 800H850" stroke="#6F87A4" stroke-width="18" stroke-linecap="round"/>
+<path d="M454 660H746" stroke="#6F87A4" stroke-width="18" stroke-linecap="round"/>
+<rect x="516" y="266" width="168" height="168" rx="26" fill="#101A27" stroke="#90A8C4" stroke-width="2"/>
+<path d="M454 434H746V568H454V434Z" stroke="#90A8C4" stroke-width="2"/>
+<text x="120" y="196" fill="#C6D0DB" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="700">ENGINEERING</text>
+</svg>

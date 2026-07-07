@@ -1,0 +1,10 @@
+<svg width="1200" height="1600" viewBox="0 0 1200 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="1600" fill="#08111A"/>
+<rect x="88" y="88" width="1024" height="1424" rx="44" stroke="#314154" stroke-width="2"/>
+<path d="M600 424L748 658H660L808 862H668L600 982L532 862H392L540 658H452L600 424Z" fill="#162332" stroke="#90A8C4" stroke-width="2"/>
+<path d="M420 1036H780" stroke="#D9E1EA" stroke-width="18" stroke-linecap="round"/>
+<path d="M468 1122H732" stroke="#6F87A4" stroke-width="12" stroke-linecap="round"/>
+<circle cx="600" cy="320" r="24" fill="#8FA4BD"/>
+<path d="M600 344V402" stroke="#8FA4BD" stroke-width="10" stroke-linecap="round"/>
+<text x="120" y="196" fill="#C6D0DB" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="700">AERIAL</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg width="1200" height="1600" viewBox="0 0 1200 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="1600" fill="#071019"/>
+<rect x="88" y="88" width="1024" height="1424" rx="44" stroke="#314154" stroke-width="2"/>
+<circle cx="600" cy="760" r="286" stroke="#90A8C4" stroke-width="2"/>
+<circle cx="600" cy="760" r="214" stroke="#90A8C4" stroke-opacity="0.7" stroke-width="2"/>
+<circle cx="600" cy="760" r="142" stroke="#90A8C4" stroke-opacity="0.5" stroke-width="2"/>
+<path d="M600 760L780 598" stroke="#D9E1EA" stroke-width="18" stroke-linecap="round"/>
+<circle cx="600" cy="760" r="28" fill="#D9E1EA"/>
+<circle cx="780" cy="598" r="18" fill="#8FA4BD"/>
+<path d="M600 474V1048" stroke="#233243" stroke-width="2"/>
+<path d="M313 760H887" stroke="#233243" stroke-width="2"/>
+<path d="M402 562L798 958" stroke="#233243" stroke-width="2"/>
+<path d="M402 958L798 562" stroke="#233243" stroke-width="2"/>
+<text x="120" y="196" fill="#C6D0DB" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="700">RADAR</text>
+</svg>
