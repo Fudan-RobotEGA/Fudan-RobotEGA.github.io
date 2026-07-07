@@ -16,7 +16,12 @@ const router = createRouter({
     { path: "/robots", name: "robots", component: RobotsPage },
     { path: "/robots/:slug", name: "robot-detail", component: RobotDetailPage },
     { path: "/open-docs", name: "open-docs", component: DocsPage },
-    { path: "/open-docs/:slug", name: "open-doc-detail", component: DocDetailPage },
+    {
+      path: "/open-docs/:slug",
+      name: "open-doc-detail",
+      component: DocDetailPage,
+      alias: ["/article/:slug", "/article/:slug/"],
+    },
     { path: "/contact", name: "contact", component: ContactPage },
     { path: "/:pathMatch(.*)*", name: "not-found", component: NotFoundPage },
   ],

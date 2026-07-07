@@ -1,5 +1,5 @@
 <template>
-  <article v-if="doc" class="panel article-page">
+  <article v-if="doc" class="panel article-page doc-article-page">
     <p class="meta">{{ doc.date || "未设置日期" }}</p>
     <h1>{{ doc.title }}</h1>
     <div class="meta-group">
