@@ -88,6 +88,24 @@
     </div>
   </section>
 
+  <section class="ega-home-section ega-battlescope-section" aria-labelledby="battlescope-home-title">
+    <div class="section-wrap">
+      <a class="ega-battlescope-feature" href="/rm-battlescope/">
+        <div class="ega-battlescope-copy">
+          <p class="meta">赛训复盘平台</p>
+          <h2 id="battlescope-home-title">RM BattleScope</h2>
+          <p>把 RMUC 2026 比赛数据转化为赛局趋势、交战态势、强队对标、操作表现和交互回放。</p>
+          <span class="ega-card-inline-link">打开完整在线版 <span aria-hidden="true">→</span></span>
+        </div>
+        <div class="ega-battlescope-metrics" aria-label="BattleScope 在线数据范围">
+          <span><strong>17</strong><small>复旦比赛</small></span>
+          <span><strong>4</strong><small>分析模块</small></span>
+          <span><strong>613</strong><small>比赛索引</small></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
   <section class="ega-home-section ega-docs-section">
     <div class="section-wrap">
       <div class="ega-section-heading">
@@ -172,7 +190,9 @@ const abilities = [
 ];
 
 const featuredRobots = getAllRobots().slice(0, 3);
-const featuredDocs = getAllDocs().slice(0, 3);
+const featuredDocs = getAllDocs()
+  .filter((doc) => !doc.slug.includes("placeholder") && doc.slug !== "template")
+  .slice(0, 3);
 
 const formatDate = (value) => (value ? value.toString().slice(0, 10) : "未设置日期");
 </script>

@@ -674,6 +674,77 @@ img {
   font-weight: 900;
 }
 
+.ega-battlescope-section {
+  padding: 8px 0 72px;
+  background: linear-gradient(180deg, #080b10 0%, #05070b 100%);
+}
+
+.ega-battlescope-feature {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  gap: clamp(36px, 6vw, 88px);
+  align-items: end;
+  overflow: hidden;
+  border: 1px solid rgba(216, 221, 230, 0.16);
+  border-radius: 34px;
+  background: linear-gradient(135deg, #101620 0%, #192334 58%, #202c3f 100%);
+  padding: clamp(32px, 5vw, 64px);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 30px 76px rgba(0, 0, 0, 0.24);
+  transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.ega-battlescope-feature:hover,
+.ega-battlescope-feature:focus-visible {
+  outline: none;
+  transform: translateY(-4px);
+  border-color: rgba(159, 176, 197, 0.48);
+  box-shadow: 0 36px 88px rgba(0, 0, 0, 0.3);
+}
+
+.ega-battlescope-copy h2 {
+  margin: 8px 0 18px;
+  color: #d8dde6;
+  font-size: clamp(40px, 5vw, 76px);
+  letter-spacing: -0.055em;
+}
+
+.ega-battlescope-copy > p:not(.meta) {
+  max-width: 680px;
+  color: rgba(216, 221, 230, 0.68);
+  font-size: clamp(16px, 1.55vw, 21px);
+}
+
+.ega-battlescope-copy .ega-card-inline-link {
+  margin-top: 22px;
+}
+
+.ega-battlescope-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgba(216, 221, 230, 0.16);
+  padding-top: 24px;
+}
+
+.ega-battlescope-metrics span {
+  display: grid;
+  gap: 6px;
+}
+
+.ega-battlescope-metrics strong {
+  color: #d8dde6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1;
+}
+
+.ega-battlescope-metrics small {
+  color: rgba(216, 221, 230, 0.52);
+  font-size: 12px;
+}
+
 .ega-docs-section {
   padding: 30px 0 86px;
 }
@@ -2591,7 +2662,8 @@ input {
 
   .ega-intro-layout,
   .ega-robot-grid,
-  .ega-docs-grid {
+  .ega-docs-grid,
+  .ega-battlescope-feature {
     grid-template-columns: 1fr;
   }
 
@@ -2695,6 +2767,20 @@ input {
     height: 220px;
   }
 
+  .ega-battlescope-section {
+    padding: 0 0 46px;
+  }
+
+  .ega-battlescope-feature {
+    gap: 32px;
+    border-radius: 24px;
+    padding: 24px;
+  }
+
+  .ega-battlescope-metrics {
+    gap: 18px;
+  }
+
   .ega-docs-section {
     padding-bottom: 54px;
   }
@@ -2711,7 +2797,8 @@ input {
   .ega-slogan-lockup,
   .ega-hero-slide,
   .ega-robot-card,
-  .ega-robot-card img {
+  .ega-robot-card img,
+  .ega-battlescope-feature {
     animation: none;
     transition: none;
   }
