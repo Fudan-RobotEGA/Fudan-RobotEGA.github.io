@@ -90,10 +90,19 @@
 
   <section class="ega-home-section ega-battlescope-section" aria-labelledby="battlescope-home-title">
     <div class="section-wrap">
+      <div class="ega-section-heading">
+        <div>
+          <p class="eyebrow">TRAINING REVIEW</p>
+          <h2 id="battlescope-home-title">赛训复盘平台</h2>
+        </div>
+        <a class="ega-text-link" href="/rm-battlescope/" aria-label="打开赛训复盘平台">
+          打开平台 <span>→</span>
+        </a>
+      </div>
+
       <a class="ega-battlescope-feature" href="/rm-battlescope/">
         <div class="ega-battlescope-copy">
-          <p class="meta">赛训复盘平台</p>
-          <h2 id="battlescope-home-title">RM BattleScope</h2>
+          <h3>RM BattleScope</h3>
           <p>把 RMUC 2026 比赛数据转化为赛局趋势、交战态势、强队对标、操作表现和交互回放。</p>
           <span class="ega-card-inline-link">打开完整在线版 <span aria-hidden="true">→</span></span>
         </div>
