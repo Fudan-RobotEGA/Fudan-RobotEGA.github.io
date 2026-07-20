@@ -7,6 +7,7 @@
 .hd{text-align:center;padding:40px 20px 20px;border-bottom:1px solid #21262d}.hd h1{font-size:2rem;color:#58a6ff;margin-bottom:8px}.hd p{color:#8b949e;font-size:.95rem}.hd a{color:#58a6ff}
 .ms{display:flex;justify-content:center;gap:16px;padding:24px 20px;flex-wrap:wrap}.mc{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px 24px;text-align:center;min-width:130px}.mc .v{font-size:1.8rem;font-weight:700;color:#58a6ff}.mc .l{font-size:.75rem;color:#8b949e;margin-top:4px}
 .g{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px 20px;max-width:1400px;margin:0 auto}.cb{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}.cb h3{font-size:.9rem;color:#c9d1d9;margin-bottom:10px}.ch{width:100%;height:380px}.cw{grid-column:1/-1}
+.project{position:relative;overflow:hidden}.project:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:#58a6ff}.project-kicker{color:#58a6ff;font-size:.72rem;font-weight:700;letter-spacing:.1em;margin-bottom:8px}.project h2{font-size:1.25rem;color:#f0f6fc;margin-bottom:8px}.project p{max-width:900px;color:#8b949e;font-size:.9rem;line-height:1.7}.project-actions{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap}.project-actions a{color:#58a6ff;font-size:.85rem;font-weight:600;text-decoration:none}.project-actions a:hover{text-decoration:underline}.project-note{margin-top:10px!important;color:#6e7681!important;font-size:.78rem!important}.project-frame{width:100%;height:720px;margin-top:16px;border:1px solid #30363d;border-radius:6px;background:#0d1117}.project-actions{margin-bottom:0}@media(max-width:768px){.project-frame{height:560px}}
 .ft{font-family:'Courier New',monospace;font-size:.85rem;line-height:1.8;padding:12px 16px;background:#0d1117;border-radius:6px;color:#7ee787;overflow-x:auto;white-space:pre}
 .fo{text-align:center;padding:24px;color:#484f58;font-size:.8rem;border-top:1px solid #21262d;margin-top:16px}.fo a{color:#58a6ff}
 @media(max-width:768px){.g{grid-template-columns:1fr}.hd h1{font-size:1.4rem}.ms{gap:8px}.mc{min-width:100px;padding:12px 16px}.mc .v{font-size:1.3rem}}
@@ -23,6 +24,14 @@
 <div class="mc"><div class="v" style="color:#3fb950">29</div><div class="l">30天活跃</div></div>
 </div>
 <div class="g">
+<section class="cb cw project" aria-labelledby="battlescope-title">
+<div class="project-kicker">扫描后新增项目</div>
+<h2 id="battlescope-title">RM BattleScope</h2>
+<p>面向操作手、指挥和赛训人员的 RMUC 2026 赛后复盘工具，覆盖赛局总览、交战态势、强队对标、操作表现与单局交互回放。</p>
+<iframe class="project-frame" src="/battlescope/replay/" title="RM BattleScope 单局交互回放" loading="lazy"></iframe>
+<div class="project-actions"><a href="/battlescope/replay/">全屏打开交互回放 →</a></div>
+<p class="project-note">该项目未计入 2026-05-01 的 72 仓库及代码量统计。</p>
+</section>
 <div class="cb"><h3>语言分布</h3><div id="c1" class="ch"></div></div>
 <div class="cb"><h3>赛季分布</h3><div id="c2" class="ch"></div></div>
 <div class="cb cw"><h3>仓库提交数 Top 20</h3><div id="c3" class="ch" style="height:480px"></div></div>

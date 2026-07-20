@@ -20,6 +20,20 @@ permalink: /article/repo-analysis-2026/
 
 ---
 
+## 扫描后新增项目
+
+### RM BattleScope
+
+面向操作手、指挥和赛训人员的 RMUC 2026 赛后复盘工具。它将区域赛数据整理为赛局总览、交战态势、强队对标、操作表现和单局交互回放，帮助战队结合比赛录像定位经济转化、火力覆盖、站位与协同问题。
+
+<iframe src="/battlescope/replay/" title="RM BattleScope 单局交互回放" loading="lazy" style="width:100%;height:720px;border:1px solid #30363d;border-radius:12px;background:#0d1117"></iframe>
+
+[全屏打开交互回放](/battlescope/replay/)
+
+> BattleScope 于本报告统计日期之后加入，未计入下方 2026-05-01 的 72 仓库及代码量统计。
+
+---
+
 ## 1. 组织概况
 
 | 项目 | 数值 |
