@@ -40,6 +40,8 @@ h1 { margin: 0 0 7px; font-size: clamp(30px, 5vw, 48px); font-weight: 530; lette
 .module .index { display: block; color: var(--module-color); font-size: 10px; letter-spacing: .12em; margin-bottom: 18px; }
 .module strong { display: block; font-size: 17px; font-weight: 540; margin-bottom: 7px; }
 .module small { display: block; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.site-return { display: inline-flex; align-items: center; margin-bottom: 22px; color: var(--muted); font-size: 12px; font-weight: 600; text-decoration: none; transition: color .15s, transform .15s; }
+.site-return:hover, .site-return:focus-visible { color: var(--text); transform: translateX(-2px); outline: none; }
 .section-head { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin-bottom: 13px; }
 .section-head h2 { margin: 0 0 4px; font-size: 20px; font-weight: 520; }
 .section-head p { margin: 0; color: var(--muted); font-size: 12px; }
@@ -94,6 +96,7 @@ progress::-moz-progress-bar { background: linear-gradient(90deg, var(--accent), 
 </head>
 <body>
 <main>
+  <a class="site-return" href="/">← 返回战队官网</a>
   <header class="hero">
     <div class="brand-marks" aria-label="复旦大学与星云 EGA 战队">
       <img class="brand-mark brand-mark-fudan" src="/battlescope/assets/fudan-emblem-transparent.png" alt="复旦大学校徽" width="1254" height="1254">
