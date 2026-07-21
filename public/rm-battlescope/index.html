@@ -172,11 +172,6 @@ const countElement=document.getElementById('count');
 const selectionElement=document.getElementById('selection');
 const form=document.getElementById('parameters');
 const generateButton=document.getElementById('generate');
-const progressPanel=document.getElementById('progressPanel');
-const progressElement=document.getElementById('progress');
-const stageElement=document.getElementById('stage');
-const percentElement=document.getElementById('percent');
-const jobError=document.getElementById('jobError');
 let selectedMatch=null;
 let searchTimer=null;
 let searchController=null;
@@ -224,53 +219,11 @@ searchInput.addEventListener('input',()=>{
   searchTimer=setTimeout(()=>loadMatches(searchInput.value.trim()),180);
 });
 
-form.addEventListener('submit',async event=>{
+form.addEventListener('submit',event=>{
   event.preventDefault();
   if(!selectedMatch) return;
-  if(staticBase){location.href=`${staticBase}/replay/`;return;}
-  generateButton.disabled=true;
-  progressPanel.hidden=false;
-  jobError.textContent='';
-  progressElement.value=0;
-  stageElement.textContent='正在创建解析任务';
-  percentElement.textContent='0%';
-  const payload={
-    game_id:selectedMatch.game_id,
-    start:document.getElementById('start').value,
-    end:document.getElementById('end').value,
-    max_gap:document.getElementById('maxGap').value,
-    smooth_window:document.getElementById('smoothWindow').value,
-    max_speed:document.getElementById('maxSpeed').value
-  };
-  try {
-    const response=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const job=await response.json();
-    if(!response.ok) throw new Error(job.error||'任务创建失败');
-    await pollJob(job.job_id);
-  } catch(error) {
-    jobError.textContent=error.message;
-    stageElement.textContent='解析失败';
-    generateButton.disabled=false;
-  }
+  location.href=`${staticBase}/replay/`;
 });
-
-async function pollJob(jobId) {
-  while(true) {
-    const response=await fetch(`/api/jobs/${encodeURIComponent(jobId)}`,{cache:'no-store'});
-    const job=await response.json();
-    if(!response.ok) throw new Error(job.error||'无法读取任务进度');
-    progressElement.value=job.progress;
-    progressElement.textContent=`${job.progress}%`;
-    stageElement.textContent=job.stage;
-    percentElement.textContent=`${job.progress}%`;
-    if(job.status==='done') {
-      location.href=job.replay_url;
-      return;
-    }
-    if(job.status==='error') throw new Error(job.error||'解析失败');
-    await new Promise(resolve=>setTimeout(resolve,350));
-  }
-}
 
 loadMatches();
 </script>
