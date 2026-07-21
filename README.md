@@ -94,6 +94,12 @@ Set-Location ..\Data_analyzer\fudan-rm-battlescope
 ..\Data_analyzer\fudan-rm-battlescope\.conda\envs\rmuc2026\python.exe scripts\generate_strong_compare.py
 ```
 
+操作表现的场均总览和按局延迟加载快照使用同一分析器口径生成：
+
+```powershell
+..\Data_analyzer\fudan-rm-battlescope\.conda\envs\rmuc2026\python.exe scripts\generate_operator_report.py
+```
+
 更新静态页面时必须保留以下约束：
 
 - 所有静态资源使用 `/battlescope/assets/`；

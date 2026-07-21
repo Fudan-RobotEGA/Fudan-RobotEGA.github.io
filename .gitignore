@@ -8,6 +8,10 @@ node_modules/
 .vite/
 .cache/
 .parcel-cache/
+.pnpm-store/
+.eslintcache
+.stylelintcache
+coverage/
 
 # Logs
 *.log
