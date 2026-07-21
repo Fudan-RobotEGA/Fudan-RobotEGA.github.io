@@ -5,8 +5,14 @@
   const ROLE_NAMES = ['英雄', '工程', '步兵3', '步兵4', '空中', '哨兵'];
   const ROLE_SHORT = { 英雄: 'HERO', 工程: 'ENG', 步兵3: 'INF 3', 步兵4: 'INF 4', 空中: 'UAV', 哨兵: 'SENTRY' };
   const TAU = Math.PI * 2;
+  const OFFICIAL_ARENA = Object.freeze({ width: 28, height: 15, roundDuration: 420, crossfallDeg: 1.5 });
 
   function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function vectorLength(vector) { return Math.hypot(vector[0], vector[1], vector[2]); }
+  function normalize(vector) { const length = vectorLength(vector) || 1; return vector.map(value => value / length); }
+  function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+  function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
   function hexAlpha(color, alpha) {
     if (/^#[0-9a-f]{6}$/i.test(color)) return color + Math.round(clamp(alpha, 0, 1) * 255).toString(16).padStart(2, '0');
     return color;
@@ -20,12 +26,18 @@
   function create(options) {
     const canvas = options.canvas, stage = options.stage || canvas.parentElement, ctx = canvas.getContext('2d');
     const colors = { ...DEFAULT_COLORS, ...(options.colors || {}) };
-    let data = options.data || null, animation = 0, disposed = false;
-    const camera = { yaw: -.74, pitch: .66, zoom: 1, dragging: false, x: 0, y: 0, mode: '战术视角' };
+    let data = options.data || null, animation = 0, disposed = false, telemetryCoverage = { start: 0, end: 0 };
+    const camera = { yaw: -2.35, pitch: .58, distance: 35, zoom: 1, dragging: false, x: 0, y: 0, mode: '战术透视' };
     const fieldImage = new Image();
     fieldImage.decoding = 'async';
     fieldImage.addEventListener('load', () => render());
     if (options.fieldImage) fieldImage.src = options.fieldImage;
+
+    function updateTelemetryCoverage() {
+      const times = (data?.tracks || []).flatMap(track => track.times || []);
+      telemetryCoverage = { start: times.length ? Math.min(...times) : 0, end: times.length ? Math.max(...times) : 0 };
+    }
+    updateTelemetryCoverage();
 
     function dpr() { return Math.min(2, global.devicePixelRatio || 1); }
     function resize() {
@@ -33,11 +45,22 @@
       const width = Math.max(1, Math.round(rect.width * ratio)), height = Math.max(1, Math.round(rect.height * ratio));
       if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
     }
+    function fieldSize() {
+      return { width: Number(data?.field?.width) || OFFICIAL_ARENA.width, height: Number(data?.field?.height) || OFFICIAL_ARENA.height };
+    }
+    function groundHeight(_x, y) {
+      const field = fieldSize(), distanceToLongSide = Math.min(clamp(y, 0, field.height), field.height - clamp(y, 0, field.height));
+      return Math.tan(OFFICIAL_ARENA.crossfallDeg * Math.PI / 180) * distanceToLongSide;
+    }
     function project(x, y, z = 0) {
-      const field = data?.field || { width: 28, height: 15 }, w = canvas.width, h = canvas.height;
-      const scale = Math.min(w / 34, h / 20.5) * camera.zoom, dx = x - field.width / 2, dy = y - field.height / 2;
-      const c = Math.cos(camera.yaw), s = Math.sin(camera.yaw), rx = dx * c - dy * s, depth = dx * s + dy * c;
-      return [w / 2 + rx * scale, h * .57 + (depth * Math.sin(camera.pitch) - z * 1.5 * Math.cos(camera.pitch)) * scale, depth * Math.cos(camera.pitch) + z * Math.sin(camera.pitch)];
+      const field = fieldSize(), w = canvas.width, h = canvas.height, distance = camera.distance / camera.zoom;
+      const target = [field.width / 2, field.height / 2, .28];
+      const direction = [Math.cos(camera.yaw) * Math.cos(camera.pitch), Math.sin(camera.yaw) * Math.cos(camera.pitch), Math.sin(camera.pitch)];
+      const eye = target.map((value, index) => value + direction[index] * distance), forward = normalize(target.map((value, index) => value - eye[index]));
+      const right = normalize(cross(forward, [0, 0, 1])), up = normalize(cross(right, forward)), relative = [x - eye[0], y - eye[1], z - eye[2]];
+      const depth = Math.max(.1, dot(relative, forward)), fov = (camera.mode === '低角透视' ? 51 : 46) * Math.PI / 180;
+      const focal = Math.min(w * .94, h * 1.32) / (2 * Math.tan(fov / 2));
+      return [w / 2 + dot(relative, right) * focal / depth, h * .53 - dot(relative, up) * focal / depth, -depth];
     }
     function polygon(points, fill, stroke = '#56667d', alpha = 1, lineWidth = 1) {
       const projected = points.map(point => project(...point));
@@ -76,47 +99,114 @@
     function hexagon(x, y, radius, angle = 0) { return Array.from({ length: 6 }, (_, i) => [x + Math.cos(angle + i / 6 * TAU) * radius, y + Math.sin(angle + i / 6 * TAU) * radius]); }
     function octagon(x, y, radius, angle = Math.PI / 8) { return Array.from({ length: 8 }, (_, i) => [x + Math.cos(angle + i / 8 * TAU) * radius, y + Math.sin(angle + i / 8 * TAU) * radius]); }
 
+    function drawImageTriangle(source, destination) {
+      const [[sx0, sy0], [sx1, sy1], [sx2, sy2]] = source, [[dx0, dy0], [dx1, dy1], [dx2, dy2]] = destination;
+      const denominator = sx0 * (sy1 - sy2) + sx1 * (sy2 - sy0) + sx2 * (sy0 - sy1);
+      if (Math.abs(denominator) < 1e-6) return;
+      const a = (dx0 * (sy1 - sy2) + dx1 * (sy2 - sy0) + dx2 * (sy0 - sy1)) / denominator;
+      const b = (dy0 * (sy1 - sy2) + dy1 * (sy2 - sy0) + dy2 * (sy0 - sy1)) / denominator;
+      const c = (dx0 * (sx2 - sx1) + dx1 * (sx0 - sx2) + dx2 * (sx1 - sx0)) / denominator;
+      const d = (dy0 * (sx2 - sx1) + dy1 * (sx0 - sx2) + dy2 * (sx1 - sx0)) / denominator;
+      const e = (dx0 * (sx1 * sy2 - sx2 * sy1) + dx1 * (sx2 * sy0 - sx0 * sy2) + dx2 * (sx0 * sy1 - sx1 * sy0)) / denominator;
+      const f = (dy0 * (sx1 * sy2 - sx2 * sy1) + dy1 * (sx2 * sy0 - sx0 * sy2) + dy2 * (sx0 * sy1 - sx1 * sy0)) / denominator;
+      ctx.save(); ctx.beginPath(); ctx.moveTo(dx0, dy0); ctx.lineTo(dx1, dy1); ctx.lineTo(dx2, dy2); ctx.closePath(); ctx.clip(); ctx.setTransform(a, b, c, d, e, f); ctx.drawImage(fieldImage, 0, 0); ctx.restore();
+    }
     function drawFieldTexture() {
-      const field = data.field, ground = [[0, 0, 0], [field.width, 0, 0], [field.width, field.height, 0], [0, field.height, 0]];
-      polygon(ground, '#101822', '#718099', 1, 1.2);
+      const field = fieldSize(), middle = field.height / 2;
+      polygon([[0, 0, 0], [field.width, 0, 0], [field.width, middle, groundHeight(0, middle)], [0, middle, groundHeight(0, middle)]], '#101822', '#718099', 1, 1.2);
+      polygon([[0, middle, groundHeight(0, middle)], [field.width, middle, groundHeight(0, middle)], [field.width, field.height, 0], [0, field.height, 0]], '#101822', '#718099', 1, 1.2);
       if (fieldImage.complete && fieldImage.naturalWidth) {
-        const crop = field.crop || [.0594, .0736, .9364, .9126];
+        const crop = data.field.crop || [.0594, .0736, .9364, .9126], columns = 8, rows = 6;
         const sx = fieldImage.naturalWidth * crop[0], sy = fieldImage.naturalHeight * crop[1], sw = fieldImage.naturalWidth * (crop[2] - crop[0]), sh = fieldImage.naturalHeight * (crop[3] - crop[1]);
-        const p00 = project(0, 0, .006), p10 = project(field.width, 0, .006), p01 = project(0, field.height, .006);
-        ctx.save(); ctx.globalAlpha = .62; ctx.setTransform((p10[0] - p00[0]) / sw, (p10[1] - p00[1]) / sw, (p01[0] - p00[0]) / sh, (p01[1] - p00[1]) / sh, p00[0], p00[1]);
-        ctx.filter = 'saturate(.76) contrast(1.12) brightness(.72)'; ctx.drawImage(fieldImage, sx, sy, sw, sh, 0, 0, sw, sh); ctx.restore();
+        ctx.save(); ctx.globalAlpha = .7; ctx.filter = 'saturate(.78) contrast(1.12) brightness(.74)';
+        for (let row = 0; row < rows; row++) for (let column = 0; column < columns; column++) {
+          const x0 = field.width * column / columns, x1 = field.width * (column + 1) / columns, y0 = field.height * row / rows, y1 = field.height * (row + 1) / rows;
+          // Tracking y=0 is the bottom of the official top-view image, while source pixels grow downward.
+          const u0 = sx + sw * column / columns, u1 = sx + sw * (column + 1) / columns;
+          const v0 = sy + sh * (1 - row / rows), v1 = sy + sh * (1 - (row + 1) / rows);
+          const p00 = project(x0, y0, groundHeight(x0, y0) + .006), p10 = project(x1, y0, groundHeight(x1, y0) + .006), p01 = project(x0, y1, groundHeight(x0, y1) + .006), p11 = project(x1, y1, groundHeight(x1, y1) + .006);
+          drawImageTriangle([[u0, v0], [u1, v0], [u1, v1]], [p00, p10, p11]); drawImageTriangle([[u0, v0], [u1, v1], [u0, v1]], [p00, p11, p01]);
+        }
+        ctx.restore();
       }
-      for (let x = 0; x <= field.width; x += 2) line([[x, 0, .014], [x, field.height, .014]], x % 4 ? '#63728b' : '#8b9bb4', .45, .23);
-      for (let y = 0; y <= field.height; y += 1) line([[0, y, .014], [field.width, y, .014]], y % 3 ? '#63728b' : '#8b9bb4', .45, .2);
-      line([[0, 0, .03], [field.width, 0, .03], [field.width, field.height, .03], [0, field.height, .03], [0, 0, .03]], '#9caac0', 1.2, .7);
+      for (let x = 0; x <= field.width; x += 2) line([[x, 0, .014], [x, middle, groundHeight(x, middle) + .014], [x, field.height, .014]], x % 4 ? '#63728b' : '#8b9bb4', .45, .2);
+      for (let y = 0; y <= field.height; y += 1) line([[0, y, groundHeight(0, y) + .014], [field.width, y, groundHeight(field.width, y) + .014]], y % 3 ? '#63728b' : '#8b9bb4', .45, .18);
+      line([[0, 0, .03], [field.width, 0, .03], [field.width, field.height, .03], [0, field.height, .03], [0, 0, .03]], '#b4c0d2', 1.3, .78);
     }
     function terrainFeatures() {
       return [
-        { points: [[10.4, 4.15], [17.55, 4.15], [18.8, 5.4], [18.8, 9.55], [17.5, 10.85], [10.5, 10.85], [9.2, 9.5], [9.2, 5.55]], z: .02, h: .22, fill: '#3d4654', stroke: '#8f9db0', kind: '中央高地' },
-        { points: [[11.3, 5.3], [16.75, 5.3], [17.65, 6.15], [17.65, 8.85], [16.7, 9.75], [11.35, 9.75], [10.35, 8.8], [10.35, 6.2]], z: .24, h: .18, fill: '#596373', stroke: '#b5c0ce', kind: '中央资源岛' },
-        { points: [[.65, .55], [9.2, .55], [9.2, 3.25], [7.95, 4.25], [.65, 4.25]], z: .02, h: .27, fill: '#3f3038', stroke: '#c76172', kind: '红方高台' },
-        { points: [[18.8, 10.75], [20.05, 9.75], [27.35, 9.75], [27.35, 14.45], [18.8, 14.45]], z: .02, h: .27, fill: '#293a55', stroke: '#578cdf', kind: '蓝方高台' },
-        { points: [[8.55, 3.05], [10.45, 4.65], [9.25, 5.6], [7.35, 4.05]], z: .02, h: .13, fill: '#4b4145', stroke: '#bb7782', kind: '红坡道' },
-        { points: [[17.55, 10.35], [18.75, 9.4], [20.65, 10.95], [19.4, 12.0]], z: .02, h: .13, fill: '#34455e', stroke: '#6894dc', kind: '蓝坡道' },
+        { points: [[11.05, 1.45], [16.95, 1.45], [18.25, 2.75], [18.25, 4.75], [19.15, 6.0], [19.15, 9.0], [18.25, 10.25], [18.25, 12.25], [16.95, 13.55], [11.05, 13.55], [9.75, 12.25], [9.75, 10.25], [8.85, 9.0], [8.85, 6.0], [9.75, 4.75], [9.75, 2.75]], z: .02, h: .16, fill: '#434b56', stroke: '#aab5c3', kind: '中央高地' },
+        { points: [[12.15, 5.45], [14, 4.55], [15.85, 5.45], [16.55, 7.5], [15.85, 9.55], [14, 10.45], [12.15, 9.55], [11.45, 7.5]], z: .19, h: .22, fill: '#68717e', stroke: '#d4dbe4', kind: '中央资源岛' },
+        { points: [[.55, .45], [9.25, .45], [9.25, 2.8], [7.6, 4.65], [.55, 4.65]], z: .02, h: .28, fill: '#49363b', stroke: '#dd6e7d', kind: '红方高台' },
+        { points: [[18.75, 12.2], [20.4, 10.35], [27.45, 10.35], [27.45, 14.55], [18.75, 14.55]], z: .02, h: .28, fill: '#2d405d', stroke: '#68a0ed', kind: '蓝方高台' },
       ];
     }
-    function drawTerrain(feature) { prism(feature.points, feature.z, feature.h, feature.fill, feature.stroke, .82); }
+    function drawTerrain(feature) {
+      const center = feature.points.reduce((result, point) => [result[0] + point[0] / feature.points.length, result[1] + point[1] / feature.points.length], [0, 0]);
+      prism(feature.points, groundHeight(center[0], center[1]) + feature.z, feature.h, feature.fill, feature.stroke, .86);
+    }
+    function wedge(x, y, width, depth, angle, lowHeight, highHeight, fill, stroke) {
+      const points = orientedCorners(x, y, width, depth, angle), base = points.map(point => [point[0], point[1], groundHeight(point[0], point[1]) + .025]);
+      const heights = [lowHeight, lowHeight, highHeight, highHeight], top = points.map((point, index) => [point[0], point[1], base[index][2] + heights[index]]);
+      const faces = points.map((_, index) => [base[index], base[(index + 1) % points.length], top[(index + 1) % points.length], top[index]]);
+      faces.map(face => ({ face, depth: face.reduce((sum, point) => sum + project(...point)[2], 0) / face.length })).sort((a, b) => a.depth - b.depth).forEach((item, index) => polygon(item.face, index % 2 ? shade(fill, -24) : shade(fill, -38), stroke, .92));
+      polygon(top, shade(fill, 16), stroke, .96);
+    }
     function drawStairs(x, y, width, depth, angle, camp) {
       const color = colors[camp];
       for (let index = 0; index < 6; index++) {
         const offset = (index - 2.5) * depth / 6, cx = x - Math.sin(angle) * offset, cy = y + Math.cos(angle) * offset;
-        box(cx, cy, .03 + index * .035, width, depth / 7, .055, angle, shade(color, -45), shade(color, 35), .82);
+        box(cx, cy, groundHeight(cx, cy) + .03 + index * .035, width, depth / 7, .055, angle, shade(color, -45), shade(color, 35), .84);
       }
     }
+    function drawRoadTunnel(x, y, angle, camp) {
+      const base = groundHeight(x, y), color = camp === '红' ? '#574046' : '#344b6a';
+      const acrossX = Math.cos(angle), acrossY = Math.sin(angle);
+      [-.86, .86].forEach(offset => box(x + acrossX * offset, y + acrossY * offset, base + .02, .34, .82, .62, angle, shade(color, -18), '#c4cedb', .94));
+      box(x, y, base + .64, 2.06, .82, .18, angle, color, '#dde4ed', .96);
+      line([[x - acrossX * .62, y - acrossY * .62, base + .22], [x + acrossX * .62, y + acrossY * .62, base + .22]], '#090c11', 5.5, .82);
+    }
+    function drawPowerRune(time) {
+      const x = 14, y = 7.5, base = groundHeight(x, y) + .45;
+      prism(octagon(x, y, 1.42), base, .2, '#707987', '#e2e7ee', .95); box(x, y, base + .2, .34, .4, 2.55, 0, '#222b38', '#aeb8c6', .98);
+      const hubZ = base + 2.2, spin = time < 180 ? time * .16 : time * .3;
+      circle(x, y, hubZ, .25, '#f1c75c', '#fff4bb', 1, 20);
+      for (let index = 0; index < 5; index++) {
+        const angle = spin + index / 5 * TAU, reach = .92, ex = x + Math.cos(angle) * reach, ez = hubZ + Math.sin(angle) * reach;
+        line([[x, y, hubZ], [ex, y, ez]], index % 2 ? '#5aa0ff' : '#ff6171', 5, .92, false, 5);
+        circle(ex, y, ez, .17, index % 2 ? '#4b8be0' : '#d95767', '#f2f5f8', .96, 14);
+      }
+    }
+    function drawPeripheralModules() {
+      const modules = [
+        { x: 1.2, y: 1.05, camp: '红', label: '起降平台' }, { x: 26.8, y: 13.95, camp: '蓝', label: '起降平台' },
+        { x: .85, y: 12.15, camp: '红', label: '雷达基座' }, { x: 27.15, y: 2.85, camp: '蓝', label: '雷达基座' },
+      ];
+      modules.forEach(module => {
+        const base = groundHeight(module.x, module.y) + .025, color = colors[module.camp];
+        if (module.label === '起降平台') prism(octagon(module.x, module.y, 1.05), base, .3, shade(color, -55), shade(color, 28), .88);
+        else box(module.x, module.y, base, 1.3, 1.0, .16, 0, shade(color, -52), shade(color, 24), .88);
+      });
+      [['红', .38, 13.55, 0], ['蓝', 27.62, 1.45, Math.PI]].forEach(([camp, x, y, angle]) => {
+        const base = groundHeight(x, y); box(x, y, base + .02, 1.25, .9, .52, angle, shade(colors[camp], -55), '#aeb8c5', .94); drawBarrel(x, y, base + .56, angle, .72, .11, '#cad3de', '#eff5fb');
+      });
+    }
+    function drawPerimeter() {
+      const field = fieldSize();
+      box(field.width / 2, -.12, .01, field.width + .5, .24, .16, 0, '#252d38', '#79869a', .96); box(field.width / 2, field.height + .12, .01, field.width + .5, .24, .16, 0, '#252d38', '#79869a', .96);
+      box(-.12, field.height / 2, .01, .24, field.height, .16, 0, '#252d38', '#79869a', .96); box(field.width + .12, field.height / 2, .01, .24, field.height, .16, 0, '#252d38', '#79869a', .96);
+    }
     function drawArenaObjects() {
-      drawStairs(7.9, 3.95, 1.8, 2.1, -.7, '红'); drawStairs(20.05, 11.0, 1.8, 2.1, -.7, '蓝');
-      prism(octagon(14, 7.5, 2.05), .43, .35, '#697485', '#d3dae3', .82);
-      prism(octagon(14, 7.5, 1.28), .78, .24, '#7d8796', '#e5eaf0', .9);
+      drawPerimeter();
+      drawStairs(7.85, 3.95, 1.75, 2.05, -.7, '红'); drawStairs(20.15, 11.05, 1.75, 2.05, -.7, '蓝');
+      wedge(12.85, 1.35, 2.05, 1.15, 0, .04, .42, '#54464a', '#e08a95'); wedge(15.15, 13.65, 2.05, 1.15, Math.PI, .04, .42, '#394d69', '#79a9ed');
+      drawRoadTunnel(13.55, .82, 0, '红'); drawRoadTunnel(14.45, 14.18, 0, '蓝');
+      drawPeripheralModules(); drawPowerRune(Number(options.getTime?.() ?? 0));
       const fortressRadius = data.field.fortress_radius || 1.3;
       Object.entries(data.field.fortresses || {}).forEach(([camp, pos]) => {
-        circle(pos[0], pos[1], .035, fortressRadius, hexAlpha(colors[camp], .12), colors[camp], .95, 36);
-        prism(hexagon(pos[0], pos[1], .62, Math.PI / 6), .04, .22, shade(colors[camp], -38), shade(colors[camp], 35), .94);
-        circle(pos[0], pos[1], .27, .24, shade(colors[camp], 22), '#f4f7fb', 1, 20);
+        const base = groundHeight(pos[0], pos[1]); circle(pos[0], pos[1], base + .035, fortressRadius, hexAlpha(colors[camp], .12), colors[camp], .95, 36);
+        prism(hexagon(pos[0], pos[1], .62, Math.PI / 6), base + .04, .22, shade(colors[camp], -38), shade(colors[camp], 35), .94);
+        circle(pos[0], pos[1], base + .27, .24, shade(colors[camp], 22), '#f4f7fb', 1, 20);
       });
     }
 
@@ -127,15 +217,26 @@
     }
     function indexAt(track, time) {
       let lo = 0, hi = track.times.length - 1;
-      if (hi < 0 || time < track.times[0] || time > track.times[hi]) return -1;
+      if (hi < 0) return -1;
+      if (time <= track.times[0]) return time >= track.times[0] - 1.05 ? 0 : -1;
+      if (time >= track.times[hi]) return time <= track.times[hi] + 1.05 ? hi : -1;
       while (lo < hi) { const mid = Math.ceil((lo + hi) / 2); if (track.times[mid] <= time) lo = mid; else hi = mid - 1; }
       return lo;
     }
     function pose(track, time) {
       const index = indexAt(track, time), point = index < 0 ? null : trackCoordinates(track, index);
       if (!point) return null;
-      const headingValues = track.heading_deg || track.heading;
-      return { index, x: point[0], y: point[1], z: Math.max(0, Number(track.z?.[index]) || 0), heading: Number(headingValues?.[index]) || 0, health: track.health?.[index], maxHealth: track.max_health?.[index] };
+      const headingValues = track.heading_deg || track.heading, next = index + 1, start = Number(track.times[index]), end = Number(track.times[next]);
+      const nextPoint = next < track.times.length ? trackCoordinates(track, next) : null, gap = end - start;
+      const continuous = nextPoint && gap > 0 && gap <= 2.05 && track.continuity?.[next] !== false && time > start && time < end;
+      const fraction = continuous ? clamp((time - start) / gap, 0, 1) : 0, z0 = Math.max(0, Number(track.z?.[index]) || 0), z1 = Math.max(0, Number(track.z?.[next]) || 0);
+      const heading0 = Number(headingValues?.[index]) || 0, heading1 = Number(headingValues?.[next]);
+      const headingDelta = Number.isFinite(heading1) ? (heading1 - heading0 + 540) % 360 - 180 : 0;
+      return {
+        index, x: continuous ? lerp(point[0], nextPoint[0], fraction) : point[0], y: continuous ? lerp(point[1], nextPoint[1], fraction) : point[1],
+        z: continuous ? lerp(z0, z1, fraction) : z0, heading: heading0 + headingDelta * fraction,
+        health: track.health?.[index], maxHealth: track.max_health?.[index], interpolated: Boolean(continuous), sampleGap: Number.isFinite(gap) ? gap : 0,
+      };
     }
     function objectiveAlive(camp, type, time) {
       const track = (data.objectives || []).find(item => item.key.camp === camp && item.key.robot_type === type), current = track ? pose(track, time) : null;
@@ -143,17 +244,17 @@
     }
     function drawObjectives(time) {
       Object.entries(data.field.objectives || {}).forEach(([key, pos]) => {
-        const [camp, type] = key.split(':'), alive = objectiveAlive(camp, type, time), team = alive ? colors[camp] : '#5e6878';
+        const [camp, type] = key.split(':'), alive = objectiveAlive(camp, type, time), team = alive ? colors[camp] : '#5e6878', base = groundHeight(pos[0], pos[1]);
         if (type === '基地') {
-          prism(octagon(pos[0], pos[1], 1.08), .03, .22, shade(team, -45), alive ? shade(team, 25) : '#8b95a3', .95);
-          prism(octagon(pos[0], pos[1], .72), .25, 1.1, shade(team, -28), '#eff5ff', .96);
-          prism(octagon(pos[0], pos[1], .38), 1.35, .3, shade(team, 18), '#ffffff', .98);
-          circle(pos[0], pos[1], 1.67, .21, alive ? '#fff4bd' : '#737c88', '#ffffff', alive ? .95 : .55, 20);
+          prism(octagon(pos[0], pos[1], 1.08), base + .03, .22, shade(team, -45), alive ? shade(team, 25) : '#8b95a3', .95);
+          prism(octagon(pos[0], pos[1], .72), base + .25, 1.1, shade(team, -28), '#eff5ff', .96);
+          prism(octagon(pos[0], pos[1], .38), base + 1.35, .3, shade(team, 18), '#ffffff', .98);
+          circle(pos[0], pos[1], base + 1.67, .21, alive ? '#fff4bd' : '#737c88', '#ffffff', alive ? .95 : .55, 20);
         } else {
-          prism(hexagon(pos[0], pos[1], .72, Math.PI / 6), .03, .18, shade(team, -42), '#cdd7e4', .96);
-          prism(hexagon(pos[0], pos[1], .48, Math.PI / 6), .21, .62, shade(team, -20), '#f3f7fc', .98);
-          circle(pos[0], pos[1], .85, .29, shade(team, 28), '#ffffff', alive ? .98 : .52, 18);
-          for (let i = 0; i < 3; i++) { const angle = time * .8 + i / 3 * TAU; line([[pos[0], pos[1], .86], [pos[0] + Math.cos(angle) * .62, pos[1] + Math.sin(angle) * .62, .86]], alive ? '#e9f2ff' : '#7a8492', 2, .8); }
+          prism(hexagon(pos[0], pos[1], .72, Math.PI / 6), base + .03, .18, shade(team, -42), '#cdd7e4', .96);
+          prism(hexagon(pos[0], pos[1], .48, Math.PI / 6), base + .21, .62, shade(team, -20), '#f3f7fc', .98);
+          circle(pos[0], pos[1], base + .85, .29, shade(team, 28), '#ffffff', alive ? .98 : .52, 18);
+          for (let i = 0; i < 3; i++) { const angle = time * .8 + i / 3 * TAU; line([[pos[0], pos[1], base + .86], [pos[0] + Math.cos(angle) * .62, pos[1] + Math.sin(angle) * .62, base + .86]], alive ? '#e9f2ff' : '#7a8492', 2, .8); }
         }
       });
     }
@@ -252,20 +353,24 @@
       if (disposed) return null; resize(); drawBackdrop();
       if (!data?.tracks?.length) { ctx.fillStyle = '#9aa8ba'; ctx.font = `${15 * dpr()}px system-ui`; ctx.fillText('选择一局比赛以载入三维战场', 28 * dpr(), 48 * dpr()); return null; }
       const time = Number(options.getTime?.() ?? 0); drawFieldTexture();
-      const features = terrainFeatures().sort((a, b) => a.points.reduce((s, p) => s + project(p[0], p[1], a.z)[2], 0) / a.points.length - b.points.reduce((s, p) => s + project(p[0], p[1], b.z)[2], 0) / b.points.length);
+      const features = terrainFeatures().sort((a, b) => a.points.reduce((s, p) => s + project(p[0], p[1], groundHeight(p[0], p[1]) + a.z)[2], 0) / a.points.length - b.points.reduce((s, p) => s + project(p[0], p[1], groundHeight(p[0], p[1]) + b.z)[2], 0) / b.points.length);
       features.forEach(drawTerrain); drawArenaObjects(); drawObjectives(time);
       const robots = collectRobots(time); drawTrails(robots, time); robots.forEach(drawRobotShadow); robots.sort((a, b) => a.depth - b.depth).forEach(drawRobotGeometry);
       const attacks = currentAttacks(time); drawAttacks(attacks, time); const occupiedLabels = []; robots.forEach(robot => drawRobotLabel(robot, occupiedLabels)); drawCompass();
-      const stats = { time, alive: robots.filter(robot => robot.alive).length, total: robots.length, attacks: attacks.length, camera: camera.mode, roles: Object.fromEntries(ROLE_NAMES.map(role => [role, robots.filter(robot => robot.type === role).length])) };
+      const stats = { time, remaining: Math.max(0, OFFICIAL_ARENA.roundDuration - time), duration: OFFICIAL_ARENA.roundDuration, telemetryStart: telemetryCoverage.start, telemetryEnd: telemetryCoverage.end, interpolated: robots.filter(robot => robot.pose.interpolated).length, alive: robots.filter(robot => robot.alive).length, total: robots.length, attacks: attacks.length, camera: camera.mode, roles: Object.fromEntries(ROLE_NAMES.map(role => [role, robots.filter(robot => robot.type === role).length])) };
       options.onStats?.(stats); return stats;
     }
-    function reset(top = false) {
-      camera.yaw = top ? 0 : -.74; camera.pitch = top ? Math.PI / 2 : .66; camera.zoom = top ? .92 : 1; camera.mode = top ? '俯视视角' : '战术视角'; render();
+    function setView(view = 'tactical') {
+      if (view === 'top') { camera.yaw = -Math.PI / 2; camera.pitch = 1.48; camera.distance = 34; camera.zoom = .94; camera.mode = '校准俯视'; }
+      else if (view === 'low') { camera.yaw = -2.22; camera.pitch = .28; camera.distance = 39; camera.zoom = 1; camera.mode = '低角透视'; }
+      else { camera.yaw = -2.35; camera.pitch = .58; camera.distance = 35; camera.zoom = 1; camera.mode = '战术透视'; }
+      render();
     }
-    function setData(next) { data = next; render(); }
+    function reset(top = false) { setView(top ? 'top' : 'tactical'); }
+    function setData(next) { data = next; updateTelemetryCoverage(); render(); }
     function frame() { render(); animation = global.requestAnimationFrame(frame); }
     function pointerDown(event) { camera.dragging = true; camera.x = event.clientX; camera.y = event.clientY; canvas.setPointerCapture(event.pointerId); }
-    function pointerMove(event) { if (!camera.dragging) return; camera.yaw += (event.clientX - camera.x) * .008; camera.pitch = clamp(camera.pitch + (event.clientY - camera.y) * .006, .22, Math.PI / 2); camera.x = event.clientX; camera.y = event.clientY; camera.mode = camera.pitch > 1.25 ? '俯视视角' : '自由视角'; render(); }
+    function pointerMove(event) { if (!camera.dragging) return; camera.yaw += (event.clientX - camera.x) * .008; camera.pitch = clamp(camera.pitch + (event.clientY - camera.y) * .006, .18, 1.48); camera.x = event.clientX; camera.y = event.clientY; camera.mode = camera.pitch > 1.28 ? '自由俯视' : camera.pitch < .34 ? '自由低角' : '自由透视'; render(); }
     function pointerUp() { camera.dragging = false; }
     function wheel(event) { event.preventDefault(); camera.zoom = clamp(camera.zoom * Math.exp(-event.deltaY * .001), .5, 2.6); render(); }
     function keyDown(event) {
@@ -275,8 +380,8 @@
     }
     canvas.style.touchAction = 'none'; canvas.addEventListener('pointerdown', pointerDown); canvas.addEventListener('pointermove', pointerMove); canvas.addEventListener('pointerup', pointerUp); canvas.addEventListener('pointercancel', pointerUp); canvas.addEventListener('dblclick', () => reset(false)); canvas.addEventListener('wheel', wheel, { passive: false }); global.addEventListener('keydown', keyDown); global.addEventListener('resize', render);
     if (options.animate !== false) animation = global.requestAnimationFrame(frame); else render();
-    return { render, reset, setData, getCamera: () => ({ ...camera }), destroy() { disposed = true; global.cancelAnimationFrame(animation); canvas.removeEventListener('pointerdown', pointerDown); canvas.removeEventListener('pointermove', pointerMove); canvas.removeEventListener('pointerup', pointerUp); canvas.removeEventListener('pointercancel', pointerUp); canvas.removeEventListener('wheel', wheel); global.removeEventListener('keydown', keyDown); global.removeEventListener('resize', render); } };
+    return { render, reset, setView, setData, getCamera: () => ({ ...camera }), destroy() { disposed = true; global.cancelAnimationFrame(animation); canvas.removeEventListener('pointerdown', pointerDown); canvas.removeEventListener('pointermove', pointerMove); canvas.removeEventListener('pointerup', pointerUp); canvas.removeEventListener('pointercancel', pointerUp); canvas.removeEventListener('wheel', wheel); global.removeEventListener('keydown', keyDown); global.removeEventListener('resize', render); } };
   }
 
-  global.BattleScopeArena3D = Object.freeze({ create, roles: ROLE_NAMES.slice() });
+  global.BattleScopeArena3D = Object.freeze({ create, roles: ROLE_NAMES.slice(), officialArena: OFFICIAL_ARENA });
 })(window);
