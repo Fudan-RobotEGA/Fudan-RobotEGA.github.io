@@ -14,10 +14,9 @@ BattleScope 将 RMUC 2026 区域赛数据整理为可在浏览器中查看的静
 - **赛局总览**：经济、伤害转化和步哨兵火力覆盖；
 - **交战态势**：交火点、死亡点、建筑血量、地面压制和移动功率；
 - **强队对标**：站位策略、阶段收益、异常片段和官方录像同步；
-- **操作表现**：按操作位统计生存、火力、移动与协同表现；
-- **交互回放**：查看一个预生成示例局的轨迹、事件和分析页签。
+- **操作表现**：按操作位统计生存、火力、移动与协同表现。
 
-在 BattleScope 首页可以搜索 613 场比赛，并浏览复旦大学的 17 局专题分析。在线版是 GitHub Pages 静态快照：比赛搜索和专题分析可以直接使用，但任意比赛的现场解析需要在本地运行 `fudan-rm-battlescope` Python 工具。
+BattleScope 在线版提供复旦大学 17 局专题分析和 5 场强队对标比赛，以 GitHub Pages 静态快照形式发布。本地 `fudan-rm-battlescope` Python 工具仍保留完整的数据分析能力。
 
 分析结果用于赛后定位值得复核的片段，不应脱离官方录像直接作为操作评价或因果结论。
 
@@ -53,7 +52,7 @@ pnpm preview
 │  ├─ pages/                    首页、战队、机器人和文档页面
 │  └─ content/                  战队、机器人、文档及联系信息
 ├─ public/                      构建时原样复制的静态资源
-│  ├─ battlescope/              BattleScope 主体、分析 JSON 和示例回放
+│  ├─ battlescope/              BattleScope 主体和专题分析 JSON
 │  └─ rm-battlescope/           BattleScope 官网兼容入口
 ├─ .github/workflows/           自动构建与部署配置
 ├─ vite.config.js               Vite 配置
@@ -84,12 +83,11 @@ Set-Location ..\Data_analyzer\fudan-rm-battlescope
 | --- | --- |
 | BattleScope 首页 | `public/battlescope/index.html` |
 | 四个专题分析页 | `public/battlescope/analysis/*/index.html` |
-| 比赛及分析数据 | `public/battlescope/api/*.json` |
+| 专题分析数据 | `public/battlescope/api/*.json` |
 | 主题、队徽和场地图 | `public/battlescope/assets/` |
-| 固定示例回放 | `public/battlescope/replay/index.html` |
 | 官网兼容入口 | `public/rm-battlescope/index.html` |
 
-当前固定示例为北部赛区第 90 场第 1 局，`game_id=1780389108168`。更新静态页面时必须保留以下约束：
+更新静态页面时必须保留以下约束：
 
 - 所有静态资源使用 `/battlescope/assets/`；
 - 专题数据使用 `/battlescope/api/*.json`；
@@ -107,7 +105,7 @@ git diff --check
 git status --short
 ```
 
-还应在本地预览中检查：首页入口、比赛搜索、四个分析模块、交战地图筛选、示例回放标签页以及桌面和窄屏布局。
+还应在本地预览中检查：首页入口、四个分析模块、交战地图筛选、官方录像跳转以及桌面和窄屏布局。
 
 ## 提交与部署
 
@@ -128,10 +126,6 @@ git push origin docs
 ### BattleScope 页面可以打开，但没有分析数据
 
 检查页面请求是否指向 `/battlescope/api/*.json`，并确认对应 JSON 已进入生产构建的 `dist/battlescope/api/`。
-
-### 在线版点击不同比赛仍打开同一个回放
-
-这是静态版的预期行为。网站只发布一个代表性示例；任意比赛解析需要运行 Python 后端，GitHub Pages 无法执行该后端。
 
 ### 刷新 Vue 子页面后显示 404
 
