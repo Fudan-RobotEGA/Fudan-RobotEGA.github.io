@@ -1,4 +1,34 @@
+# Dependencies
+node_modules/
+
+# Local build output (the deployed site is stored at the repository root)
+/dist/
+
+# Build tool caches
+.vite/
+.cache/
+.parcel-cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Editor settings and temporary files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating system files
 .DS_Store
-dist
-node_modules
-个人简历_2026.pdf
+Thumbs.db
+Desktop.ini

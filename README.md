@@ -84,8 +84,15 @@ Set-Location ..\Data_analyzer\fudan-rm-battlescope
 | BattleScope 首页 | `public/battlescope/index.html` |
 | 四个专题分析页 | `public/battlescope/analysis/*/index.html` |
 | 专题分析数据 | `public/battlescope/api/*.json` |
+| 强队对比目录与逐局快照 | `public/battlescope/api/strong-compare/` |
 | 主题、队徽和场地图 | `public/battlescope/assets/` |
 | 官网兼容入口 | `public/rm-battlescope/index.html` |
+
+强队对比的静态快照可在网站仓库根目录重新生成；该命令只读分析器和赛事数据库，不会修改或复制它们：
+
+```powershell
+..\Data_analyzer\fudan-rm-battlescope\.conda\envs\rmuc2026\python.exe scripts\generate_strong_compare.py
+```
 
 更新静态页面时必须保留以下约束：
 
