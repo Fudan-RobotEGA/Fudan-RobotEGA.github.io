@@ -29,8 +29,11 @@ h1 { margin: 0 0 7px; font-size: clamp(30px, 5vw, 48px); font-weight: 530; lette
 .module .index { display: block; color: var(--module-color); font-size: 10px; letter-spacing: .12em; margin-bottom: 18px; }
 .module strong { display: block; font-size: 17px; font-weight: 540; margin-bottom: 7px; }
 .module small { display: block; color: var(--muted); font-size: 11px; line-height: 1.55; }
-.site-return { display: inline-flex; align-items: center; margin-bottom: 22px; color: var(--muted); font-size: 12px; font-weight: 600; text-decoration: none; transition: color .15s, transform .15s; }
+.site-nav { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px; }
+.site-return { display: inline-flex; align-items: center; color: var(--muted); font-size: 12px; font-weight: 600; text-decoration: none; transition: color .15s, transform .15s; }
 .site-return:hover, .site-return:focus-visible { color: var(--text); transform: translateX(-2px); outline: none; }
+.three-d-quick { display:inline-flex; align-items:center; gap:9px; padding:9px 13px; border:1px solid rgba(91,211,169,.48); border-radius:999px; background:rgba(22,46,43,.72); color:#b8f5df; font-size:12px; font-weight:700; text-decoration:none; transition:transform .15s,border-color .15s,background .15s; }
+.three-d-quick:hover,.three-d-quick:focus-visible { transform:translateY(-1px); border-color:#5bd3a9; background:rgba(29,64,57,.85); outline:none; }
 @media (max-width: 820px) {
   main { width: min(100% - 20px, 680px); padding-top: 24px; }
   .hero { grid-template-columns: 1fr; align-items: start; gap: 12px; }
@@ -45,7 +48,10 @@ h1 { margin: 0 0 7px; font-size: clamp(30px, 5vw, 48px); font-weight: 530; lette
 </head>
 <body>
 <main>
-  <a class="site-return" href="/">← 返回战队官网</a>
+  <nav class="site-nav" aria-label="页面导航">
+    <a class="site-return" href="/">← 返回战队官网</a>
+    <a class="three-d-quick" href="/battlescope/3d/">进入三维战场 <span aria-hidden="true">→</span></a>
+  </nav>
   <header class="hero">
     <div class="brand-marks" aria-label="复旦大学与星云 EGA 战队">
       <img class="brand-mark brand-mark-fudan" src="/battlescope/assets/fudan-emblem-transparent.png" alt="复旦大学校徽" width="1254" height="1254">
