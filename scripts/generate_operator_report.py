@@ -1,4 +1,4 @@
-"""Export the lazy-loadable operator report for the static website."""
+"""Export the operator report and its backward-compatible detail files."""
 
 from __future__ import annotations
 
@@ -39,9 +39,11 @@ def main() -> None:
             filename = f"{match['game_id']}-{match['robot_id']}.json"
             generated_files.add(filename)
             match["data_url"] = f"/battlescope/api/operators/games/{filename}"
+            detail = details_by_key[(match["game_id"], match["robot_id"])]
+            match["detail"] = detail
             write_json(
                 DETAILS_ROOT / filename,
-                details_by_key[(match["game_id"], match["robot_id"])],
+                detail,
             )
 
     for path in DETAILS_ROOT.glob("*.json"):

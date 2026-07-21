@@ -13,6 +13,11 @@ node_modules/
 .stylelintcache
 coverage/
 
+# Python caches from data export and contract tests
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
 # Logs
 *.log
 npm-debug.log*
