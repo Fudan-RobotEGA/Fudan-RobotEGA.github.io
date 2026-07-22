@@ -95,20 +95,20 @@
           <p class="eyebrow">TRAINING REVIEW</p>
           <h2 id="battlescope-home-title">赛训复盘平台</h2>
         </div>
-        <a class="ega-text-link" href="/rm-battlescope/" aria-label="打开赛训复盘平台">
+        <a class="ega-text-link" href="/battlescope/" aria-label="打开赛训复盘平台">
           打开平台 <span>→</span>
         </a>
       </div>
 
-      <a class="ega-battlescope-feature" href="/rm-battlescope/">
+      <a class="ega-battlescope-feature" href="/battlescope/">
         <div class="ega-battlescope-copy">
           <h3>RM BattleScope</h3>
-          <p>把 RMUC 2026 比赛数据转化为赛局趋势、交战态势、强队对标和操作表现。</p>
+          <p>把 RMUC 2026 比赛数据转化为赛局趋势、交战态势、强队对标、操作表现与三维战场回放。</p>
           <span class="ega-card-inline-link">打开完整在线版 <span aria-hidden="true">→</span></span>
         </div>
         <div class="ega-battlescope-metrics" aria-label="BattleScope 在线数据范围">
           <span><strong>17</strong><small>复旦比赛</small></span>
-          <span><strong>4</strong><small>分析模块</small></span>
+          <span><strong>5</strong><small>分析模块</small></span>
           <span><strong>5</strong><small>对标比赛</small></span>
         </div>
       </a>

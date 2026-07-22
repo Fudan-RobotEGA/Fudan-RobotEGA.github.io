@@ -22,14 +22,15 @@ h1 { margin: 0 0 7px; font-size: clamp(30px, 5vw, 48px); font-weight: 530; lette
 .hero p, .muted { color: var(--muted); }
 .hero p { margin: 0; }
 .count { white-space: nowrap; color: #c7d0df; border: 1px solid var(--border); border-radius: 999px; padding: 8px 12px; background: rgba(21,25,35,.78); font-size: 12px; }
-.module-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-bottom: 34px; }
+.module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 11px; margin-bottom: 34px; }
 .module { position: relative; min-height: 142px; padding: 17px; overflow: hidden; border: 1px solid var(--border); border-radius: 12px; background: linear-gradient(145deg, rgba(27,32,44,.96), rgba(17,21,30,.94)); color: var(--text); text-decoration: none; transition: transform .15s, border-color .15s, background .15s; }
 .module::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--module-color); }
 .module:hover { transform: translateY(-2px); border-color: var(--module-color); background: linear-gradient(145deg, rgba(35,42,58,.98), rgba(18,23,33,.96)); }
 .module .index { display: block; color: var(--module-color); font-size: 10px; letter-spacing: .12em; margin-bottom: 18px; }
 .module strong { display: block; font-size: 17px; font-weight: 540; margin-bottom: 7px; }
 .module small { display: block; color: var(--muted); font-size: 11px; line-height: 1.55; }
-.site-return { display: inline-flex; align-items: center; margin-bottom: 22px; color: var(--muted); font-size: 12px; font-weight: 600; text-decoration: none; transition: color .15s, transform .15s; }
+.site-nav { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px; }
+.site-return { display: inline-flex; align-items: center; color: var(--muted); font-size: 12px; font-weight: 600; text-decoration: none; transition: color .15s, transform .15s; }
 .site-return:hover, .site-return:focus-visible { color: var(--text); transform: translateX(-2px); outline: none; }
 @media (max-width: 820px) {
   main { width: min(100% - 20px, 680px); padding-top: 24px; }
@@ -45,7 +46,9 @@ h1 { margin: 0 0 7px; font-size: clamp(30px, 5vw, 48px); font-weight: 530; lette
 </head>
 <body>
 <main>
-  <a class="site-return" href="/">← 返回战队官网</a>
+  <nav class="site-nav" aria-label="页面导航">
+    <a class="site-return" href="/">← 返回战队官网</a>
+  </nav>
   <header class="hero">
     <div class="brand-marks" aria-label="复旦大学与星云 EGA 战队">
       <img class="brand-mark brand-mark-fudan" src="/battlescope/assets/fudan-emblem-transparent.png" alt="复旦大学校徽" width="1254" height="1254">
@@ -56,7 +59,7 @@ h1 { margin: 0 0 7px; font-size: clamp(30px, 5vw, 48px); font-weight: 530; lette
       <h1>RM BattleScope</h1>
       <p>RoboMaster专项赛训复盘平台</p>
     </div>
-    <div class="count">4 个分析模块</div>
+    <div class="count">5 个分析模块</div>
   </header>
 
   <nav class="module-grid" aria-label="分析模块">
@@ -75,6 +78,10 @@ h1 { margin: 0 0 7px; font-size: clamp(30px, 5vw, 48px); font-weight: 530; lette
     <a class="module" href="/battlescope/analysis/operators/" style="--module-color:#3f8fdf">
       <span class="index">个人视角</span><strong>操作表现</strong>
       <small>按操作位复盘生存、火力、移动与协同</small>
+    </a>
+    <a class="module" href="/battlescope/3d/" style="--module-color:#5bd3a9">
+      <span class="index">空间视角</span><strong>三维战场</strong>
+      <small>复旦及强校相关对局的可交互三维回放</small>
     </a>
   </nav>
 </main>
