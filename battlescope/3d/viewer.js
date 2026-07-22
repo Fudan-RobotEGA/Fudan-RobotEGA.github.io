@@ -1,5 +1,5 @@
 'use strict';
-const canvas=document.getElementById('field'),stage=document.getElementById('stage'),slider=document.getElementById('slider'),play=document.getElementById('play');
+const canvas=document.getElementById('field'),stage=document.getElementById('arenaViewport'),slider=document.getElementById('slider'),play=document.getElementById('play');
 const state={catalog:null,data:null,timer:0,last:0,playhead:0,duration:420,scene:null};
 const esc=value=>String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 function clock(value){const seconds=Math.max(0,Math.ceil(value));return `${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`}
