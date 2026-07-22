@@ -68,10 +68,28 @@ function crossfallHeight(y, field) {
   const distance = Math.min(clamp(y, 0, field.height), field.height - clamp(y, 0, field.height));
   return Math.tan(OFFICIAL_ARENA.crossfallDeg * Math.PI / 180) * distance;
 }
+function terrainBaseHeight(feature, field) {
+  const centerY = feature.points.reduce((sum, point) => sum + point[1], 0) / feature.points.length;
+  return crossfallHeight(centerY, field) + feature.base;
+}
 function terrainHeight(x, y, field) {
   let height = crossfallHeight(y, field);
-  for (const feature of TERRAIN) if (pointInPolygon(x, y, feature.points)) height = Math.max(height, feature.base + feature.height);
+  for (const feature of TERRAIN) if (pointInPolygon(x, y, feature.points)) height = Math.max(height, terrainBaseHeight(feature, field) + feature.height);
   return height;
+}
+function applyFieldUvs(geometry, field) {
+  const positions = geometry.getAttribute('position'), uvs = geometry.getAttribute('uv');
+  for (let index = 0; index < positions.count; index++) {
+    uvs.setXY(index, clamp((positions.getX(index) + field.width / 2) / field.width, 0, 1), clamp((positions.getY(index) + field.height / 2) / field.height, 0, 1));
+  }
+  uvs.needsUpdate = true;
+}
+function createFieldFloorGeometry(field) {
+  const geometry = new THREE.PlaneGeometry(field.width, field.height, 56, 30), positions = geometry.getAttribute('position');
+  for (let index = 0; index < positions.count; index++) positions.setZ(index, crossfallHeight(positions.getY(index) + field.height / 2, field));
+  positions.needsUpdate = true;
+  geometry.computeVertexNormals();
+  return geometry;
 }
 function trackCoordinates(track, index) {
   if (track.clean_xy) return track.clean_xy[index] || null;
@@ -175,7 +193,7 @@ function create(options) {
   const canvas = options.canvas, stage = options.stage || canvas.parentElement;
   const colors = { ...DEFAULT_COLORS, ...(options.colors || {}) };
   let data = options.data || null, disposed = false, animation = 0, lastTime = -1, lastStatsMode = '', lastTrailTime = -1;
-  let telemetryCoverage = { start: 0, end: 0 }, cameraMode = '战术透视';
+  let telemetryCoverage = { start: 0, end: 0 }, cameraMode = '战术透视', fieldSurfaceMaterials = [];
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -246,10 +264,15 @@ function create(options) {
     });
     shape.closePath();
     const geometry = new THREE.ExtrudeGeometry(shape, { depth: feature.height, bevelEnabled: true, bevelSegments: 2, bevelSize: .045, bevelThickness: .025, curveSegments: 1 });
-    geometry.translate(0, 0, feature.base);
+    applyFieldUvs(geometry, field);
+    geometry.translate(0, 0, terrainBaseHeight(feature, field));
     const top = concrete.clone(), side = concreteDark.clone();
-    top.color.set(feature.camp === '红' ? 0xc59fa0 : feature.camp === '蓝' ? 0x9eafc5 : feature.key === 'resource-island' ? 0xe0d8cc : 0xcfc8bd);
+    top.color.set(0xe8e3dc);
+    top.roughness = .86;
+    top.metalness = .025;
+    top.clearcoat = .1;
     side.color.set(feature.camp === '红' ? 0x473034 : feature.camp === '蓝' ? 0x26384d : 0x353331);
+    fieldSurfaceMaterials.push(top);
     const mesh = addMesh(staticGroup, geometry, [top, side], [0, 0, 0], [-Math.PI / 2, 0, 0]);
     const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 25), new THREE.LineBasicMaterial({ color: feature.camp ? hexNumber(colors[feature.camp]) : 0xa4a19a, transparent: true, opacity: .52 }));
     edges.rotation.x = -Math.PI / 2;
@@ -300,6 +323,7 @@ function create(options) {
       const child = staticGroup.children.pop();
       disposeObject(child);
     }
+    fieldSurfaceMaterials = [];
     const field = getField();
     box(staticGroup, [54, .14, 34], [0, -.12, 0], darkFloor);
     const grid = new THREE.GridHelper(54, 54, 0x2a3441, 0x151d27);
@@ -307,8 +331,9 @@ function create(options) {
     grid.material.transparent = true;
     grid.material.opacity = .28;
     staticGroup.add(grid);
-    const fieldMaterial = physicalMaterial({ color: 0x908a82, roughness: .84, metalness: .035, clearcoat: .08 });
-    const floor = addMesh(staticGroup, new THREE.PlaneGeometry(field.width, field.height, 42, 24), fieldMaterial, [0, .004, 0], [-Math.PI / 2, 0, 0]);
+    const fieldMaterial = physicalMaterial({ color: 0xb8b3ab, roughness: .86, metalness: .025, clearcoat: .08 });
+    fieldSurfaceMaterials.push(fieldMaterial);
+    const floor = addMesh(staticGroup, createFieldFloorGeometry(field), fieldMaterial, [0, .004, 0], [-Math.PI / 2, 0, 0]);
     floor.receiveShadow = true;
     if (options.fieldImage) new THREE.TextureLoader().load(options.fieldImage, texture => {
       if (disposed) { texture.dispose(); return; }
@@ -318,8 +343,10 @@ function create(options) {
       texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
       texture.repeat.set(crop[2] - crop[0], crop[3] - crop[1]);
       texture.offset.set(crop[0], 1 - crop[3]);
-      fieldMaterial.map = texture;
-      fieldMaterial.needsUpdate = true;
+      for (const material of fieldSurfaceMaterials) {
+        material.map = texture;
+        material.needsUpdate = true;
+      }
     });
     box(staticGroup, [field.width + .45, .22, .22], [0, .11, field.height / 2 + .11], blackMetal);
     box(staticGroup, [field.width + .45, .22, .22], [0, .11, -field.height / 2 - .11], blackMetal);
