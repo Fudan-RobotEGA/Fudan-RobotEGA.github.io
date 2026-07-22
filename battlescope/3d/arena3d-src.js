@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const DEFAULT_COLORS = { 红: '#e63c50', 蓝: '#2879e8' };
 const ROLE_NAMES = ['英雄', '工程', '步兵3', '步兵4', '空中', '哨兵'];
 const ROLE_LABELS = { 英雄: '英雄', 工程: '工程', 步兵3: '三号步兵', 步兵4: '四号步兵', 空中: '无人机', 哨兵: '哨兵' };
-const OFFICIAL_ARENA = Object.freeze({ width: 28, height: 15, roundDuration: 420, crossfallDeg: 1.5 });
+const OFFICIAL_ARENA = Object.freeze({ width: 28, height: 15, roundDuration: 420 });
 const FALLBACK_FIELD = Object.freeze({
   width: 28,
   height: 15,
@@ -14,20 +14,23 @@ const FALLBACK_FIELD = Object.freeze({
   objectives: { '红:基地': [2.46, 7.44], '红:前哨站': [10.87, 3.58], '蓝:前哨站': [17.12, 11.32], '蓝:基地': [25.73, 7.44] },
 });
 const AIRCRAFT_ALTITUDE = 1.72;
+const ROBOT_VISUAL_SCALE = Object.freeze({ 英雄: .62, 工程: .62, 步兵3: .68, 步兵4: .68, 空中: .58, 哨兵: .6 });
+const ROBOT_LABEL_OFFSET = Object.freeze({ 英雄: .62, 工程: .66, 步兵3: .58, 步兵4: .58, 空中: .24, 哨兵: .6 });
+const ATTACK_EFFECT_DURATION = 1.1;
 const TAU = Math.PI * 2;
 
 const TERRAIN = [
   {
     key: 'central-highland',
     points: [[11.05, 1.45], [16.95, 1.45], [18.25, 2.75], [18.25, 4.75], [19.15, 6], [19.15, 9], [18.25, 10.25], [18.25, 12.25], [16.95, 13.55], [11.05, 13.55], [9.75, 12.25], [9.75, 10.25], [8.85, 9], [8.85, 6], [9.75, 4.75], [9.75, 2.75]],
-    base: .03,
-    height: .18,
+    base: .025,
+    height: .26,
     color: 0x706d68,
   },
   {
     key: 'resource-island',
     points: [[12.15, 5.45], [14, 4.55], [15.85, 5.45], [16.55, 7.5], [15.85, 9.55], [14, 10.45], [12.15, 9.55], [11.45, 7.5]],
-    base: .21,
+    base: .285,
     height: .24,
     color: 0x88827a,
   },
@@ -35,7 +38,7 @@ const TERRAIN = [
     key: 'red-highland',
     points: [[.55, .45], [9.25, .45], [9.25, 2.8], [7.6, 4.65], [.55, 4.65]],
     base: .025,
-    height: .31,
+    height: .34,
     color: 0x68585a,
     camp: '红',
   },
@@ -43,7 +46,7 @@ const TERRAIN = [
     key: 'blue-highland',
     points: [[18.75, 12.2], [20.4, 10.35], [27.45, 10.35], [27.45, 14.55], [18.75, 14.55]],
     base: .025,
-    height: .31,
+    height: .34,
     color: 0x515d6d,
     camp: '蓝',
   },
@@ -64,16 +67,9 @@ function pointInPolygon(x, y, points) {
   }
   return inside;
 }
-function crossfallHeight(y, field) {
-  const distance = Math.min(clamp(y, 0, field.height), field.height - clamp(y, 0, field.height));
-  return Math.tan(OFFICIAL_ARENA.crossfallDeg * Math.PI / 180) * distance;
-}
-function terrainBaseHeight(feature, field) {
-  const centerY = feature.points.reduce((sum, point) => sum + point[1], 0) / feature.points.length;
-  return crossfallHeight(centerY, field) + feature.base;
-}
+function terrainBaseHeight(feature) { return feature.base; }
 function terrainHeight(x, y, field) {
-  let height = crossfallHeight(y, field);
+  let height = 0;
   for (const feature of TERRAIN) if (pointInPolygon(x, y, feature.points)) height = Math.max(height, terrainBaseHeight(feature, field) + feature.height);
   return height;
 }
@@ -83,13 +79,6 @@ function applyFieldUvs(geometry, field) {
     uvs.setXY(index, clamp((positions.getX(index) + field.width / 2) / field.width, 0, 1), clamp((positions.getY(index) + field.height / 2) / field.height, 0, 1));
   }
   uvs.needsUpdate = true;
-}
-function createFieldFloorGeometry(field) {
-  const geometry = new THREE.PlaneGeometry(field.width, field.height, 56, 30), positions = geometry.getAttribute('position');
-  for (let index = 0; index < positions.count; index++) positions.setZ(index, crossfallHeight(positions.getY(index) + field.height / 2, field));
-  positions.needsUpdate = true;
-  geometry.computeVertexNormals();
-  return geometry;
 }
 function trackCoordinates(track, index) {
   if (track.clean_xy) return track.clean_xy[index] || null;
@@ -192,7 +181,7 @@ function orientedCorners(x, y, width, depth, angle) {
 function create(options) {
   const canvas = options.canvas, stage = options.stage || canvas.parentElement;
   const colors = { ...DEFAULT_COLORS, ...(options.colors || {}) };
-  let data = options.data || null, disposed = false, animation = 0, lastTime = -1, lastStatsMode = '', lastTrailTime = -1;
+  let data = options.data || null, disposed = false, animation = 0, lastTime = -1, lastStatsMode = '', lastTrailTime = -1, lastAttackTime = -1, currentAttacks = [];
   let telemetryCoverage = { start: 0, end: 0 }, cameraMode = '战术透视', fieldSurfaceMaterials = [];
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -333,7 +322,7 @@ function create(options) {
     staticGroup.add(grid);
     const fieldMaterial = physicalMaterial({ color: 0xb8b3ab, roughness: .86, metalness: .025, clearcoat: .08 });
     fieldSurfaceMaterials.push(fieldMaterial);
-    const floor = addMesh(staticGroup, createFieldFloorGeometry(field), fieldMaterial, [0, .004, 0], [-Math.PI / 2, 0, 0]);
+    const floor = addMesh(staticGroup, new THREE.PlaneGeometry(field.width, field.height), fieldMaterial, [0, .004, 0], [-Math.PI / 2, 0, 0]);
     floor.receiveShadow = true;
     if (options.fieldImage) new THREE.TextureLoader().load(options.fieldImage, texture => {
       if (disposed) { texture.dispose(); return; }
@@ -420,6 +409,13 @@ function create(options) {
     material.userData.deadColor = new THREE.Color(0x4d555d);
     return material;
   }
+  function finishRobotModel(group, type) {
+    const scale = ROBOT_VISUAL_SCALE[type] || .65;
+    group.scale.setScalar(scale);
+    group.userData.visualScale = scale;
+    group.userData.labelOffset = ROBOT_LABEL_OFFSET[type] || .58;
+    return group;
+  }
   function createRobotModel(type, camp) {
     const group = new THREE.Group(), teamColor = hexNumber(colors[camp]);
     const chassis = taggedMaterial(0x171d24, { roughness: .28, metalness: .88, clearcoat: .42 });
@@ -431,13 +427,13 @@ function create(options) {
     if (type === '空中') {
       cylinder(group, .24, .28, .22, 18, [0, .05, 0], armor);
       for (let index = 0; index < 4; index++) {
-        const angle = Math.PI / 4 + index * Math.PI / 2, x = Math.cos(angle) * .52, z = Math.sin(angle) * .52;
-        box(group, [.84, .055, .075], [Math.cos(angle) * .25, .05, Math.sin(angle) * .25], chassis, -angle);
-        cylinder(group, .23, .23, .025, 24, [x, .11, z], accent);
+        const angle = Math.PI / 4 + index * Math.PI / 2, x = Math.cos(angle) * .43, z = Math.sin(angle) * .43;
+        box(group, [.68, .05, .065], [Math.cos(angle) * .21, .05, Math.sin(angle) * .21], chassis, -angle);
+        cylinder(group, .2, .2, .024, 20, [x, .11, z], accent);
         cylinder(group, .08, .09, .11, 14, [x, .06, z], metal);
       }
-      box(group, [.5, .14, .2], [.28, -.06, 0], metal);
-      return group;
+      box(group, [.42, .12, .18], [.23, -.05, 0], metal);
+      return finishRobotModel(group, type);
     }
     const dimensions = type === '英雄' ? [1.02, .76] : type === '哨兵' ? [1.08, .8] : type === '工程' ? [.94, .76] : [.82, .68];
     const [length, width] = dimensions;
@@ -452,20 +448,20 @@ function create(options) {
     box(group, [.09, .15, width * .66], [-length * .43, .36, 0], accent);
     if (type === '工程') {
       box(group, [.48, .28, .48], [-.08, .57, 0], armor);
-      box(group, [.72, .13, .14], [.29, .78, 0], taggedMaterial(0xd8a933, { emissive: 0x9c6810, emissiveIntensity: .14, metalness: .54 }), 0);
+      box(group, [.52, .12, .13], [.21, .76, 0], taggedMaterial(0xd8a933, { emissive: 0x9c6810, emissiveIntensity: .14, metalness: .54 }), 0);
       cylinder(group, .13, .13, .2, 16, [-.02, .76, 0], metal, [Math.PI / 2, 0, 0]);
     } else {
       const turretRadius = type === '英雄' ? .31 : type === '哨兵' ? .3 : .23;
       cylinder(group, turretRadius, turretRadius * 1.08, .2, 18, [0, .58, 0], armor);
       const barrels = type === '哨兵' ? [-.13, .13] : [0];
       barrels.forEach(offset => {
-        const lengthScale = type === '英雄' ? .96 : type === '哨兵' ? .72 : .66;
+        const lengthScale = type === '英雄' ? .72 : type === '哨兵' ? .52 : .48;
         cylinder(group, type === '英雄' ? .065 : .042, type === '英雄' ? .08 : .055, lengthScale, 14, [lengthScale * .46, .63, offset], metal, [0, 0, Math.PI / 2]);
         cylinder(group, type === '英雄' ? .09 : .065, type === '英雄' ? .09 : .065, .14, 14, [lengthScale - .02, .63, offset], chassis, [0, 0, Math.PI / 2]);
       });
       if (type === '步兵4') for (const z of [-.31, .31]) box(group, [.3, .19, .07], [-.2, .56, z], accent);
     }
-    return group;
+    return finishRobotModel(group, type);
   }
   function setRobotAlive(robot, alive) {
     if (robot.alive === alive) return;
@@ -510,7 +506,7 @@ function create(options) {
         robot.label.style.display = 'none';
         continue;
       }
-      const ground = terrainHeight(current.x, current.y, field), altitude = robot.type === '空中' ? AIRCRAFT_ALTITUDE : .04;
+      const ground = terrainHeight(current.x, current.y, field), altitude = robot.type === '空中' ? AIRCRAFT_ALTITUDE : .02;
       robot.model.visible = true;
       robot.model.position.set(worldX(current.x, field), ground + altitude, worldZ(current.y, field));
       robot.model.rotation.y = -current.heading * Math.PI / 180;
@@ -535,7 +531,7 @@ function create(options) {
         if (sampleTime < start || sampleTime > time) return;
         const point = trackCoordinates(robot.track, index);
         if (!point) return;
-        const elevation = terrainHeight(point[0], point[1], field) + (robot.type === '空中' ? AIRCRAFT_ALTITUDE : .035);
+        const elevation = terrainHeight(point[0], point[1], field) + (robot.type === '空中' ? AIRCRAFT_ALTITUDE : .02);
         positions.push(worldX(point[0], field), elevation, worldZ(point[1], field));
       });
       if (positions.length < 6) continue;
@@ -550,21 +546,50 @@ function create(options) {
     const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, length, 10), material);
     mesh.position.copy(midpoint);
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.normalize());
+    mesh.renderOrder = 7;
     attackGroup.add(mesh);
+    return mesh;
+  }
+  function attackAnchorHeight(type) {
+    if (type === '空中') return AIRCRAFT_ALTITUDE + .04;
+    if (type === '基地') return 1.12;
+    if (type === '前哨站') return .7;
+    return .31;
+  }
+  function glowMaterial(color, opacity, depthTest = false) {
+    return new THREE.MeshBasicMaterial({ color, transparent: true, opacity, depthTest, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false });
   }
   function updateAttacks(time) {
+    if (Math.abs(time - lastAttackTime) < .045) return currentAttacks;
+    lastAttackTime = time;
     clearDynamicGroup(attackGroup);
-    const field = getField(), attacks = (data?.attacks || []).filter(item => Math.abs(Number(item.hit_time) - time) < .7 && item.confidence !== 'low');
+    const field = getField(), attacks = (data?.attacks || []).filter(item => Math.abs(Number(item.hit_time) - time) < ATTACK_EFFECT_DURATION && item.confidence !== 'low');
     for (const attack of attacks) {
       const startGround = terrainHeight(attack.attacker_xy[0], attack.attacker_xy[1], field), endGround = terrainHeight(attack.victim_xy[0], attack.victim_xy[1], field);
-      const start = new THREE.Vector3(worldX(attack.attacker_xy[0], field), startGround + .62, worldZ(attack.attacker_xy[1], field));
-      const end = new THREE.Vector3(worldX(attack.victim_xy[0], field), endGround + (attack.victim_type === '空中' ? AIRCRAFT_ALTITUDE : .55), worldZ(attack.victim_xy[1], field));
-      const color = attack.confidence === 'high' ? 0xffdd62 : 0xff9f43;
-      cylinderBetween(start, end, .025, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: .9 }));
-      const pulse = addMesh(attackGroup, new THREE.SphereGeometry(.13, 14, 10), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: .55 }), [end.x, end.y, end.z]);
-      pulse.scale.setScalar(1 + Math.sin(time * 9) * .18);
+      const start = new THREE.Vector3(worldX(attack.attacker_xy[0], field), startGround + attackAnchorHeight(attack.attacker_type), worldZ(attack.attacker_xy[1], field));
+      const end = new THREE.Vector3(worldX(attack.victim_xy[0], field), endGround + attackAnchorHeight(attack.victim_type), worldZ(attack.victim_xy[1], field));
+      const campColor = hexNumber(colors[attack.attacker_camp] || '#ffd768'), coreColor = attack.attacker_camp === '红' ? 0xffeef0 : 0xeaf3ff;
+      const life = clamp(1 - Math.abs(Number(attack.hit_time) - time) / ATTACK_EFFECT_DURATION, 0, 1), burst = clamp(Number(attack.burst_count) || 1, 1, 10);
+      const radius = (String(attack.caliber).includes('42') ? .07 : .045) * (1 + burst * .025);
+      cylinderBetween(start, end, radius * 2.3, glowMaterial(campColor, .16 + life * .26));
+      cylinderBetween(start, end, radius, glowMaterial(coreColor, .72 + life * .24, true));
+      const particleCount = Math.min(6, 2 + Math.ceil(burst / 2)), direction = new THREE.Vector3().subVectors(end, start);
+      for (let index = 0; index < particleCount; index++) {
+        const fraction = (time * 2.1 + index / particleCount) % 1, point = start.clone().addScaledVector(direction, fraction);
+        const particle = addMesh(attackGroup, new THREE.SphereGeometry(radius * 1.8, 10, 8), glowMaterial(campColor, .68 + life * .25), [point.x, point.y, point.z], [0, 0, 0], false);
+        particle.renderOrder = 8;
+      }
+      const impactRadius = .2 + life * .18 + burst * .008;
+      const pulse = addMesh(attackGroup, new THREE.SphereGeometry(impactRadius, 16, 12), glowMaterial(campColor, .26 + life * .42), [end.x, end.y, end.z], [0, 0, 0], false);
+      pulse.renderOrder = 9;
+      const ring = addMesh(attackGroup, new THREE.TorusGeometry(impactRadius * 1.35, .035, 8, 28), glowMaterial(coreColor, .48 + life * .38), [end.x, end.y + .015, end.z], [Math.PI / 2, 0, 0], false);
+      ring.renderOrder = 9;
+      const light = new THREE.PointLight(campColor, 2.4 * life, 3.2, 2);
+      light.position.copy(end);
+      attackGroup.add(light);
     }
-    return attacks;
+    currentAttacks = attacks;
+    return currentAttacks;
   }
   function overlapArea(first, second) {
     const width = Math.max(0, Math.min(first.x + first.width, second.x + second.width) - Math.max(first.x, second.x));
@@ -582,7 +607,7 @@ function create(options) {
     const sorted = active.slice().sort((a, b) => b.model.position.distanceToSquared(camera.position) - a.model.position.distanceToSquared(camera.position));
     for (const robot of sorted) {
       scratchVector.copy(robot.model.position);
-      scratchVector.y += robot.type === '空中' ? .34 : .76;
+      scratchVector.y += robot.model.userData.labelOffset;
       scratchVector.project(camera);
       if (scratchVector.z < -1 || scratchVector.z > 1) { robot.label.style.display = 'none'; continue; }
       const anchorX = (scratchVector.x * .5 + .5) * rectangle.width, anchorY = (-scratchVector.y * .5 + .5) * rectangle.height;
@@ -695,6 +720,8 @@ function create(options) {
     lastTime = -1;
     lastStatsMode = '';
     lastTrailTime = -1;
+    lastAttackTime = -1;
+    currentAttacks = [];
     render();
   }
   function frame() {
