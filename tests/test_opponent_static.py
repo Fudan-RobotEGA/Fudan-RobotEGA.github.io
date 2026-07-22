@@ -16,7 +16,16 @@ class OpponentStaticTests(unittest.TestCase):
         for comparison in payload["comparisons"]:
             self.assertNotEqual(comparison["school"], "复旦大学")
             self.assertEqual(len(comparison["reports"]), 5)
-            self.assertEqual(len(comparison["radar_metrics"]), 6)
+            self.assertNotIn("radar_metrics", comparison)
+            for report in comparison["reports"]:
+                self.assertEqual(len(report["radar_metrics"]), 6)
+                keys = {metric["key"] for metric in report["radar_metrics"]}
+                if report["robot_type"] == "工程":
+                    self.assertIn("economy_gain_7m", keys)
+                    self.assertNotIn("buff_count", keys)
+                else:
+                    self.assertIn("buff_count", keys)
+                    self.assertNotIn("economy_gain_7m", keys)
         page = PAGE.read_text(encoding="utf-8")
         self.assertIn("/battlescope/api/opponents.json", page)
         self.assertIn("全部机器人类型汇总", page)
