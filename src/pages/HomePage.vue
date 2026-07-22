@@ -103,7 +103,7 @@
       <a class="ega-battlescope-feature" href="/battlescope/">
         <div class="ega-battlescope-copy">
           <h3>RM BattleScope</h3>
-          <p>把 RMUC 2026 比赛数据转化为赛局趋势、交战态势、强队对标、操作表现与三维战场回放。</p>
+          <p>把 RMUC 2026 比赛数据转化为赛局趋势、交战态势、强队对标、操作表现、三维战场回放和对手分析。</p>
           <span class="ega-card-inline-link">打开完整在线版 <span aria-hidden="true">→</span></span>
         </div>
         <div class="ega-battlescope-metrics" aria-label="BattleScope 在线数据范围">

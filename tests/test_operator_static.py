@@ -34,6 +34,9 @@ class OperatorStaticExportTests(unittest.TestCase):
         for report in self.overview["reports"]:
             self.assertTrue(report["radar_ranges"]["deaths"]["inverse"])
             self.assertTrue(report["radar_ranges"]["isolated_seconds"]["inverse"])
+            self.assertTrue(report["radar_ranges"]["assembly_mean_duration"]["inverse"])
+            self.assertNotIn("shots", report["radar_ranges"])
+            self.assertNotIn("buff_count", report["radar_ranges"])
 
     def test_page_has_one_overview_request_and_no_lazy_load_states(self) -> None:
         self.assertEqual(self.page.count("fetch("), 1)
@@ -43,6 +46,8 @@ class OperatorStaticExportTests(unittest.TestCase):
         self.assertNotIn("正在加载", self.page)
         self.assertIn("复旦 17 场平均", self.page)
         self.assertIn("radar-average", self.page)
+        self.assertIn("最高装配等级", self.page)
+        self.assertIn("装配时长", self.page)
 
 
 if __name__ == "__main__":
