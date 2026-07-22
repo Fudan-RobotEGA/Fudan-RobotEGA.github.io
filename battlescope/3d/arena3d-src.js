@@ -18,6 +18,8 @@ const ROBOT_VISUAL_SCALE = Object.freeze({ 英雄: .62, 工程: .62, 步兵3: .6
 const ROBOT_LABEL_OFFSET = Object.freeze({ 英雄: .62, 工程: .66, 步兵3: .58, 步兵4: .58, 空中: .24, 哨兵: .6 });
 const ATTACK_EFFECT_DURATION = 1.1;
 const TAU = Math.PI * 2;
+const OFFICIAL_TERRAIN_CACHE = new Map();
+let officialHeightMap = null;
 
 const TERRAIN = [
   {
@@ -69,9 +71,31 @@ function pointInPolygon(x, y, points) {
 }
 function terrainBaseHeight(feature) { return feature.base; }
 function terrainHeight(x, y, field) {
+  if (officialHeightMap) {
+    const { data, step, width, height, offset } = officialHeightMap;
+    const gridX = clamp(Number(x) / step, 0, width - 1), gridY = clamp(Number(y) / step, 0, height - 1);
+    const x0 = Math.floor(gridX), y0 = Math.floor(gridY), x1 = Math.min(width - 1, x0 + 1), y1 = Math.min(height - 1, y0 + 1);
+    const fractionX = gridX - x0, fractionY = gridY - y0;
+    const top = lerp(data[y0 * width + x0], data[y0 * width + x1], fractionX);
+    const bottom = lerp(data[y1 * width + x0], data[y1 * width + x1], fractionX);
+    return lerp(top, bottom, fractionY) / 100 + offset;
+  }
   let height = 0;
   for (const feature of TERRAIN) if (pointInPolygon(x, y, feature.points)) height = Math.max(height, terrainBaseHeight(feature, field) + feature.height);
   return height;
+}
+function loadOfficialTerrain(url) {
+  if (!OFFICIAL_TERRAIN_CACHE.has(url)) OFFICIAL_TERRAIN_CACHE.set(url, fetch(url).then(response => {
+    if (!response.ok) throw new Error(`官方场地读取失败 (${response.status})`);
+    return response.json();
+  }));
+  return OFFICIAL_TERRAIN_CACHE.get(url);
+}
+function applyOfficialHeightMap(heightMap) {
+  if (!heightMap?.data || officialHeightMap?.encoded === heightMap.data) return;
+  const binary = atob(heightMap.data), data = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index++) data[index] = binary.charCodeAt(index);
+  officialHeightMap = { data, encoded: heightMap.data, step: Number(heightMap.step), width: Number(heightMap.width), height: Number(heightMap.height), offset: Number(heightMap.offset) || 0 };
 }
 function applyFieldUvs(geometry, field) {
   const positions = geometry.getAttribute('position'), uvs = geometry.getAttribute('uv');
@@ -182,7 +206,7 @@ function create(options) {
   const canvas = options.canvas, stage = options.stage || canvas.parentElement;
   const colors = { ...DEFAULT_COLORS, ...(options.colors || {}) };
   let data = options.data || null, disposed = false, animation = 0, lastTime = -1, lastStatsMode = '', lastTrailTime = -1, lastAttackTime = -1, currentAttacks = [];
-  let telemetryCoverage = { start: 0, end: 0 }, cameraMode = '战术透视', fieldSurfaceMaterials = [];
+  let telemetryCoverage = { start: 0, end: 0 }, cameraMode = '战术透视', fieldSurfaceMaterials = [], fieldTexture = null, terrainLoadToken = 0;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -269,6 +293,41 @@ function create(options) {
     staticGroup.add(edges);
     return mesh;
   }
+  function terrainGeometry(payload) {
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(payload.positions, 3));
+    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(payload.uvs, 2));
+    geometry.setIndex(payload.indices);
+    geometry.computeVertexNormals();
+    geometry.computeBoundingSphere();
+    return geometry;
+  }
+  function createOfficialTerrain(payload, fieldMaterial) {
+    applyOfficialHeightMap(payload.heightMap);
+    if (powerRune) powerRune.position.copy(toWorld(14, 7.5, terrainHeight(14, 7.5, getField())));
+    const topMaterial = fieldMaterial.clone(), sideMaterial = concreteDark.clone();
+    topMaterial.color.set(0xffffff);
+    topMaterial.roughness = .86;
+    topMaterial.metalness = .025;
+    topMaterial.clearcoat = .1;
+    if (fieldTexture) topMaterial.map = fieldTexture;
+    sideMaterial.color.set(0x292b2d);
+    sideMaterial.roughness = .92;
+    fieldSurfaceMaterials.push(topMaterial);
+    const top = addMesh(staticGroup, terrainGeometry(payload.top), topMaterial);
+    const sides = addMesh(staticGroup, terrainGeometry(payload.sides), sideMaterial);
+    top.renderOrder = 1;
+    sides.renderOrder = 0;
+  }
+  function createFallbackTerrain() {
+    TERRAIN.forEach(createPolygonMesh);
+    createStairs(7.85, 3.95, 1.75, 2.05, -.7, '红');
+    createStairs(20.15, 11.05, 1.75, 2.05, -.7, '蓝');
+    createWedge(12.85, 1.35, 2.05, 1.15, 0, .04, .46, redStructure);
+    createWedge(15.15, 13.65, 2.05, 1.15, Math.PI, .04, .46, blueStructure);
+    createTunnel(13.55, .82, 0, '红');
+    createTunnel(14.45, 14.18, 0, '蓝');
+  }
   function createWedge(x, y, width, depth, angle, low, high, material) {
     const field = getField(), corners = orientedCorners(x, y, width, depth, angle), positions = [];
     const heights = [low, low, high, high];
@@ -308,6 +367,7 @@ function create(options) {
     }
   }
   function buildArena() {
+    const loadToken = ++terrainLoadToken;
     while (staticGroup.children.length) {
       const child = staticGroup.children.pop();
       disposeObject(child);
@@ -324,6 +384,7 @@ function create(options) {
     fieldSurfaceMaterials.push(fieldMaterial);
     const floor = addMesh(staticGroup, new THREE.PlaneGeometry(field.width, field.height), fieldMaterial, [0, .004, 0], [-Math.PI / 2, 0, 0]);
     floor.receiveShadow = true;
+    floor.position.y = -.225;
     if (options.fieldImage) new THREE.TextureLoader().load(options.fieldImage, texture => {
       if (disposed) { texture.dispose(); return; }
       const crop = field.crop || FALLBACK_FIELD.crop;
@@ -332,6 +393,7 @@ function create(options) {
       texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
       texture.repeat.set(crop[2] - crop[0], crop[3] - crop[1]);
       texture.offset.set(crop[0], 1 - crop[3]);
+      fieldTexture = texture;
       for (const material of fieldSurfaceMaterials) {
         material.map = texture;
         material.needsUpdate = true;
@@ -341,13 +403,18 @@ function create(options) {
     box(staticGroup, [field.width + .45, .22, .22], [0, .11, -field.height / 2 - .11], blackMetal);
     box(staticGroup, [.22, .22, field.height], [field.width / 2 + .11, .11, 0], blackMetal);
     box(staticGroup, [.22, .22, field.height], [-field.width / 2 - .11, .11, 0], blackMetal);
-    TERRAIN.forEach(createPolygonMesh);
-    createStairs(7.85, 3.95, 1.75, 2.05, -.7, '红');
-    createStairs(20.15, 11.05, 1.75, 2.05, -.7, '蓝');
-    createWedge(12.85, 1.35, 2.05, 1.15, 0, .04, .46, redStructure);
-    createWedge(15.15, 13.65, 2.05, 1.15, Math.PI, .04, .46, blueStructure);
-    createTunnel(13.55, .82, 0, '红');
-    createTunnel(14.45, 14.18, 0, '蓝');
+    loadOfficialTerrain(options.officialTerrain || 'official-terrain.json').then(payload => {
+      if (disposed || loadToken !== terrainLoadToken) return;
+      createOfficialTerrain(payload, fieldMaterial);
+      buildObjectives();
+      render();
+    }).catch(error => {
+      if (disposed || loadToken !== terrainLoadToken) return;
+      console.warn(error);
+      floor.position.y = .004;
+      createFallbackTerrain();
+      render();
+    });
     createFence(field);
     const runePosition = toWorld(14, 7.5, terrainHeight(14, 7.5, field));
     powerRune = new THREE.Group();
