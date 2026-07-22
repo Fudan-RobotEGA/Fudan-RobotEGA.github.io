@@ -1,0 +1,13 @@
+{
+  "name": "fudan-robotega-website",
+  "private": true,
+  "scripts": {
+    "build:3d": "esbuild battlescope/3d/arena3d-src.js --bundle --format=iife --global-name=BattleScopeArenaBundle --minify --outfile=battlescope/3d/arena3d.js && node scripts/strip-trailing-whitespace.mjs battlescope/3d/arena3d.js"
+  },
+  "dependencies": {
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1"
+  }
+}
