@@ -58,6 +58,10 @@ function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
 function lerp(a, b, fraction) { return a + (b - a) * fraction; }
 function hexNumber(value) { return Number.parseInt(String(value).replace('#', ''), 16); }
 function fieldData(data) { return { ...FALLBACK_FIELD, ...(data?.field || {}) }; }
+function matchSchool(data, camp) {
+  const track = data?.tracks?.find(item => item.key?.camp === camp);
+  return String(data?.match?.[`${camp}方学校`] || track?.key?.school || `${camp}方`).trim();
+}
 function worldX(x, field) { return Number(x) - field.width / 2; }
 function worldZ(y, field) { return field.height / 2 - Number(y); }
 function pointInPolygon(x, y, points) {
@@ -226,9 +230,9 @@ function create(options) {
   controls.minPolarAngle = .08;
   controls.maxPolarAngle = Math.PI * .46;
   controls.target.set(0, .35, 0);
-  const staticGroup = new THREE.Group(), objectiveGroup = new THREE.Group(), robotGroup = new THREE.Group(), trailGroup = new THREE.Group(), attackGroup = new THREE.Group();
-  scene.add(staticGroup, objectiveGroup, robotGroup, trailGroup, attackGroup);
-  const labels = new Map();
+  const staticGroup = new THREE.Group(), objectiveGroup = new THREE.Group(), campBannerGroup = new THREE.Group(), robotGroup = new THREE.Group(), trailGroup = new THREE.Group(), attackGroup = new THREE.Group();
+  scene.add(staticGroup, objectiveGroup, campBannerGroup, robotGroup, trailGroup, attackGroup);
+  const labels = new Map(), campLabels = new Map();
   const labelLayer = document.createElement('div');
   labelLayer.className = 'robot-label-layer';
   labelLayer.setAttribute('aria-hidden', 'true');
@@ -262,6 +266,37 @@ function create(options) {
   function makeCampMaterial(camp, opacity = 1) {
     const color = hexNumber(colors[camp]);
     return physicalMaterial({ color, emissive: color, emissiveIntensity: .08, roughness: .4, metalness: .62, clearcoat: .52, transparent: opacity < 1, opacity });
+  }
+  function clearCampBanners() {
+    campLabels.forEach(item => item.label.remove());
+    campLabels.clear();
+    while (campBannerGroup.children.length) {
+      const child = campBannerGroup.children.pop();
+      disposeObject(child);
+    }
+  }
+  function updateCampBanners() {
+    clearCampBanners();
+    if (!data) return;
+    const field = getField();
+    for (const camp of ['红', '蓝']) {
+      const school = matchSchool(data, camp), color = hexNumber(colors[camp]), side = camp === '红' ? -1 : 1;
+      const x = side * (field.width / 2 + 2.25), group = new THREE.Group();
+      const markerMaterial = physicalMaterial({ color, emissive: color, emissiveIntensity: .5, roughness: .45, metalness: .35, transparent: true, opacity: .55 });
+      box(group, [4.1, .055, 1.05], [x, -.02, 0], markerMaterial, 0, false);
+      const glowMaterial = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: .2, depthWrite: false });
+      box(group, [4.65, .012, 1.45], [x, -.045, 0], glowMaterial, 0, false);
+      const label = document.createElement('div');
+      label.className = `camp-school-label is-${camp === '红' ? 'red' : 'blue'}`;
+      if ([...school].length > 8) label.classList.add('is-compact');
+      const sideTag = document.createElement('span'), name = document.createElement('strong');
+      sideTag.textContent = `${camp}方`;
+      name.textContent = school;
+      label.append(sideTag, name);
+      labelLayer.appendChild(label);
+      campLabels.set(camp, { label, anchor: new THREE.Vector3(x, 1.12, 0) });
+      campBannerGroup.add(group);
+    }
   }
   function box(parent, size, position, material, rotationY = 0, shadows = true) {
     return addMesh(parent, new THREE.BoxGeometry(...size), material, position, [0, rotationY, 0], shadows);
@@ -663,6 +698,29 @@ function create(options) {
     const height = Math.max(0, Math.min(first.y + first.height, second.y + second.height) - Math.max(first.y, second.y));
     return width * height;
   }
+  function updateCampLabels(rectangle, occupied) {
+    for (const item of campLabels.values()) {
+      scratchVector.copy(item.anchor).project(camera);
+      if (scratchVector.z < -1 || scratchVector.z > 1) { item.label.style.display = 'none'; continue; }
+      const anchorX = (scratchVector.x * .5 + .5) * rectangle.width, anchorY = (-scratchVector.y * .5 + .5) * rectangle.height;
+      const width = Math.min(item.label.offsetWidth || 184, rectangle.width - 12), height = item.label.offsetHeight || 38, margin = 6;
+      const candidates = [
+        { x: anchorX - width / 2, y: anchorY - height / 2 },
+        { x: anchorX - width / 2, y: anchorY - height - 14 },
+        { x: anchorX - width / 2, y: anchorY + 14 },
+      ].map(candidate => ({ x: clamp(candidate.x, margin, rectangle.width - width - margin), y: clamp(candidate.y, margin, rectangle.height - height - margin), width, height }));
+      let best = candidates[0], bestScore = Infinity;
+      candidates.forEach((candidate, index) => {
+        const collision = occupied.reduce((total, box) => total + overlapArea(candidate, box), 0);
+        const distance = Math.hypot(candidate.x + width / 2 - anchorX, candidate.y + height / 2 - anchorY);
+        const score = collision * 40 + distance + index * .2;
+        if (score < bestScore) { best = candidate; bestScore = score; }
+      });
+      occupied.push(best);
+      item.label.style.display = '';
+      item.label.style.transform = `translate3d(${best.x}px,${best.y}px,0)`;
+    }
+  }
   function updateLabels(active) {
     const rectangle = stage.getBoundingClientRect(), occupied = [];
     const host = stage.parentElement;
@@ -671,6 +729,7 @@ function create(options) {
       const box = obstacle.getBoundingClientRect(), clipped = { x: box.left - rectangle.left, y: box.top - rectangle.top, width: box.width, height: box.height };
       if (clipped.x < rectangle.width && clipped.y < rectangle.height && clipped.x + clipped.width > 0 && clipped.y + clipped.height > 0) occupied.push(clipped);
     }
+    updateCampLabels(rectangle, occupied);
     const sorted = active.slice().sort((a, b) => b.model.position.distanceToSquared(camera.position) - a.model.position.distanceToSquared(camera.position));
     for (const robot of sorted) {
       scratchVector.copy(robot.model.position);
@@ -776,6 +835,7 @@ function create(options) {
     data = next;
     updateTelemetryCoverage();
     clearRobots();
+    updateCampBanners();
     // All catalog entries use the same official arena. Keep the static scene on
     // the GPU while switching matches instead of rebuilding textures/materials.
     for (const track of data?.tracks || []) {
@@ -845,6 +905,7 @@ function create(options) {
       canvas.removeEventListener('dblclick', doubleClick);
       controls.dispose();
       clearRobots();
+      clearCampBanners();
       disposeObject(scene);
       concreteTexture.dispose();
       renderer.dispose();
