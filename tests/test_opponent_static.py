@@ -25,6 +25,8 @@ class OpponentStaticTests(unittest.TestCase):
                     self.assertNotIn("buff_count", keys)
                 else:
                     self.assertIn("buff_count", keys)
+                    self.assertIn("inferred_damage", keys)
+                    self.assertNotIn("mean_support_distance", keys)
                     self.assertNotIn("economy_gain_7m", keys)
         page = PAGE.read_text(encoding="utf-8")
         self.assertIn("/battlescope/api/opponents.json", page)

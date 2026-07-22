@@ -39,16 +39,17 @@ class OperatorStaticExportTests(unittest.TestCase):
             if report["robot_type"] == "工程":
                 self.assertEqual(
                     keys,
-                    {"deaths", "assembly_max_level", "damage_taken",
+                    {"deaths", "assembly_mean_level", "damage_taken",
                      "mean_support_distance", "isolated_seconds", "economy_gain_7m"},
                 )
                 self.assertFalse(report["radar_ranges"]["economy_gain_7m"]["inverse"])
             else:
                 self.assertEqual(
                     keys,
-                    {"deaths", "damage_taken", "mean_support_distance",
+                    {"deaths", "damage_taken", "inferred_damage",
                      "isolated_seconds", "shots", "buff_count"},
                 )
+                self.assertFalse(report["radar_ranges"]["inferred_damage"]["inverse"])
 
     def test_page_has_one_overview_request_and_no_lazy_load_states(self) -> None:
         self.assertEqual(self.page.count("fetch("), 1)
@@ -58,8 +59,10 @@ class OperatorStaticExportTests(unittest.TestCase):
         self.assertNotIn("正在加载", self.page)
         self.assertIn("复旦 17 场平均", self.page)
         self.assertIn("radar-average", self.page)
-        self.assertIn("最高装配", self.page)
+        self.assertIn("平均装配", self.page)
+        self.assertNotIn("平均最高装配", self.page)
         self.assertIn("局总经济增益", self.page)
+        self.assertIn("平均推断造成伤害", self.page)
 
 
 if __name__ == "__main__":
